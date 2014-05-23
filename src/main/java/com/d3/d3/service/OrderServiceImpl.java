@@ -28,7 +28,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
+    
+    @Resource
+    private OrderRepository orderRepository;
+    
     @Override
     public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -46,20 +49,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order1> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return orderRepository.findAll();
     }
 
     @Override
     public Order1 findById(Integer idOrd) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return orderRepository.findOne(idOrd);
     }
 
     @Override
     public boolean checkAccessUser(Integer idOrd, Integer idUser) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Order1 ord = orderRepository.findOne(idOrd);
+        if(ord == null || ord.getIdOrd() <= 0) {
+            return false;
+        }
+        if(ord.getIdUsu().getIdUsu() != idUser) {
+            System.out.println("ERROR");
+            return false;
+        }
+        return true;
     }
-    /*@Resource
-    private OrderRepository orderRepository;
+    /*
     
     @Resource
     private ProductService productService;
@@ -153,25 +163,5 @@ public class OrderServiceImpl implements OrderService {
         return upd != null;
     }
 
-    @Override
-    public List<Order1> findAll() {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public Order1 findById(Integer idOrd) {
-        return orderRepository.findOne(idOrd);
-    }
-
-    @Override
-    public boolean checkAccessUser(Integer idOrd, Integer idUser) {
-        Order1 ord = orderRepository.findOne(idOrd);
-        if(ord == null || ord.getIdOrd() <= 0) {
-            return false;
-        }
-        if(ord.getIdUsu().getIdUsu() != idUser) {
-            return false;
-        }
-        return true;
-    }*/
+    */
 }
