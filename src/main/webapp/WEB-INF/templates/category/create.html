@@ -1,0 +1,10 @@
+CREATE
+<form action="#" th:action="@{/admin/category/create.html}" th:object="${category}" method="post" role="form">
+    <div class="form-group">
+        <input type="hidden" th:field="*{idCat}" />
+    </div>
+    <div class="form-group">
+        <label for="name">Nombre<input type="text" th:field="*{name}" class="form-control" /></label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

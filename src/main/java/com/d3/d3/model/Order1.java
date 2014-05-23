@@ -67,6 +67,10 @@ public class Order1 implements Serializable {
     private String telephone;
     @Column(name = "ID_CARD")
     private Integer idCard;
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "STATUS")
+    private String status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order1")
     private Collection<Item> itemCollection;
     @JoinColumn(name = "ID_USU", referencedColumnName = "ID_USU")
@@ -161,6 +165,14 @@ public class Order1 implements Serializable {
         this.idUsu = idUsu;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -38,7 +38,7 @@ public class Category implements Serializable {
     private Integer idCat;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 2, max = 30)
     @Column(name = "NAME")
     private String name;
     @OneToMany(mappedBy = "idCat")
@@ -103,6 +103,10 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         return "com.d3.d3.model.Category[ idCat=" + idCat + " ]";
+    }
+
+    public void update(Category category) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

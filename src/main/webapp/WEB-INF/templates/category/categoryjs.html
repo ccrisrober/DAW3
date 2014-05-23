@@ -1,0 +1,18 @@
+Aquí te cuento que hace este html:
+    -Si existe la variable "error", muestras el error y solo el href.
+    -Si existe la variable "ok", me muestras el "js" y el a href
+  
+    <div th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
+    <div th:if="${ok}">
+        <p th:text="${ok}"></p>
+        <script type="text/javascript">
+            function redireccionar(){
+                window.location="../category.html";
+            } 
+            setTimeout ("redireccionar()", 5000);
+        </script>
+    </div>
+    
+Pulsa <a href="../" th:href="@{../category.html}">aquí</a> para volver a la lista de categorías

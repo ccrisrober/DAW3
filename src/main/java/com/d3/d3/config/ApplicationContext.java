@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(basePackages = {"com.d3.d3.controller",
     "com.d3.d3.service"})
 @EnableTransactionManagement
-@Import({SecurityConfig.class})
+//@Import({SecurityConfig.class})
 @EnableWebMvc
 @ImportResource("classpath:applicationContext.xml")
 @PropertySource("classpath:application.properties")

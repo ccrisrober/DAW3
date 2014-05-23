@@ -1,0 +1,10 @@
+INDEX (MOSTRAR TABLA DE CATEGORÍAS)
+<table>
+    <tr th:each="cat : ${categories}">
+        <td width="25%" th:text="${cat.name}"></td>
+        <td width="25%"><a th:href="@{/admin/category/show/} + ${cat.idCat} + .html">Mirar</a></td>
+        <td width="25%"><a th:href="@{/admin/category/edit/} + ${cat.idCat} + .html">Editar</a></td>
+        <td width="25%"><a th:href="@{/admin/category/delete/} + ${cat.idCat} + .html">Borrar</a></td>
+    </tr>   
+</table>
+<a href="category/create.html" th:href="@{/admin/category/create.html}">Crear nueva categoría</a>
