@@ -24,7 +24,7 @@ public interface CategoryService {
 
     public boolean update(Category category);
 
-    public boolean delete(int id_) throws CategoryNotFoundException;
+    public boolean delete(int id_);// throws CategoryNotFoundException;
 
     public List<Product> findProductWithIdCategory(Integer id);
     

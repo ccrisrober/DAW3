@@ -9,6 +9,7 @@ package com.d3.d3.service;
 import com.d3.d3.model.Category;
 import com.d3.d3.model.Product;
 import com.d3.d3.repository.CategoryRepository;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -44,24 +45,35 @@ public class CategoryServiceImpl implements CategoryService {
             //throw new CategoryNotFoundException();
         }
         old.update(c);
-        categoryRepository.save(old);
+        old = categoryRepository.save(old);
         return old != null && old.getIdCat() > 0;
     }
 
     @Override
-    public boolean delete(int id) throws CategoryNotFoundException{
+    public boolean delete(int id) {// throws CategoryNotFoundException{
         // Buscamos la "categoría" con el id = "id"
         Category del = categoryRepository.findOne(id);
         // Si es null, devolvemos excepción
         if(del == null) {
-            throw new CategoryNotFoundException();
+            return false;
+            //throw new CategoryNotFoundException();
         }
-        categoryRepository.delete(del);
+        categoryRepository.delete(id);
         return true;
     }
 
+    /**
+     * Si es null, significa que no existe la categoría : D
+     * @param id
+     * @return 
+     */
     @Override
     public List<Product> findProductWithIdCategory(Integer id) {
-        return categoryRepository.getProductWithIdCat(id);
+        Category c = categoryRepository.findOne(id);
+        List<Product> categories = null;
+        if(c != null) {
+            categories = (List<Product>) c.getProductCollection();
+        }
+        return categories;
     }
 }

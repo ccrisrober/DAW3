@@ -6,18 +6,21 @@
 
 package com.d3.d3.controller;
 
+import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.OrderReceipt;
+import com.d3.d3.model.others.ShopCart;
+import com.d3.d3.service.OrderService;
+import com.d3.d3.service.ProductService;
+import com.d3.d3.validation.ItemProductValidator;
 import com.d3.d3.validation.OrderReceiptValidator;
-import com.google.common.base.Functions;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import com.d3.d3.validation.others.Functions;
+import java.util.Collection;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -34,13 +37,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/shopcart")
 public class ShopCartController {
     
-    /*private final static String SHOPCART = "shopcart";
+    @InitBinder(value = "orderreceipt")
+    protected void initBinderOrderReceipt(WebDataBinder binder) {
+        binder.setValidator(new OrderReceiptValidator());
+    }
     
-    // Determino la vista
+    @InitBinder(value = "itemproduct")
+    protected void initBinderItemProduct(WebDataBinder binder) {
+        binder.setValidator(new ItemProductValidator());
+    }
+    
+    private final String SHOPCART = "shopcart";
+    private final String URL = "shopcart";
+    private final String INDEX = URL + "/index";
+    private final String RECEIPT = URL + "/receipt";
+    private final String PAYMENT = URL + "/payment";
+    private final String FINISH = URL + "/finish";
+    private final String REDIR_LOGIN = "redirect: login.html";
+    
     @ModelAttribute("page")
     public String module() {
         return SHOPCART;
     }
+    
+    @Resource
+    private OrderService orderService;
+    
+    @Resource
+    private ProductService productService;
     
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(@ModelAttribute(value = "itemproduct") @Valid ItemProduct item,
@@ -52,42 +76,108 @@ public class ShopCartController {
         // Comprobamos que existe el id_user en session
         int id_user = Functions.getID_USER(session);
         if(id_user <= 1) {
-            return "redirect:login.html";   // Creo que así valdría : D
+            return REDIR_LOGIN;   // Creo que así valdría : D
         }
         
         // Vemos si existe el shopcart
         Object spp = session.getAttribute(SHOPCART);
         ShopCart sp;
         if((spp == null) || ! (spp instanceof ShopCart)) {
-            // Cargamos el shopcart en "sp"
-            sp = new ShopCart(id_user);
+            sp = new ShopCart(id_user); // Cargamos el shopcart en "sp"
         } else {
             sp = (ShopCart) spp;
             if(!sp.valid(id_user)) {
-                //error
+                return REDIR_LOGIN;
             }
         }
-        // Añadimos el producto
+        // Si llegamos aquí ya sabemos que tenemos un Carrito en perfecto estado
+        //      Vamos a mirar si existe stock
+        Integer stock = productService.findStockById(item.getId());
+        if(item.getQuantity() > stock) {
+            //Error, no hay espacio D:
+        }
+        //      Si hay stock, insertamos en el carrito : D
+        sp.addItem(item.getId(), item.getQuantity());
         
-        
-        
-        
-        // HAY QUE MIRAR LO DEL STOOOOOCK
-        
-        
-        
-        
-        
-        
-        sp.annadirProducto(item.getId_prod(), item.getQuantity());
         session.setAttribute(SHOPCART, sp);
         return "redirect:"+ referer;
     }
     
-    @RequestMapping(value = {"", "/index"}, method = RequestMethod.GET)
-    public String main(HttpSession session) {
-        return "shopcart/index";
+    @RequestMapping(value = "/receipt", method = RequestMethod.GET)
+    public String receipt(Model m, HttpSession session) {
+        // Comprobamos que existe el id_user en session
+        int id_user = Functions.getID_USER(session);
+        if(id_user <= 1) {
+            return REDIR_LOGIN;   // Creo que así valdría : D
+        }
+        
+        // Vemos si existe el shopcart
+        Object spp = session.getAttribute(SHOPCART);
+        ShopCart sp;
+        if((spp == null) || ! (spp instanceof ShopCart)) {
+            return REDIR_LOGIN;
+        } else {
+            sp = (ShopCart) spp;
+            if(!sp.valid(id_user)) {
+                return REDIR_LOGIN;
+            }
+        }
+        
+        // Llegados aquí, ya tenemos un carrito en perfecto estado de "revista"
+        Collection<ItemProduct> products = sp.getProducts();
+        double total = orderService.getTotalPrice(products);
+        m.addAttribute("products", products);
+        m.addAttribute("total", total);
+        return RECEIPT;
     }
+    
+    @RequestMapping(value = "/payment", method = RequestMethod.POST)
+    public String payment(Model m) {
+        m.addAttribute("orderreceipt", new OrderReceipt());
+        return PAYMENT;
+    }
+    
+    @RequestMapping(value = "/finish", method = RequestMethod.POST)
+    public String finish(ModelMap model, 
+            @ModelAttribute(value = "orderreceipt") @Valid OrderReceipt receipt,
+            BindingResult errors, HttpSession session) {
+        if (errors.hasErrors()) {
+            System.out.println("Error validación");
+            return PAYMENT;   //error
+        }
+        // Comprobamos que existe el id_user en session
+        int id_user = Functions.getID_USER(session);
+        if(id_user <= 1) {
+            return REDIR_LOGIN;   // Creo que así valdría : D
+        }
+        
+        // Vemos si existe el shopcart
+        Object spp = session.getAttribute(SHOPCART);
+        ShopCart sp;
+        if((spp == null) || ! (spp instanceof ShopCart)) {
+            return REDIR_LOGIN;
+        } else {
+            sp = (ShopCart) spp;
+            if(!sp.valid(id_user)) {
+                return REDIR_LOGIN;
+            }
+        }
+        boolean create = orderService.createOrder(sp, receipt);
+        if(!create) {
+            //ERROR ¿A DÓNDE MANDO?
+        }
+        return FINISH;
+    }
+    
+    @RequestMapping(value = {"/add", "/payment", "/finish"}, method = RequestMethod.GET)
+    public String error(HttpServletRequest request) {
+        String referer = request.getHeader("Referer");  // Obtenemos la página de dónde venimos : D
+        return "redirect:"+ referer;
+    }
+    
+    /*
+    
+    
     
     @RequestMapping(value = "/finish", method = RequestMethod.POST)
     public String finish(HttpSession session, ModelMap model, 

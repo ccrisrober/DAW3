@@ -19,26 +19,62 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean create(Product product) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Product p = productRepository.save(product);
+        return p != null && p.getIdProd() > 0;
     }
 
     @Override
     public boolean update(Product product) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Product old = productRepository.findOne(product.getIdProd());
+        if(old == null) {
+            return false;
+        }
+        old.update(product);
+        old = productRepository.save(old);
+        return old != null && old.getIdProd() > 0;
     }
 
     @Override
-    public boolean delete(int id_) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean delete(int id) {
+        Product del = productRepository.findOne(id);
+        if(del == null) {
+            return false;
+            //throw new ProductNotFoundException();
+        }
+        productRepository.delete(id);
+        return true;
     }
 
     @Override
-    public Product findById(int id_) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Product findById(int id) {
+        return productRepository.findOne(id);
     }
 
     @Override
     public List<Product> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findBySearchName(String search) {
+        return productRepository.findByName(search);
+    }
+
+    @Override
+    public Integer findStockById(Integer id) {
+        Integer stock = productRepository.findStockById(id);
+        if(stock < 0) {
+            stock = 0;
+        }
+        return stock;
+    }
+
+    @Override
+    public Double findPriceById(Integer id) {
+        Double price = productRepository.findPriceById(id);
+        if(price < 0) {
+            price = 0.0;
+        }
+        return price;
     }
 }

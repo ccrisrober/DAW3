@@ -15,11 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class LoginController {
-
-    /*@InitBinder(value = "userlogin")
-    protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(new LoginValidator());
-    }*/
     
     /** Login form.
      * @return  */

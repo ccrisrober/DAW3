@@ -6,10 +6,15 @@
 
 package com.d3.d3.service;
 
+import com.d3.d3.model.Image;
+import java.util.List;
+
 /**
  *
  * @author Cristian
  */
 public interface ImageService {
-    
+    public boolean create(Image m);
+    public boolean create(List<Image> imgs);
+    public boolean create(Image[] imgs);
 }

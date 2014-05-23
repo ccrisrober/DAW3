@@ -168,5 +168,9 @@ public class Product implements Serializable {
     public String toString() {
         return "com.d3.d3.model.Product[ idProd=" + idProd + " ]";
     }
+
+    public void update(Product product) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

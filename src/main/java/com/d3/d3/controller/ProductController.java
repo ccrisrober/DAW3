@@ -34,11 +34,12 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Cristian
  */
 @Controller
-@RequestMapping("/product")
+//@RequestMapping("/product")
 public class ProductController {
 
     @Resource
     private ProductService productService;
+    
     
     // Determino la vista
     @ModelAttribute("page")
@@ -46,8 +47,13 @@ public class ProductController {
         return "product";
     }
     
-    private static final String INDEX = "product/";
-
+    private final String URL = "product";
+    private final String INDEX = URL + "/index";
+    private final String CREATE = URL + "/create";
+    private final String EDIT = URL + "/edit";
+    private final String DELETE = URL + "/delete";
+    private final String SHOW = URL + "/show";
+    
     @InitBinder(value = "product")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new ProductValidator());
@@ -56,7 +62,7 @@ public class ProductController {
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(Model model) {
         model.addAttribute("product", new Product());
-        return INDEX + "create";
+        return CREATE;
     }
 
     private String uploadImage(MultipartFile image) {
@@ -92,12 +98,12 @@ public class ProductController {
             BindingResult errors, Model m, @RequestParam("image") MultipartFile[] images) {
         if (errors.hasErrors()) {
             System.out.println("Error validación");
-            return INDEX + "create";
+            return CREATE;
         }
         boolean insert = productService.create(product);
         if (!insert) {
             m.addAttribute("error", "No se ha podido insertar");
-            return INDEX + "create";
+            return CREATE;
         }
 
         // Si todo ha ido bien, subo las fotos

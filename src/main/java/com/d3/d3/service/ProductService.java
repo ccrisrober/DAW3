@@ -24,5 +24,11 @@ public interface ProductService {
     public Product findById(int id_);
 
     public List<Product> findAll();
+
+    public List<Product> findBySearchName(String search);
+
+    public Integer findStockById(Integer id);
+    
+    public Double findPriceById(Integer id);
     
 }

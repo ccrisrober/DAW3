@@ -18,6 +18,4 @@ import org.springframework.data.repository.query.Param;
  * @author Cristian
  */
 public interface CategoryRepository extends JpaRepository<Category, Integer>{
-    @Query("select p from Product p where p.idCat = :id")
-    public List<Product> getProductWithIdCat(@Param("id") Integer id);
 }

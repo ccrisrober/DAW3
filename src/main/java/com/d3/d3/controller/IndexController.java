@@ -7,8 +7,10 @@
 package com.d3.d3.controller;
 
 import com.d3.d3.model.Product;
+import com.d3.d3.service.ProductService;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,27 +24,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class IndexController {
     
+    @Resource
+    private ProductService productService;
+    
+    private final String URL = "index";
+    private final String INDEX = URL + "/index";
+    private final String ABOUT = URL + "/about";
+    private final String CONTACT = URL + "/contact";
+    private final String SEARCH = URL + "/search";
+    private final String REDIR = "redirect:index.html";
+    
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
     public String index(Model m) {
         m.addAttribute("page", "index");
-        return "index/index";
+        return INDEX;
     }
     
     @RequestMapping(value = "/aboutUs", method = RequestMethod.GET)
     public String aboutUs(Model m) {
         m.addAttribute("page", "aboutUs");
-        return "index/aboutUs";
+        return ABOUT;
     }
     
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
     public String contact(Model m) {
         m.addAttribute("page", "contact");
-        return "index/contact";
+        return CONTACT;
     }
     
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search_get() {
-        return "redirect:index.html";
+        return REDIR;
     }
     
     @RequestMapping(value = "/search", method = RequestMethod.POST)
@@ -52,15 +64,10 @@ public class IndexController {
         if(search.isEmpty()) {
             products = new LinkedList<Product>();
         } else {
-            products = new LinkedList<Product>();//Esto va con DAO
+            products = productService.findBySearchName(search);
         }
         m.addAttribute("products", products);
         m.addAttribute("search", search);
-        return "index/search";
+        return SEARCH;
     }
-    /*// Determino la vista
-    @ModelAttribute("page")
-    public String module() {
-        return "index";
-    }*/
 }

@@ -7,7 +7,9 @@
 package com.d3.d3.controller;
 
 import com.d3.d3.model.User;
+import com.d3.d3.service.UserService;
 import com.d3.d3.validation.UserValidator;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -25,32 +27,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Cristian
  */
 @Controller
+@RequestMapping("/register")
 public class RegisterController {
 
+    @Resource
+    private UserService userService;
+    
+    private final String URL = "register";
+    private final String REGISTER = URL + "/register";
+    private final String REGISTER_SUCCESS = URL + "/registerSuccess";
+    
     @InitBinder(value = "user")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new UserValidator());
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/index"}, method = RequestMethod.GET)
     public String login(Model model) {
         model.addAttribute("user", new User());
-        return "register/register";
+        return REGISTER;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = {"", "/index"}, method = RequestMethod.POST)
     public String sendLogin (
             @ModelAttribute(value = "user") @Valid User user,
-            BindingResult errors, ModelMap modelMap, HttpSession session) {
+            BindingResult errors, ModelMap modelMap) {
+        String redir = REGISTER_SUCCESS;
         if (errors.hasErrors()) {
-            System.out.println("some errors occur");
-            return "register/register";
+            redir = REGISTER;
+        } else {
+            if(!userService.create(user)) {
+                redir = REGISTER;
+            }
+            modelMap.addAttribute("username", user.getNickname());
         }
-        
-        System.out.println("Conectado con éxito");
-        modelMap.addAttribute("username", user.getNickname());
-        session.setAttribute("id_user", user.getIdUsu());
-        return "register/registerSuccess";
+        return redir;
     }
     
 }

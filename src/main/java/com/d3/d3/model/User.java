@@ -162,5 +162,9 @@ public class User implements Serializable {
     public String toString() {
         return "com.d3.d3.model.User[ idUsu=" + idUsu + " ]";
     }
+
+    public void update(User u) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

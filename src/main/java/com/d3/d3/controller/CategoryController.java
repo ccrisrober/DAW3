@@ -36,7 +36,7 @@ public class CategoryController {
     @Resource
     public CategoryService categoryService;
     
-    private final String URL = "/category";
+    private final String URL = "category";
     private final String INDEX = URL + "/index";
     private final String CATJS = URL + "/categoryjs";
     private final String CREATE = URL + "/create";
@@ -73,7 +73,7 @@ public class CategoryController {
         
         Category c = categoryService.create(category);
         if(c == null) {
-            m.addAttribute("error", "category.create.erro");
+            m.addAttribute("error", "category.create.error");
         } else {
             m.addAttribute("ok", "category.create.ok");
         }
@@ -119,7 +119,7 @@ public class CategoryController {
         if(id_ <= 0) {
             m.addAttribute("error", "category.notfound");
         }
-        boolean delete = true;//categoryService.delete(id_);
+        boolean delete = categoryService.delete(id_);
         if(!delete) {
             m.addAttribute("error", "category.delete.error");
         } else {
@@ -138,7 +138,7 @@ public class CategoryController {
         if(products == null) {
             products = new LinkedList<Product>();
         }
-        m.addAttribute("produts", products);
+        m.addAttribute("products", products);
         return SHOW;
     }
 }
