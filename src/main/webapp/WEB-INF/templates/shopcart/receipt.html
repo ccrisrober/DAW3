@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Poxmanía tu tienda online</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
+        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
+        <link rel="icon" href="../assets/img/icon.png" type="image/x-icon" th:href="@{/assets/img/icon.png}"/>
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
+        <![endif]-->
+
+        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("input[name=payment]").click(function () {    
+                    alert($('input:radio[name=payment]:checked').val());
+                    var sel = $('input:radio[name=payment]:checked').val();
+                    if(sel === "delivery") {
+                        alert("hola");
+                        $('#payment').text('');
+                    }
+                 });
+            });
+</script>
+
+    </head>
+
+    <body>
+
+        <div class="container">
+
+            <div th:replace="fragments/header :: header">&nbsp;</div>
+
+            <form action="#" th:action="@{/shopcart/finish.html}" method="post">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Listado de productos</div>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>
+                                    <th>Mirar</th>
+                                    <th>Editar</th>
+                                    <th>Borrar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="prod : ${products}">
+                                    <td width="25%" th:text="${prod.name}"></td>
+                                    <td width="25%" th:text="${prod.description}"></td>
+                                    <td width="25%" th:text="${prod.price}"></td>
+                                    <td width="6.5%"><input type="text" id="quantity" name="quantity" th:value="0" autofocus="autofocus" /></td>
+                                    <td width="6.5%"><input type="text" id="product" name="product" th:value="${prod.id}"/></td>
+                                </tr>                    
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Precio total del pedido</div>
+                    <label class="espacio1" data-precio="off">TOTAL: <span th:text="${total}"></span> &euro;</label><br/>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Forma de pago</div>    
+                    <div class="espacio1">
+                        <label>Contra Reembolso (+5 Euros)   <input type="radio" name="payment" value="delivery" /></label><br/>
+                        <label>Tarjeta de crédito   <input type="radio" name="payment" value="card" /></label><br/>
+                    </div>
+                </div>
+
+                <div id="payment">
+                    <div th:replace="shopcart/tarjeta">&nbsp;</div><!--http://ugate.github.io/thymus/#navcontrol-->
+                </div>
+                
+                <div class="control-group limpiarlados">
+                    <label label-default="" class="control-label"></label>
+                    <div class="controls">
+                        <button type="submit" class="btn btn-success">Finalizar pedido</button> 
+                        <a href="../index.html" th:href="@{/index.html}"><button type="button" class="btn btn-warning">Cancel</button></a>
+                    </div>
+                </div>
+            </form>
+            <!--<form action="#" th:action="@{/shopcart/begin.html}" method="post">
+                <input type="hidden" th:value="back" name="back" />
+                <button type="submit">Empezar pedido</button>
+            </form>    -->
+
+            <br/>
+
+            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
+
+        </div>
+    </body>
+</html>

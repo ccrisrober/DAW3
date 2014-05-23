@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <link rel="stylesheet" type="text/css" media="all"
+              href="../assets/css/main.css" th:href="@{/assets/css/main.css}"/>
+        <link rel="stylesheet" type="text/css" media="all"
+              href="../assets/css/main.css" th:href="@{/assets/css/demo.css}"/>
+        
+<script th:src="@{/assets/js/jquery.1.10.2.min.js}"></script>
+<script th:src="@{/assets/js/main.js}"></script>
+        <h1>INDEX</h1>
+        <a href="index.html">Home</a>
+        <a href="aboutUs.html">Sobre nosotros</a>
+        <a href="contact.html">Contacto</a>
+        
+        <h1>Hola</h1>
+        <p th:text="#{hello}"></p>
+        <p>Hello World Thymeleaf Offline!!</p>
+        <a href="admin.html">ADMIN</a>
+        <a href="login.html">LOGIN</a>
+        <a href="user.html">USER</a>
+    </body>
+</html>

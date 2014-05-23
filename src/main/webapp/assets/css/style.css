@@ -1,0 +1,156 @@
+/******************
+ * GENERAL STYLES *
+ ******************/
+
+.container {
+    padding-top: 18px;
+}
+
+/**********
+ * HEADER - MENÚ*
+ **********/ 
+
+/* palabra MENU que aparece cuando se redimensiona a un mínimo */
+@media (min-width:768px) { .navbar-brand { display: none; } }
+@media (max-width:768px) { .navbar-header { border: 1px solid #cccccc; border-radius: 4px; } }
+
+/********
+ * BODY *
+ ********/
+
+#casa {	
+    border-left:1px solid #c6c6c6;
+}
+
+.margin1 { margin-top: 25px; }
+.margin2 { margin-bottom: 15px; }
+
+.saldoParrafo {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 18px;
+    font-weight: bold;
+}
+
+/*#pixmaniacosParrafo {
+        font-size: 30px;
+        margin-bottom: 18px;
+        font-weight: bold;
+}*/
+
+.amarillo {width: 100%;}
+.sec{ width: 100%;}
+
+a:link, a:visited { text-decoration: none }
+.espacio1 { padding: 12px 0 12px 12px; }
+.reducirboton { width: 84%; }
+#lisobrante { padding: 25px 10px;}
+
+
+@media(max-width:992px ) { #saldoParrafo{ font-size: 22px; }}
+@media(max-width:632px ) { #saldoParrafo{ font-size: 16px; }}
+
+@media(max-width:1199px) { 
+    .amarillo { width: 100%;}
+    .sec { width: 100%; }
+    .ocultarInfo{ display: none; }
+}
+@media(max-width:992px) { 
+    .ocultar { display: none;}
+    .sec { width: 50%; }
+
+}
+@media(max-width: 768px){ #botonBuscar{ margin-top:10px; }}
+@media(max-width:607px) { 
+    .ocultar2 { display: none;}
+    /*#pixmaniacosParrafo { font-size: 20px; } */
+}
+
+@media(max-width:300px) { #logo { width: 90%; }}
+
+
+/* ********
+ * FOOTER *
+ **********/
+footer, .limpiarlados {
+    clear:both;
+}
+#copyright {
+    background-color:#ebebeb;
+    padding-top: 40px;
+    height: 100px;
+    text-align: center;
+}
+
+/* ******************************* 
+
+del navbar, lineas editadas del bootstrap 
+4759, 4468, 4811, 4339, 4030, 4792, 4787, 4343, 4820, 
+
+
+n-m linea 4384,  4466, 4495
+
+*********************************************/
+
+/***************
+* OTROS STYLES *
+****************/
+
+/* ABOUT us style */
+
+#about img {
+    height: 200px;
+    width: 150px;
+    border-radius: 50%; /* Borde redondeado */
+    box-shadow: 0px 0px 15px #000; /* Sombra */
+    padding:0;
+    border:0;
+    -moz-transition: all 1s;
+    -webkit-transition: all 1s;
+    -o-transition: all 1s;
+}
+#about img:hover {
+    box-shadow: 0; /* Con esto eliminamos la sombra */
+    border-radius: 0; /* Con esto eliminamos el borde redondeado */
+    -moz-transition: all 1s;
+    -webkit-transition: all 1s;
+    -o-transition: all 1s;
+    cursor:pointer;
+}
+
+/* FORM REGISTRAR Y LOGUIN */
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

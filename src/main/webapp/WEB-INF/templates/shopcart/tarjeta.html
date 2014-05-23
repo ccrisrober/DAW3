@@ -1,0 +1,75 @@
+<div class="col-sm-6" id="paymentJS">
+    <fieldset>
+        <legend>Datos de tarjeta</legend>
+        <div class="control-group">
+            <label label-default="" class="control-label">Nombre propietario</label>
+            <div class="controls">
+                <input type="text" class="form-control" pattern="\w+ \w+.*" title="Nombre y apellidos" required="" />
+            </div>
+        </div>
+        <br/>
+        <div class="control-group">
+            <label label-default="" class="control-label">Número tarjeta</label>
+            <div class="controls">
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="First four digits" required="" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="Second four digits" required="" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="Third four digits" required="" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="Fourth four digits" required="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="control-group">
+            <label label-default="" class="control-label">Caducidad de la tarjeta</label>
+            <div class="controls">
+                <div class="row">
+                    <div class="col-md-9">
+                        <select class="form-control" name="cc_exp_mo">
+                            <option value="01">Enero</option>
+                            <option value="02">Febrero</option>
+                            <option value="03">Marzo</option>
+                            <option value="04">Abril</option>
+                            <option value="05">Mayo</option>
+                            <option value="06">Junio</option>
+                            <option value="07">Julio</option>
+                            <option value="08">Agosto</option>
+                            <option value="09">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" name="cc_exp_yr">
+                            <option>2014</option>
+                            <option>2015</option>
+                            <option>2016</option>
+                            <option>2017</option>
+                            <option>2018</option>
+                            <option>2019</option>
+                            <option>2020</option>
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                            <option>2028</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <br/>
+</div>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Poxmanía tu tienda online</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
+        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
+        <link rel="icon" href="../assets/img/icon.png" type="image/x-icon" th:href="@{/assets/img/icon.png}"/>
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
+        <![endif]-->
+
+        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
+    </head>
+
+    <body>
+
+        <div class="container">
+
+            <div th:replace="fragments/header :: header">&nbsp;</div>
+
+            <div th:if="${error}"><p class="alert alert-danger" th:text="$(error)"></p></div>
+            <div th:if="${ok}"><p class="alert alert-success" th:text="${ok}"></p></div>
+
+            <div th:if="${products != null and not #lists.isEmpty(products)}">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Listado de productos</div>
+                    <div class="table-responsive">
+
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="display: none">Nº Producto</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>
+                                    <th>Mirar</th>
+                                    <th>Editar</th>
+                                    <th>Borrar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="prod : ${products}">
+                                    <td width="25%" th:text="${prod.name}"></td>
+                                    <td width="25%" th:text="${prod.description}"></td>
+                                    <td width="25%" th:text="${prod.price}"></td>
+                                    <td width="6.5%"><a th:href="@{product/show.html(id=${prod.id})}">Mirar</a></td>
+                                </tr>                    
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
+
+        </div>
+    </body>
+</html>

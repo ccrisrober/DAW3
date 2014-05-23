@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <!-- Navbar 
+        <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">My project</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li th:classappend="${page == 'home' ? 'active' : ''}"><a href="#" th:href="@{/}">Home</a></li>
+                        <li th:classappend="${page == 'messages' ? 'active' : ''}"><a href="#" th:href="@{/message}">Messages</a></li>
+                        <li th:classappend="${page == 'tasks' ? 'active' : ''}"><a href="#" th:href="@{/task}">Tasks</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/signin" th:href="@{/signin}">Sign in</a></li>
+                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                    </ul>
+                </div>
+                /.nav-collapse
+            </div>
+        </div>-->
+        <header>
+            <div class="row clearfix margin2">
+                <center>
+                    <div class="col-md-4 column">
+                        <a href="index.html"><img src="../../assets/img/poxmania.png" th:attr="src=@{/assets/img/poxmania.png},title=#{logo},alt=#{logo}" id="logo" /></a>
+                    </div>
+
+                    <div class="col-md-4 column margin1">
+                        <form role="form" method="POST">
+                            <div class="form-group">
+                                <div class="col-sm-8"><input type="text" class="form-control" /></div>
+                                <a href="search.html"><button type="submit" class="btn btn-info" id="botonBuscar">Buscar</button></a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4 column margin1">
+                        <a href="login.html" th:href="@{/login.html}"><button type="button" class="btn btn-default">Mi cuenta</button></a>
+                        <a href="shopcart/index.html" th:href="@{/shopcart/index.html}"><button type="button" class="btn btn-primary">Cesta</button></a>
+                    </div>
+                </center>
+            </div>
+            
+            <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" >Menú</a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li id="casa"><a href="index.html" th:href="@{/index.html}"><span class="glyphicon glyphicon-home"></span></a></li>
+                            <li><a href="contact.html" th:href="@{/contact.html}">Contacta</a></li>
+                            <li><a href="register.html" th:href="@{/register.html}">Registrar</a></li>
+                            <li><a href="aboutUs.html" th:href="@{/aboutUs.html}">Quiénes somos</a></li>
+                            <li id="lisobrante"> </li>
+                            <li><a href="">Electronica</a></li>
+                            <li><a href="">Fotos</a></li>
+                            <li><a href="">Consolas</a></li>
+                            <li><a href="">Fotos</a></li>
+                            <li><a href="">Consolas</a></li>
+                            <li><a href="">Electronica</a></li>
+                            <li><a href="">Fotos</a></li>
+                            <li><a href="">Consolas</a></li>
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+    </body>
+</html>
