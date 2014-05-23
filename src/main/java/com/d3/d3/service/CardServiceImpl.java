@@ -6,6 +6,7 @@
 
 package com.d3.d3.service;
 
+import com.d3.d3.exceptions.CardNotFoundException;
 import com.d3.d3.model.Card;
 import com.d3.d3.repository.CardRepository;
 import java.util.List;

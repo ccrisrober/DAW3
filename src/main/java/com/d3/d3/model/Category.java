@@ -106,7 +106,8 @@ public class Category implements Serializable {
     }
 
     public void update(Category category) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setName(category.getName());
+        this.setProductCollection(category.getProductCollection());
     }
     
 }

@@ -7,6 +7,7 @@
 package com.d3.d3.service;
 
 import com.d3.d3.model.Product;
+import com.d3.d3.repository.ProductRepository;
 import java.util.List;
 
 /**
@@ -30,5 +31,9 @@ public interface ProductService {
     public Integer findStockById(Integer id);
     
     public Double findPriceById(Integer id);
+
+    public boolean removeStock(Integer id, Integer quantity);
+
+    public void setRepository(ProductRepository productRepositoryMock);
     
 }

@@ -8,6 +8,7 @@ package com.d3.d3.validation;
 
 import com.d3.d3.model.Order1;
 import com.d3.d3.model.others.OrderReceipt;
+import java.util.regex.Pattern;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -31,7 +32,18 @@ public class OrderReceiptValidator implements Validator {
         }
         // Si es pago por tarjeta, validamos los cuatro campos con dígitos
         if(or.getPayment().compareTo("card")==0) {
-            //if(or.getCard1())
+            if(!Pattern.matches("\\d{4}", or.getCard1())) {
+                errors.rejectValue("card1", "orderreceipt.card.matcher");
+            }
+            if(!Pattern.matches("\\d{4}", or.getCard2())) {
+                errors.rejectValue("card2", "orderreceipt.card.matcher");
+            }
+            if(!Pattern.matches("\\d{4}", or.getCard3())) {
+                errors.rejectValue("card3", "orderreceipt.card.matcher");
+            }
+            if(!Pattern.matches("\\d{4}", or.getCard4())) {
+                errors.rejectValue("card4", "orderreceipt.card.matcher");
+            }
         }
     }
     

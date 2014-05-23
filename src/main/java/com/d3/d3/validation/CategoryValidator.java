@@ -23,7 +23,6 @@ public class CategoryValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        
     }
 
 }

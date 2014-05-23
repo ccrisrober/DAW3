@@ -1,5 +1,5 @@
 EDIT
-<form action="#" th:action="@{/admin/category/edit.html}" th:object="${category}" method="post" role="form" enctype="multipart/form-data">
+<form action="#" th:action="@{/admin/category/edit/} + *{idCat} + .html" th:object="${category}" method="post" role="form">
     <div class="form-group">
         <input type="hidden" th:field="*{idCat}" />
     </div>

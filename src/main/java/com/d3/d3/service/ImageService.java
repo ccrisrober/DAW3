@@ -17,4 +17,5 @@ public interface ImageService {
     public boolean create(Image m);
     public boolean create(List<Image> imgs);
     public boolean create(Image[] imgs);
+    public List<Image> findByProductId(int id);
 }

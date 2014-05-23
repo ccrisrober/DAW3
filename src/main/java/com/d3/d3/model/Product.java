@@ -170,7 +170,13 @@ public class Product implements Serializable {
     }
 
     public void update(Product product) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setDescription(product.getDescription());
+        this.setIdCat(product.getIdCat());
+        this.setImageCollection(product.getImageCollection());
+        this.setItemCollection(product.getItemCollection());
+        this.setName(product.getName());
+        this.setPrice(product.getPrice());
+        this.setStock(product.getStock());
     }
     
 }

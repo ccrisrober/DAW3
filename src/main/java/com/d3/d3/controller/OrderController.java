@@ -7,9 +7,11 @@
 package com.d3.d3.controller;
 
 import com.d3.d3.model.Order1;
+import com.d3.d3.service.OrderService;
 import com.d3.d3.validation.others.Functions;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,10 +39,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class OrderController {
+/*  
+    @Resource
+    private OrderService orderService;
     
     @RequestMapping(value = {"/admin/order", "/admin/order/index"}, method = RequestMethod.GET)
     public String showOrders(Model model) {
-        List<Order1> orders = new LinkedList<Order1>();   // Esto es una consulta al DAO de Orders
+        List<Order1> orders = orderService.findAll();
+        if(orders == null) {
+            orders = new LinkedList<Order1>();
+        }
         model.addAttribute("orders", orders);
         return "order/orders";
     }
@@ -69,7 +77,7 @@ public class OrderController {
             m.addAttribute("error", "Producto no encontrado");
             return "redirect:../order.html";
         }
-        Order1 order = new Order1();  //Consulta BD
+        Order1 order = orderService.findById(id_);
         if(order == null) {
             m.addAttribute("error", "Pedido no encontrado");
             return "redirect:../order.html";
@@ -85,7 +93,7 @@ public class OrderController {
             m.addAttribute("error", "Producto no encontrado");
             return "redirect:../order.html";
         }
-        Order1 order = new Order1();  //Consulta BD
+        Order1 order = orderService.findById(id_);
         if(order == null) {
             m.addAttribute("error", "Pedido no encontrado");
             return "redirect:../order.html";
@@ -114,7 +122,7 @@ public class OrderController {
             System.out.println("Error validación");
             return "order/status";
         }
-        boolean update = true;  // Llamar al DAO ;)
+        boolean update = orderService.updateStatus(Functions.getInt(id), status);
         if(!update) {
             m.addAttribute("error", "No se ha podido actualizar");
             return "order/status";
@@ -125,29 +133,37 @@ public class OrderController {
     
     @RequestMapping(value = "/user/order/{id}", method = RequestMethod.GET)
     public String showOrderUser(@PathVariable String id, 
-            /*BindingResult errors, */Model m, HttpSession session) {
+            Model m, HttpSession session) {
         //Comprobamos si el pedido es del usuario
-        int id_ = Functions.getID_USER(session);
-        if(id_ <= 0) {
+        int idUser = Functions.getID_USER(session);
+        if(idUser <= 0) {
             m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
             return "¿DONDE?";
         }
-        boolean checkAccess = true; //llamada al DAO
+        int idOrd = Functions.getInt(id);
+        if(idOrd <= 0) {
+            m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
+            return "¿DONDE?";
+        }
+        boolean checkAccess = orderService.checkAccessUser(idOrd, idUser);
         if(!checkAccess) {
             m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
             return "¿DONDE?";
         }
-        Order1 o = new Order1();  //llamada al servicio
+        Order1 o = orderService.findById(idOrd);    // No hace falta comprobar porque si ha llegado aquí,
+                                                    //  es que al menos existe y se tiene acceso
         m.addAttribute("order", o);
         return "order/_view";
     }
 
     @RequestMapping(value = {"/user/order", "/user/order/index"}, method = RequestMethod.GET)
-    public String showAllOrderUser(/*BindingResult errors, */ 
-            Model m, HttpSession session) {
-        LinkedList<Order1> order = new LinkedList<Order1>();
+    public String showAllOrderUser(Model m, HttpSession session) {
+        List<Order1> order = orderService.findAll();
+        if(order == null) {
+            order = new LinkedList<Order1>();
+        }
         m.addAttribute("orders", order);
         return "order/orders";
     }
-
+*/
 }

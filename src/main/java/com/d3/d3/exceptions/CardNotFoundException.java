@@ -4,12 +4,11 @@
  * and open the template in the editor.
  */
 
-package com.d3.d3.service;
+package com.d3.d3.exceptions;
 
 /**
  *
  * @author Cristian
  */
-class CategoryNotFoundException extends Exception {
-    
+public class CardNotFoundException extends Exception {
 }

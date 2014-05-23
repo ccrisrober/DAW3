@@ -6,10 +6,11 @@
 
 package com.d3.d3.service;
 
+import com.d3.d3.model.Order1;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.OrderReceipt;
-import com.d3.d3.model.others.ShopCart;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -17,8 +18,15 @@ import java.util.Collection;
  */
 public interface OrderService {
 
-    public boolean createOrder(ShopCart sp, OrderReceipt receipt);
+    public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus);
 
     public double getTotalPrice(Collection<ItemProduct> products);
     
+    public boolean updateStatus(Integer idOrd, String status);
+    
+    public List<Order1> findAll();
+    
+    public Order1 findById(Integer idOrd);
+    
+    public boolean checkAccessUser(Integer idOrd, Integer idUser);
 }

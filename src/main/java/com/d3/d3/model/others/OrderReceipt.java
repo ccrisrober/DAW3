@@ -7,6 +7,7 @@
 package com.d3.d3.model.others;
 
 import com.d3.d3.annotation.Phone;
+import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,10 +31,18 @@ public class OrderReceipt {
     String phone;
 
     // Esto es solo si usas tarjeta : D
-    Integer card1;
-    Integer card2;
-    Integer card3;
-    Integer card4;
+    @NotNull
+    @Size(min = 4, max = 4)
+    String card1;
+    @NotNull
+    @Size(min = 4, max = 4)
+    String card2;
+    @NotNull
+    @Size(min = 4, max = 4)
+    String card3;
+    @NotNull
+    @Size(min = 4, max = 4)
+    String card4;
 
     public String getPayment() {
         return payment;
@@ -75,36 +84,40 @@ public class OrderReceipt {
         this.phone = phone;
     }
 
-    public Integer getCard1() {
+    public String getCard1() {
         return card1;
     }
 
-    public void setCard1(Integer card1) {
+    public void setCard1(String card1) {
         this.card1 = card1;
     }
 
-    public Integer getCard2() {
+    public String getCard2() {
         return card2;
     }
 
-    public void setCard2(Integer card2) {
+    public void setCard2(String card2) {
         this.card2 = card2;
     }
 
-    public Integer getCard3() {
+    public String getCard3() {
         return card3;
     }
 
-    public void setCard3(Integer card3) {
+    public void setCard3(String card3) {
         this.card3 = card3;
     }
 
-    public Integer getCard4() {
+    public String getCard4() {
         return card4;
     }
 
-    public void setCard4(Integer card4) {
+    public void setCard4(String card4) {
         this.card4 = card4;
+    }
+
+    public Date getDate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

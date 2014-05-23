@@ -5,10 +5,12 @@
  */
 package com.d3.d3.controller;
 
+import com.d3.d3.model.Image;
 import com.d3.d3.model.Product;
+import com.d3.d3.service.ImageService;
 import com.d3.d3.service.ProductService;
-import com.d3.d3.validation.ProductValidator;import com.d3.d3.validation.others.Functions;
-import java.io.BufferedOutputStream;
+import com.d3.d3.validation.ProductValidator;
+import com.d3.d3.validation.others.Functions;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,26 +36,29 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Cristian
  */
 @Controller
-//@RequestMapping("/product")
+@RequestMapping("/product")
 public class ProductController {
 
     @Resource
     private ProductService productService;
-    
-    
+    @Resource
+    private ImageService imageService;
+
     // Determino la vista
     @ModelAttribute("page")
     public String module() {
         return "product";
     }
-    
+
     private final String URL = "product";
     private final String INDEX = URL + "/index";
     private final String CREATE = URL + "/create";
     private final String EDIT = URL + "/edit";
     private final String DELETE = URL + "/delete";
     private final String SHOW = URL + "/show";
-    
+    private final String SHOW_ALL = URL + "/showAll";
+    private final String PRODJS = URL + "/productjs";
+
     @InitBinder(value = "product")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new ProductValidator());
@@ -65,8 +70,8 @@ public class ProductController {
         return CREATE;
     }
 
-    private String uploadImage(MultipartFile image) {
-        String message = "";
+    private String uploadImage(MultipartFile image, Product prod) {
+        String message;
         try {
             byte[] bytes = image.getBytes();
 
@@ -87,12 +92,18 @@ public class ProductController {
             System.err.println(dir.getAbsolutePath() + File.separator + image.getName());
 
             message = "You successfully uploaded file=" + image.getName() + "<br />";
+
+            Image img = new Image();
+            img.setImage(serverFile.getAbsolutePath());
+            img.setIdProd(prod);
+            imageService.create(img);
+
         } catch (IOException e) {
             return "You failed to upload " + image.getName() + " => " + e.getMessage();
         }
         return message;
     }
-    
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create_post(@ModelAttribute(value = "product") @Valid Product product,
             BindingResult errors, Model m, @RequestParam("image") MultipartFile[] images) {
@@ -103,17 +114,15 @@ public class ProductController {
         boolean insert = productService.create(product);
         if (!insert) {
             m.addAttribute("error", "No se ha podido insertar");
-            return CREATE;
+        } else {
+            // Si todo ha ido bien, subo las fotos
+            String message = "";
+            for (MultipartFile image : images) {
+                message += uploadImage(image, product);
+            }
+            m.addAttribute("ok", "Producto " + product.getName() + " insertado");
         }
-
-        // Si todo ha ido bien, subo las fotos
-        String message = "";
-        for (MultipartFile image : images) {
-            message += uploadImage(image);
-        }
-
-        m.addAttribute("ok", "Producto " + product.getName() + " insertado");
-        return "redirect:../products.html";
+        return PRODJS;
     }
 
     @RequestMapping(value = "/show/{id}", method = RequestMethod.GET)
@@ -121,18 +130,19 @@ public class ProductController {
         int id_ = Functions.getInt(id);
         if (id_ <= 0) {
             m.addAttribute("error", "Producto no encontrado");
-            return "redirect:../products.html";
+        } else {
+            Product p = productService.findById(id_);
+            if (p != null) {
+                m.addAttribute("product", p);
+                return SHOW;
+            } else {
+                m.addAttribute("error", "Producto no encontrado");
+            }
         }
-        Product p = productService.findById(id_);
-        if (p == null) {
-            m.addAttribute("error", "Producto no encontrado");
-            return "redirect:../products.html";
-        }
-        m.addAttribute("product", p);
-        return INDEX + "show";
+        return PRODJS;
     }
 
-    @RequestMapping(value = {"/product/all", "/product", "/product/index"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/all", "", "/index"}, method = RequestMethod.GET)
     public String showAll(@RequestParam(value = "error", defaultValue = "",
             required = true) String error, @RequestParam(value = "ok", defaultValue = "",
                     required = true) String ok, ModelMap model) {
@@ -144,7 +154,7 @@ public class ProductController {
             model.addAttribute("error", error);
         }
         model.addAttribute("products", lp);
-        return INDEX + "showAll";
+        return SHOW_ALL;
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
@@ -152,15 +162,16 @@ public class ProductController {
         int id_ = Functions.getInt(id);
         if (id_ <= 0) {
             m.addAttribute("error", "Producto no encontrado");
-            return "redirect:../products.html";
+        } else {
+            Product p = productService.findById(id_);
+            if (p == null) {
+                m.addAttribute("error", "Producto no encontrado");
+            } else {
+                m.addAttribute("product", p);
+                return EDIT;
+            }
         }
-        Product p = productService.findById(id_);
-        if (p == null) {
-            m.addAttribute("error", "Producto no encontrado");
-            return "redirect:../products.html";
-        }
-        m.addAttribute("product", p);
-        return INDEX + "edit";
+        return PRODJS;
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
@@ -169,32 +180,31 @@ public class ProductController {
         int id_ = Functions.getInt(id);
         if (id_ <= 0) {
             m.addAttribute("error", "Producto no encontrado");
-            return "redirect:../products.html";
+        } else {
+            boolean delete = productService.delete(id_);
+            if (!delete) {
+                m.addAttribute("error", "Producto no encontrado");
+            } else {
+                m.addAttribute("ok", "Producto borrado");
+            }
         }
-        boolean delete = productService.delete(id_);
-        if (!delete) {
-            m.addAttribute("error", "Producto no encontrado");
-            return "redirect:../products.html";
-        }
-        m.addAttribute("ok", "Producto borrado");
-        return "redirect:../products.html";
+        return PRODJS;
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
     public String edit_post(@ModelAttribute(value = "product") @Valid Product product,
-            //@RequestParam(value = "hola", defaultValue = "", required = true) String hola, 
             BindingResult errors, Model m) {
-        /*if(hola.isEmpty()) {
-         System.out.println("Campo 'hola' vacío");
-         return INDEX + "edit";
-         }*/
         if (errors.hasErrors()) {
             System.out.println("ERRORES");
-            return INDEX + "edit";
+            return EDIT;
         }
         boolean edit = productService.update(product);
-        m.addAttribute("ok", "Producto actualizado");
-        return "redirect:../products.html";
+        if (!edit) {
+            m.addAttribute("error", "product.edit.error");
+        } else {
+            m.addAttribute("ok", "product.edit.ok");
+        }
+        return PRODJS;
     }
 
 }

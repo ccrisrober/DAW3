@@ -6,6 +6,7 @@
 
 package com.d3.d3.controller;
 
+import com.d3.d3.model.Order1;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.model.others.ShopCart;
@@ -162,7 +163,11 @@ public class ShopCartController {
                 return REDIR_LOGIN;
             }
         }
-        boolean create = orderService.createOrder(sp, receipt);
+        double plus = 0.0;
+        if(receipt.getPayment().equals("delivery")) {
+            plus = 5;
+        }
+        boolean create = orderService.createOrder(sp.getProducts(), receipt, id_user, plus);
         if(!create) {
             //ERROR ¿A DÓNDE MANDO?
         }

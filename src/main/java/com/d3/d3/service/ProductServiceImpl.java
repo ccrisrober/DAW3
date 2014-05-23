@@ -77,4 +77,21 @@ public class ProductServiceImpl implements ProductService {
         }
         return price;
     }
+
+    @Override
+    public boolean removeStock(Integer id, Integer quantity) {
+        Product prod = this.findById(id);
+        Integer stock = prod.getStock();
+        stock -= quantity;
+        if(stock < 0) {
+            return false;
+        }
+        prod.setStock(stock);
+        return this.update(prod);
+    }
+
+    @Override
+    public void setRepository(ProductRepository productRepositoryMock) {
+        this.productRepository = productRepositoryMock;
+    }
 }
