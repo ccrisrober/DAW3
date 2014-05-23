@@ -82,6 +82,7 @@ CREATE TABLE Order_ (
     telephone VARCHAR(10) NOT NULL,
     id_usu INTEGER DEFAULT 0,
     id_card INTEGER DEFAULT 0,
+	status varchar(20) not null,
     CONSTRAINT PK_Order_ PRIMARY KEY (id_ord)
 );
 
@@ -144,4 +145,3 @@ INSERT INTO CDL.CATEGORY ("NAME")
 	VALUES ('Droguería');
 
 	
---http://optimizarsinmas.blogspot.com.es/2011/01/encriptar-una-cadena-con-sha1-en-java-y.html
