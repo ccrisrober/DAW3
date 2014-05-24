@@ -18,6 +18,13 @@ public class ItemProduct {
     @NotNull
     Integer id;
 
+    public ItemProduct() {
+    }
+    
+    public ItemProduct(int id) {
+        this.id = id;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
