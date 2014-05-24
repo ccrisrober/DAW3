@@ -141,7 +141,7 @@ public class ProductController {
             Product p = productService.findById(id_);
             if (p != null) {
                 m.addAttribute("product", p);
-                m.addAttribute("itemproduct", new ItemProduct());
+                m.addAttribute("itemproduct", new ItemProduct(id_));
                 return SHOW;
             } else {
                 m.addAttribute("error", "Producto no encontrado");

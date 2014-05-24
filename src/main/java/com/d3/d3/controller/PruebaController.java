@@ -94,7 +94,7 @@ public class PruebaController {
     public String prueba(Model m) {
         Collection<ItemProduct> cir = new LinkedList<ItemProduct>();
         for (int i = 0; i < 5; i++) {
-            ItemProduct ip = new ItemProduct();
+            ItemProduct ip = new ItemProduct((i%2) + 1);
             ip.setId((i%2) + 1);
             ip.setQuantity(10);
             cir.add(ip);

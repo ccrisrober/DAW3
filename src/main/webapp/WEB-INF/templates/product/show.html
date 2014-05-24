@@ -53,9 +53,10 @@
                 </div>
             </div>
 
-            <form action="#" th:action="@{/shopcard/add}" th:object="${itemproduct}">
+            <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
                 <input type="text" th:field="*{id}" ></input>
                 <input type="number" th:field="*{quantity}"></input>
+                <button type="submit">Añadir al carro tu xD</button>
             </form>
             
             
