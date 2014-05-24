@@ -36,13 +36,14 @@ import org.springframework.context.annotation.Import;
  * @author Cristian
  */
 @Configuration
-@ComponentScan(basePackages = {"com.d3.d3.controller",
-    "com.d3.d3.service"})
+//@ComponentScan(basePackages = {"com.d3.d3.controller",
+//    "com.d3.d3.service"})
+@ComponentScan({"com.d3.d3.controller", "com.d3.d3.service"})
 @EnableTransactionManagement
-//@Import({SecurityConfig.class})
 @EnableWebMvc
 @ImportResource("classpath:applicationContext.xml")
 @PropertySource("classpath:application.properties")
+@Import({SecurityConfig.class})
 public class ApplicationContext {
 
     private static final String VIEW_RESOLVER_PREFIX = "/WEB-INF/templates/";
