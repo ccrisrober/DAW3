@@ -60,4 +60,9 @@ public class UserServiceImpl implements UserService {
         old = userRepository.save(u);
         return old != null && old.getIdUsu() > 0;
     }
+
+    @Override
+    public void setRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 }

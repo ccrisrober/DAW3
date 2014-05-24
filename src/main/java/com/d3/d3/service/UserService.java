@@ -8,6 +8,7 @@ package com.d3.d3.service;
 
 import com.d3.d3.model.User;
 import com.d3.d3.model.others.UserLogin;
+import com.d3.d3.repository.UserRepository;
 import java.util.List;
 
 /**
@@ -21,4 +22,6 @@ public interface UserService {
     public int chekLogin(UserLogin ul);
     public User findById(Integer id);
     public boolean update(User u);// throws UserNotFoundException;
+
+    public void setRepository(UserRepository userRepository);
 }

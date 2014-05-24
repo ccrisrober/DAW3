@@ -11,99 +11,71 @@ import com.d3.d3.model.Order1;
 import com.d3.d3.model.User;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.OrderReceipt;
+import com.d3.d3.repository.CardRepository;
+import com.d3.d3.repository.ItemRepository;
 import com.d3.d3.repository.OrderRepository;
+import com.d3.d3.repository.ProductRepository;
+import com.d3.d3.repository.UserRepository;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-
-
-
 // VIGILAR AND Y OR DE CUANDO COMPRUEBO DATOS EN TODOS LOS SERVICIOS
-
-
-
-
-
 @Service
 public class OrderServiceImpl implements OrderService {
+    //Borrar
+    String texto = "";
+    
     
     @Resource
     private OrderRepository orderRepository;
-    
-    @Override
-    public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public double getTotalPrice(Collection<ItemProduct> products) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean updateStatus(Integer idOrd, String status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Order1> findAll() {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public Order1 findById(Integer idOrd) {
-        return orderRepository.findOne(idOrd);
-    }
-
-    @Override
-    public boolean checkAccessUser(Integer idOrd, Integer idUser) {
-        Order1 ord = orderRepository.findOne(idOrd);
-        if(ord == null || ord.getIdOrd() <= 0) {
-            return false;
-        }
-        if(ord.getIdUsu().getIdUsu() != idUser) {
-            System.out.println("ERROR");
-            return false;
-        }
-        return true;
-    }
-    /*
-    
     @Resource
-    private ProductService productService;
-    
+    private CardRepository cardRepository;
     @Resource
-    private CardService cardService;
+    private UserRepository userRepository;
+    @Resource
+    private ItemRepository itemRepository;
+    @Resource
+    private ProductRepository productRepository;
 
-    @Resource
-    private UserService userService;
-    
-    @Resource
-    private ItemService itemService;
+    //@Resource
+    private ProductService productService = new ProductServiceImpl();
+
+    //@Resource
+    private CardService cardService = new CardServiceImpl();
+
+    //@Resource
+    private UserService userService = new UserServiceImpl();
+
+    //@Resource
+    private ItemService itemService = new ItemServiceImpl();
     
     @Override
     public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus) {
         // Creo un Order vacío
         Order1 emptyOrder = new Order1();
         emptyOrder.setDirection(receipt.getDirection());
-        if(receipt.getPayment().equals("card")) {
+        if (receipt.getPayment().equals("card")) {
             Card cardAux = new Card();
             cardAux.setDateCatd(receipt.getDate());
-            String numCard = receipt.getCard1() + "-" + receipt.getCard2() + "-" +
-                    receipt.getCard3() + "-" + receipt.getCard4();
+            String numCard = receipt.getCard1() + "-" + receipt.getCard2() + "-"
+                    + receipt.getCard3() + "-" + receipt.getCard4();
             cardAux.setNumCard(numCard);
+            cardService.setRepository(cardRepository);
             Card create = cardService.create(cardAux);
-            if(create == null || create.getIdCard() < 0) {
+            if (create == null || create.getIdCard() < 0) {
                 //ERROR XD
-            return false;
+                texto+=("Error creación de tarjeta");
+                return false;
             }
             emptyOrder.setIdCard(create.getIdCard());
         }
+        userService.setRepository(userRepository);
         User usu = userService.findById(id_user);
-        if(usu == null || usu.getIdUsu() <= 0) {
+        if (usu == null || usu.getIdUsu() <= 0) {
             // ERROR XD
+            texto+=("Error al buscar usuario");
             return false;
         }
         emptyOrder.setIdUsu(usu);
@@ -112,41 +84,47 @@ public class OrderServiceImpl implements OrderService {
         emptyOrder.setStatus("en preparación");
         emptyOrder.setSurnameRec(receipt.getSurname());
         emptyOrder.setTelephone(receipt.getPhone());
-        
+
         // Guardamos el pedido para sacar su id
         Order1 order = orderRepository.save(emptyOrder);
-    
-        if(order == null || order.getIdOrd() <= 0) {
+        
+        if (order == null || order.getIdOrd() <= 0) {
             //ERROR XD
+            texto+=("Error al guardar order");
+            return false;
+        }
+
+        // Ahora cremos la tabla intermedia
+        itemService.setRepository(itemRepository);
+        itemService.setRepository(productRepository);
+        boolean create = itemService.create(sp, order);
+        
+        if (!create) {
+            //ERROR XD
+            texto+=("Error al crear los items");
             return false;
         }
         
-        // Ahora cremos la tabla intermedia
-        boolean create = itemService.create(sp, order.getIdOrd());
-    
-        if(!create) {
-            //ERROR XD
-            return false;
-        }
-    
         double price = this.getTotalPrice(sp);
         
         order.setPrice(price);
         
         Order1 save = orderRepository.save(order);
         
-        if(save == null || save.getIdOrd() <= 0) {
+        if (save == null || save.getIdOrd() <= 0) {
             //ERROR XD
-            System.out.println("hola");
+            texto+=("Error al actualizar el pedido");
             return false;
         }
+        texto+=("Se finish");
         return true;
     }
-
+    
     @Override
     public double getTotalPrice(Collection<ItemProduct> products) {
         double total = 0.0;
-        for(ItemProduct p: products) {
+        productService.setRepository(productRepository);
+        for (ItemProduct p : products) {
             total += productService.findPriceById(p.getId());
         }
         return total;
@@ -155,13 +133,50 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean updateStatus(Integer idOrd, String status) {
         Order1 findById = this.findById(idOrd);
-        if(findById == null || findById.getIdOrd() <= 0) {
+        if (findById == null || findById.getIdOrd() <= 0) {
             return false;
         }
         findById.setStatus(status);
         Order1 upd = orderRepository.save(findById);
         return upd != null;
     }
+    
+    @Override
+    public List<Order1> findAll() {
+        return orderRepository.findAll();
+    }
+    
+    @Override
+    public Order1 findById(Integer idOrd) {
+        return orderRepository.findOne(idOrd);
+    }
+    
+    @Override
+    public boolean checkAccessUser(Integer idOrd, Integer idUser) {
+        Order1 ord = orderRepository.findOne(idOrd);
+        if (ord == null || ord.getIdOrd() <= 0) {
+            return false;
+        }
+        if (ord.getIdUsu().getIdUsu() != idUser) {
+            System.out.println("ERROR");
+            return false;
+        }
+        return true;
+    }
+    /*
+    
+    
+    
+    
 
-    */
+    
+    
+    
+
+     */
+    //Borrar
+    @Override
+    public String text() {
+        return this.texto;
+    }
 }

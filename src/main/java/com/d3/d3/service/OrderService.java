@@ -29,4 +29,7 @@ public interface OrderService {
     public Order1 findById(Integer idOrd);
     
     public boolean checkAccessUser(Integer idOrd, Integer idUser);
+    
+    public String text();
+
 }

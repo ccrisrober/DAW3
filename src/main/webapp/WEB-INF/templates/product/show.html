@@ -53,6 +53,12 @@
                 </div>
             </div>
 
+            <form action="#" th:action="@{/shopcard/add}" th:object="${itemproduct}">
+                <input type="text" th:field="*{id}" ></input>
+                <input type="number" th:field="*{quantity}"></input>
+            </form>
+            
+            
             <form>
                 <input type="button" value="Back" onClick="history.go(-1);
                     return true;" class="btn btn-warning" />

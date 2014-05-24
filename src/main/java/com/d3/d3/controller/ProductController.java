@@ -7,8 +7,10 @@ package com.d3.d3.controller;
 
 import com.d3.d3.model.Image;
 import com.d3.d3.model.Product;
+import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.service.ImageService;
 import com.d3.d3.service.ProductService;
+import com.d3.d3.validation.ItemProductValidator;
 import com.d3.d3.validation.ProductValidator;
 import com.d3.d3.validation.others.Functions;
 import java.io.BufferedOutputStream;
@@ -48,6 +50,11 @@ public class ProductController {
     @ModelAttribute("page")
     public String module() {
         return "product";
+    }
+    
+    @InitBinder(value = "itemproduct")
+    protected void initBinderItemProduct(WebDataBinder binder) {
+        binder.setValidator(new ItemProductValidator());
     }
 
     private final String URL = "product";
@@ -134,6 +141,7 @@ public class ProductController {
             Product p = productService.findById(id_);
             if (p != null) {
                 m.addAttribute("product", p);
+                m.addAttribute("itemproduct", new ItemProduct());
                 return SHOW;
             } else {
                 m.addAttribute("error", "Producto no encontrado");

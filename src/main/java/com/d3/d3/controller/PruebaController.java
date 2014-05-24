@@ -8,9 +8,13 @@ package com.d3.d3.controller;
 
 import com.d3.d3.model.Image;
 import com.d3.d3.model.Product;
+import com.d3.d3.model.others.ItemProduct;
+import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.service.ImageService;
+import com.d3.d3.service.OrderService;
 import com.d3.d3.service.ProductService;
 import com.d3.d3.service.UserService;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -26,8 +30,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/prueba")
 public class PruebaController {
-    /*@Resource
-    private OrderService orderService;*/
+    @Resource
+    private OrderService orderService;
     @Resource
     private ProductService productService;
     @Resource
@@ -86,26 +90,28 @@ public class PruebaController {
         return "index2";
     }
     
-    /*@RequestMapping(value = "/order", method = RequestMethod.GET)
+    @RequestMapping(value = "/order", method = RequestMethod.GET)
     public String prueba(Model m) {
         Collection<ItemProduct> cir = new LinkedList<ItemProduct>();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 5; i++) {
             ItemProduct ip = new ItemProduct();
-            ip.setId(1);
+            ip.setId((i%2) + 1);
             ip.setQuantity(10);
             cir.add(ip);
         }
         OrderReceipt or = new OrderReceipt();
-        or.setCard1("1111");
-        or.setCard2("1111");
-        or.setCard3("1111");
-        or.setCard4("1111");
+        or.setCard1("");
+        or.setCard2("");
+        or.setCard3("");
+        or.setCard4("");
         or.setDirection("Mi casa o q ase");
         or.setName("Mi nombre o k ase");
         or.setPayment("delivery");
         or.setSurname("Mi apellido o k ase");
+        or.setPhone("916651199");
+        System.out.println("hola");
         boolean error = orderService.createOrder(cir, or, 1, 5);
-        m.addAttribute("error", error);
+        m.addAttribute("error", orderService.text());
         return "index2";
-    }*/
+    }
 }

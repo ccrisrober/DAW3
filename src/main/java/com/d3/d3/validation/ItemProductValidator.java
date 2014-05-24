@@ -6,6 +6,7 @@
 
 package com.d3.d3.validation;
 
+import com.d3.d3.model.others.ItemProduct;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -17,12 +18,11 @@ public class ItemProductValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> type) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ItemProduct.class.isAssignableFrom(type);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

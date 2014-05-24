@@ -164,7 +164,14 @@ public class User implements Serializable {
     }
 
     public void update(User u) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setDirection(u.getDirection());
+        this.setName(u.getName());
+        this.setNickname(u.getNickname());
+        this.setOrder1Collection(u.getOrder1Collection());
+        this.setPassword(u.getPassword());
+        this.setSurname(u.getSurname());
+        this.setSurname2(u.getSurname2());
+        this.setTelephone(u.getTelephone());
     }
     
 }

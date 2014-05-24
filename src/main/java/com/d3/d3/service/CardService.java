@@ -8,6 +8,7 @@ package com.d3.d3.service;
 
 import com.d3.d3.exceptions.CardNotFoundException;
 import com.d3.d3.model.Card;
+import com.d3.d3.repository.CardRepository;
 import java.util.List;
 
 /**
@@ -20,4 +21,6 @@ public interface CardService {
     public boolean delete(Integer id) throws CardNotFoundException;
     public List<Card> findAll();
     public Card findById(Integer id);
+
+    public void setRepository(CardRepository cardRepository);
 }

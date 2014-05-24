@@ -6,17 +6,17 @@
 
 package com.d3.d3.controller;
 
-import com.d3.d3.model.Order1;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.model.others.ShopCart;
 import com.d3.d3.service.OrderService;
+import com.d3.d3.service.OrderServiceImpl;
 import com.d3.d3.service.ProductService;
+import com.d3.d3.service.ProductServiceImpl;
 import com.d3.d3.validation.ItemProductValidator;
 import com.d3.d3.validation.OrderReceiptValidator;
 import com.d3.d3.validation.others.Functions;
 import java.util.Collection;
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -61,11 +61,11 @@ public class ShopCartController {
         return SHOPCART;
     }
     
-    @Resource
-    private OrderService orderService;
+    //@Resource
+    private OrderService orderService = new OrderServiceImpl();
     
-    @Resource
-    private ProductService productService;
+    //@Resource
+    private ProductService productService = new ProductServiceImpl();
     
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(@ModelAttribute(value = "itemproduct") @Valid ItemProduct item,

@@ -31,18 +31,20 @@ public class OrderReceipt {
     String phone;
 
     // Esto es solo si usas tarjeta : D
-    @NotNull
-    @Size(min = 4, max = 4)
+    //@NotNull
+    //@Size(min = 4, max = 4)
     String card1;
-    @NotNull
-    @Size(min = 4, max = 4)
+    //@NotNull
+    //@Size(min = 4, max = 4)
     String card2;
-    @NotNull
-    @Size(min = 4, max = 4)
+    //@NotNull
+    //@Size(min = 4, max = 4)
     String card3;
-    @NotNull
-    @Size(min = 4, max = 4)
+    //@NotNull
+    //@Size(min = 4, max = 4)
     String card4;
+    //@Date
+    private Date date;
 
     public String getPayment() {
         return payment;
@@ -117,7 +119,11 @@ public class OrderReceipt {
     }
 
     public Date getDate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
     
 }

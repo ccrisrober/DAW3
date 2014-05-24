@@ -57,4 +57,9 @@ public class CardServiceImpl implements CardService {
     public Card findById(Integer id) {
         return cardRepository.findOne(id);
     }
+
+    @Override
+    public void setRepository(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+    }
 }
