@@ -4,7 +4,28 @@
         <div class="control-group">
             <label label-default="" class="control-label">Nombre propietario</label>
             <div class="controls">
-                <input type="text" class="form-control" pattern="\w+ \w+.*" title="Nombre y apellidos" required="" />
+                <input th:field="*{name}" type="text" class="form-control" pattern="\w+*" title="Nombre" required="" />
+            </div>
+        </div>
+        <br/>
+        <div class="control-group">
+            <label label-default="" class="control-label">Apellido propietario</label>
+            <div class="controls">
+                <input th:field="*{surname}" type="text" class="form-control" pattern="\w+*" title="Apellidos" required="" />
+            </div>
+        </div>
+        <br/>
+        <div class="control-group">
+            <label label-default="" class="control-label">Dirección propietario</label>
+            <div class="controls">
+                <input th:field="*{direction}" type="text" class="form-control" pattern="\w+*" title="direction" required="" />
+            </div>
+        </div>
+        <br/>
+        <div class="control-group">
+            <label label-default="" class="control-label">Teléfono propietario</label>
+            <div class="controls">
+                <input th:field="*{phone}" type="text" class="form-control" pattern="\w+*" title="direction" required="" />
             </div>
         </div>
         <br/>

@@ -6,16 +6,18 @@
 
 package com.d3.d3.controller;
 
-import com.d3.d3.model.Item;
+import com.d3.d3.model.User;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.model.others.ShopCart;
 import com.d3.d3.repository.ProductRepository;
+import com.d3.d3.repository.UserRepository;
 import com.d3.d3.service.OrderService;
 import com.d3.d3.service.OrderServiceImpl;
 import com.d3.d3.service.ProductService;
 import com.d3.d3.service.ProductServiceImpl;
+import com.d3.d3.service.UserService;
 import com.d3.d3.validation.ItemProductValidator;
 import com.d3.d3.validation.OrderReceiptValidator;
 import com.d3.d3.validation.others.Functions;
@@ -78,6 +80,11 @@ public class ShopCartController {
     
     @Resource
     private ProductRepository productRepository;
+    
+    @Resource
+    private UserService userService;
+    @Resource
+    private UserRepository userRepository;
     
     
     @RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -154,8 +161,19 @@ public class ShopCartController {
     }
     
     @RequestMapping(value = "/payment", method = RequestMethod.POST)
-    public String payment(Model m) {
-        m.addAttribute("orderreceipt", new OrderReceipt());
+    public String payment(Model m, HttpSession session) {
+        // Comprobamos que existe el id_user en session
+        int id_user = Functions.getID_USER(session);
+        if(id_user < 1) {
+            return REDIR_LOGIN;   // Creo que así valdría : D
+        }
+        userService.setRepository(userRepository);
+        User user = userService.findById(id_user);
+        if(user == null) {
+            return REDIR_LOGIN;   // Creo que así valdría : D
+        }
+        OrderReceipt receipt = new OrderReceipt(user);
+        m.addAttribute("orderreceipt", receipt);
         return PAYMENT;
     }
     

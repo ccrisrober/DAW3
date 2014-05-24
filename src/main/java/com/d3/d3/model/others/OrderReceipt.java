@@ -7,6 +7,7 @@
 package com.d3.d3.model.others;
 
 import com.d3.d3.annotation.Phone;
+import com.d3.d3.model.User;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -45,6 +46,17 @@ public class OrderReceipt {
     String card4;
     //@Date
     private Date date;
+
+    public OrderReceipt() {
+        
+    }
+    
+    public OrderReceipt(User user) {
+        this.direction = user.getDirection();
+        this.name = user.getName();
+        this.phone = user.getTelephone();
+        this.surname = user.getSurname();
+    }
 
     public String getPayment() {
         return payment;
