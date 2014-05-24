@@ -21,7 +21,7 @@ public class Functions {
                 
          }
          }*/
-        return 0;
+        return 1;
     }
 
     public static int getInt(String str) {

@@ -24,17 +24,22 @@ public class ShopCart implements Serializable {
         this.id_user = id_user;
     }
     
-    synchronized public void addItem(int[] id_producto, int[] quantity) {
-        for(int i = 0; i < id_producto.length; i++) {
-            ShopCart.this.addItem(id_producto[i], quantity[i]);
+    synchronized public void addItem(int[] id_product, int[] quantity) {
+        for(int i = 0; i < id_product.length; i++) {
+            ShopCart.this.addItem(id_product[i], quantity[i]);
         }
     }
     
-    synchronized public void addItem(int id_producto, int quantity) {
-        if(products.containsKey(id_producto)) {
-            //quantity += productos.get(id_producto);
+    synchronized public void addItem(int id_product, int quantity) {
+        ItemProduct item = products.get(id_product);
+        if(item == null) {
+            item = new ItemProduct();
+            item.setId(id_product);
+            item.setQuantity(quantity);
+        } else {
+            item.setQuantity(item.getQuantity() + quantity);
         }
-        //productos.put(id_producto, quantity);
+        products.put(id_product, item);
     }
 
     public Collection<ItemProduct> getProducts() {
@@ -47,6 +52,15 @@ public class ShopCart implements Serializable {
     
     public boolean valid(int id_user) {
         return id_user == this.getId_user();
+    }
+
+    @Override
+    public String toString() {
+        String aux = "";
+        for(ItemProduct ip: this.products.values()) {
+            aux += ("Objeto: " + ip.id + ". Cantidad: " + ip.quantity) + "\n";
+        }
+        return aux;
     }
     
 }

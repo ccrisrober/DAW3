@@ -7,9 +7,12 @@
 package com.d3.d3.service;
 
 import com.d3.d3.model.Card;
+import com.d3.d3.model.Item;
 import com.d3.d3.model.Order1;
+import com.d3.d3.model.Product;
 import com.d3.d3.model.User;
 import com.d3.d3.model.others.ItemProduct;
+import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.repository.CardRepository;
 import com.d3.d3.repository.ItemRepository;
@@ -17,6 +20,7 @@ import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.repository.ProductRepository;
 import com.d3.d3.repository.UserRepository;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -125,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
         double total = 0.0;
         productService.setRepository(productRepository);
         for (ItemProduct p : products) {
-            total += productService.findPriceById(p.getId());
+            total += productService.findPriceById(p.getId()) * p.getQuantity();
         }
         return total;
     }
@@ -178,5 +182,25 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public String text() {
         return this.texto;
+    }
+
+    @Override
+    public void setRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Override
+    public Collection<ItemProductReceipt> generateReceipt(Collection<ItemProduct> products) {
+        productService.setRepository(productRepository);
+        Collection<ItemProductReceipt> items = new LinkedList<ItemProductReceipt>();
+        for(ItemProduct ip: products) {
+            Product product = productService.findById(ip.getId());
+            if(product == null) {
+                //error xD
+            }
+            items.add(new ItemProductReceipt(ip, product));
+        }
+        
+        return items;
     }
 }

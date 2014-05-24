@@ -6,9 +6,12 @@
 
 package com.d3.d3.controller;
 
+import com.d3.d3.model.Item;
 import com.d3.d3.model.others.ItemProduct;
+import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.model.others.ShopCart;
+import com.d3.d3.repository.ProductRepository;
 import com.d3.d3.service.OrderService;
 import com.d3.d3.service.OrderServiceImpl;
 import com.d3.d3.service.ProductService;
@@ -17,10 +20,11 @@ import com.d3.d3.validation.ItemProductValidator;
 import com.d3.d3.validation.OrderReceiptValidator;
 import com.d3.d3.validation.others.Functions;
 import java.util.Collection;
+import java.util.LinkedList;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -30,7 +34,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  *
@@ -38,8 +41,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @RequestMapping("/shopcart")
-@Secured("ROLE_USER")
-@SessionAttributes("shopcart")
 public class ShopCartController {
     
     @InitBinder(value = "orderreceipt")
@@ -71,16 +72,20 @@ public class ShopCartController {
     //@Resource
     private ProductService productService = new ProductServiceImpl();
     
+    @Resource
+    private ProductRepository productRepository;
+    
+    
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(@ModelAttribute(value = "itemproduct") @Valid ItemProduct item,
             BindingResult errors, HttpServletRequest request, 
             HttpSession session) {
         
         String referer = request.getHeader("Referer");  // Obtenemos la página de dónde venimos : D
-        
+       
         // Comprobamos que existe el id_user en session
         int id_user = Functions.getID_USER(session);
-        if(id_user <= 1) {
+        if(id_user < 1) {
             return REDIR_LOGIN;   // Creo que así valdría : D
         }
         
@@ -97,6 +102,7 @@ public class ShopCartController {
         }
         // Si llegamos aquí ya sabemos que tenemos un Carrito en perfecto estado
         //      Vamos a mirar si existe stock
+        productService.setRepository(productRepository);
         Integer stock = productService.findStockById(item.getId());
         if(item.getQuantity() > stock) {
             //Error, no hay espacio D:
@@ -105,6 +111,8 @@ public class ShopCartController {
         sp.addItem(item.getId(), item.getQuantity());
         
         session.setAttribute(SHOPCART, sp);
+        System.out.println("CARRITO: ");
+        System.out.println(sp);
         return "redirect:"+ referer;
     }
     
@@ -112,7 +120,7 @@ public class ShopCartController {
     public String receipt(Model m, HttpSession session) {
         // Comprobamos que existe el id_user en session
         int id_user = Functions.getID_USER(session);
-        if(id_user <= 1) {
+        if(id_user < 1) {
             return REDIR_LOGIN;   // Creo que así valdría : D
         }
         
@@ -130,8 +138,13 @@ public class ShopCartController {
         
         // Llegados aquí, ya tenemos un carrito en perfecto estado de "revista"
         Collection<ItemProduct> products = sp.getProducts();
+        orderService.setRepository(productRepository);
         double total = orderService.getTotalPrice(products);
-        m.addAttribute("products", products);
+        Collection<ItemProductReceipt> productsItem = orderService.generateReceipt(products);
+        if(productsItem == null) {
+            productsItem = new LinkedList<ItemProductReceipt>();
+        }
+        m.addAttribute("products", productsItem);
         m.addAttribute("total", total);
         return RECEIPT;
     }
@@ -152,7 +165,7 @@ public class ShopCartController {
         }
         // Comprobamos que existe el id_user en session
         int id_user = Functions.getID_USER(session);
-        if(id_user <= 1) {
+        if(id_user < 1) {
             return REDIR_LOGIN;   // Creo que así valdría : D
         }
         

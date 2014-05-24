@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -112,6 +113,18 @@ public class PruebaController {
         System.out.println("hola");
         boolean error = orderService.createOrder(cir, or, 1, 5);
         m.addAttribute("error", orderService.text());
+        return "index2";
+    }
+    @RequestMapping(value = "/session", method = RequestMethod.GET)
+    public String session(HttpSession session, Model m) {
+        if(session.getAttribute("hola") == null) {
+            session.setAttribute("hola", 1);
+        } else {
+            Integer hola = (Integer) session.getAttribute("hola");
+            hola++;
+            session.setAttribute("hola", hola);
+        }
+        m.addAttribute("error", session.getAttribute("hola"));
         return "index2";
     }
 }

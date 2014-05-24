@@ -58,12 +58,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="prod : ${products}">
-                                    <td width="25%" th:text="${prod.name}"></td>
-                                    <td width="25%" th:text="${prod.description}"></td>
-                                    <td width="25%" th:text="${prod.price}"></td>
-                                    <td width="6.5%"><input type="text" id="quantity" name="quantity" th:value="0" autofocus="autofocus" /></td>
-                                    <td width="6.5%"><input type="text" id="product" name="product" th:value="${prod.id}"/></td>
+                                <tr th:each="item : ${products}">
+                                    <td width="25%" th:text="${item.product.name}"></td>
+                                    <td width="25%" th:text="${item.product.description}"></td>
+                                    <td width="25%" th:text="${item.product.price}"></td>
+                                    <td width="6.5%"><input type="text" id="quantity" name="quantity" th:value="${item.quantity}" autofocus="autofocus" /></td>
+                                    <td width="6.5%"><input type="text" id="product" name="product" th:value="${item.id}"/></td>
                                 </tr>                    
                             </tbody>
                         </table>
