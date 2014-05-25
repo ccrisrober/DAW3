@@ -154,3 +154,8 @@ n-m linea 4384,  4466, 4495
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+
+.clear {
+    height: 20px;
+}

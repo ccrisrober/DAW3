@@ -8,6 +8,8 @@ package com.d3.d3.controller;
 import com.d3.d3.model.Image;
 import com.d3.d3.model.Product;
 import com.d3.d3.model.others.ItemProduct;
+import com.d3.d3.model.others.ProductAux;
+import com.d3.d3.repository.CategoryRepository;
 import com.d3.d3.service.ImageService;
 import com.d3.d3.service.ProductService;
 import com.d3.d3.validation.ItemProductValidator;
@@ -18,15 +20,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,6 +37,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -49,6 +53,9 @@ public class ProductController {
 
     @Resource
     private ImageService imageService;
+
+    @Resource
+    private CategoryRepository categoryRepository;
 
     // Determino la vista
     @ModelAttribute("page")
@@ -73,7 +80,7 @@ public class ProductController {
     private final String SHOW_ALL_USER = URL + "/showAllUser";
     private final String PRODJS = URL + "/productjs";
 
-    @InitBinder(value = "product")
+    @InitBinder(value = "productaux")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new ProductValidator());
     }
@@ -82,10 +89,18 @@ public class ProductController {
     public String create(Model model, HttpSession session) {
         String redir = Functions.goAdmin(session);
         if (redir.isEmpty()) {
-            model.addAttribute("product", new Product());
+            model.addAttribute("productaux", new ProductAux());
+            model.addAttribute("catgs", categoryRepository.findAll());
             redir = CREATE;
         }
         return redir;
+    }
+
+    @Autowired
+    private ServletContext servletContext;  //Usaremos esto para calcular la ruta de subida de la imágenes
+
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
     }
 
     private String uploadImage(MultipartFile image, Product prod) {
@@ -101,7 +116,8 @@ public class ProductController {
             }
 
             // Create the file on server
-            File serverFile = new File(dir.getAbsolutePath() + File.separator + image.getName());
+            File serverFile = new File(servletContext.getRealPath("/") + 
+                    "assets" + File.separator + "img" + File.separator + image.getOriginalFilename());
             BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
             stream.write(bytes);
             stream.close();
@@ -112,7 +128,7 @@ public class ProductController {
             message = "You successfully uploaded file=" + image.getName() + "<br />";
 
             Image img = new Image();
-            img.setImage(serverFile.getAbsolutePath());
+            img.setImage(serverFile.getName());//serverFile.getAbsolutePath());
             img.setIdProd(prod);
             imageService.create(img);
 
@@ -143,40 +159,76 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/admin/product/uploadImages/{id}", method = RequestMethod.POST)
-    public String updPost(@RequestParam("id") String id,
+    public @ResponseBody
+    String uploadMultipleFileHandler(@RequestParam("id") Integer id,
             @RequestParam("image") MultipartFile[] images, Model m, HttpSession session) {
         String redir = Functions.goAdmin(session);
         if (redir.isEmpty()) {
-            int id_ = Functions.getInt(id);
-            if (id_ <= 0) {
+            //int id_ = Functions.getInt(id);
+            if (id <= 0) {
                 m.addAttribute("error", "{product.notfound}");
-                return PRODJS;
+                redir = PRODJS;
+            } else {
+                Product product = productService.findById(id);
+                if (product == null) {
+                    m.addAttribute("error", "{product.notfound}");
+                    redir = PRODJS;
+                } else {
+                    // Si todo ha ido bien, subo las fotos
+                    String message = "";
+                    for (MultipartFile image : images) {
+                        message += uploadImage(image, product) + "\n";
+                    }
+                    System.out.println(message);
+                    redir = "redirect:/admin/product/show/" + id + ".html";
+                }
             }
-            Product product = productService.findById(id_);
-            if (product == null) {
-                m.addAttribute("error", "{product.notfound}");
-                return PRODJS;
-            }
-            // Si todo ha ido bien, subo las fotos
-            String message = "";
-            for (MultipartFile image : images) {
-                message += uploadImage(image, product);
-            }
-            return "redirect:product/show/" + id_ + ".html";
         }
         return redir;
     }
 
+    /*public @ResponseBody String updPost(@RequestParam("id") String id,
+     @RequestParam("image") MultipartFile[] images, Model m, HttpSession session) {
+     String redir = Functions.goAdmin(session);
+     if (redir.isEmpty()) {
+     int id_ = Functions.getInt(id);
+     if (id_ <= 0) {
+     m.addAttribute("error", "{product.notfound}");
+     return PRODJS;
+     }
+     Product product = productService.findById(id_);
+     if (product == null) {
+     m.addAttribute("error", "{product.notfound}");
+     return PRODJS;
+     }
+     // Si todo ha ido bien, subo las fotos
+     String message = "";
+     for (MultipartFile image : images) {
+     message += uploadImage(image, product);
+     }
+     return "redirect:product/show/" + id_ + ".html";
+     }
+     return redir;
+     }*/
     @RequestMapping(value = "/admin/product/create", method = RequestMethod.POST)
-    public String create_post(@ModelAttribute(value = "product") @Valid Product product,
+    public String create_post(@ModelAttribute(value = "productaux") @Valid ProductAux product,
             BindingResult errors, Model m/*, @RequestParam("image") MultipartFile[] images*/, HttpSession session) {
         String redir = Functions.goAdmin(session);
         if (redir.isEmpty()) {
+            //Aquí pruebo
+
+            System.out.println("ERRORES:");
+            for (ObjectError e : errors.getAllErrors()) {
+                System.out.println(e);
+            }
+
             if (errors.hasErrors()) {
                 System.out.println("Error validación");
+                m.addAttribute("catgs", categoryRepository.findAll());
                 return CREATE;
             }
-            boolean insert = productService.create(product);
+            Product prod = new Product(product, categoryRepository.findOne(product.getIdCat()));
+            boolean insert = productService.create(prod);
             if (!insert) {
                 m.addAttribute("error", "No se ha podido insertar");
             } else {
@@ -283,7 +335,8 @@ public class ProductController {
                 if (p == null) {
                     m.addAttribute("error", "Producto no encontrado");
                 } else {
-                    m.addAttribute("product", p);
+                    ProductAux prod = new ProductAux(p);
+                    m.addAttribute("productaux", prod);
                     return EDIT;
                 }
             }
@@ -313,16 +366,17 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/admin/product/edit/{id}", method = RequestMethod.POST)
-    public String edit_post(@ModelAttribute(value = "product")
-            @Valid Product product,
+    public String edit_post(@ModelAttribute(value = "productaux") @Valid ProductAux product,
             BindingResult errors, Model m, HttpSession session) {
         String redir = Functions.goAdmin(session);
         if (redir.isEmpty()) {
             if (errors.hasErrors()) {
                 System.out.println("ERRORES");
+                m.addAttribute("catgs", categoryRepository.findAll());
                 return EDIT;
             }
-            boolean edit = productService.update(product);
+            Product prod = new Product(product, categoryRepository.findOne(product.getIdCat()));
+            boolean edit = productService.update(prod);
             if (!edit) {
                 m.addAttribute("error", "product.edit.error");
             } else {

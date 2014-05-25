@@ -6,7 +6,7 @@
 
 package com.d3.d3.validation;
 
-import com.d3.d3.model.Product;
+import com.d3.d3.model.others.ProductAux;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -19,7 +19,7 @@ public class ProductValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> type) {
-        return Product.class.isAssignableFrom(type);
+        return ProductAux.class.isAssignableFrom(type);
     }
 
     @Override
@@ -27,8 +27,18 @@ public class ProductValidator implements Validator {
         // Compruebo argumentos vacíos
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "nameProduct.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "priceProduct.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description", "description.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "stock", "stock.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "price", "price.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "idCat", "category.required");
         // Compruebo rangos
-        Product u = (Product) o;
+        ProductAux u = (ProductAux) o;
+        if(u.getPrice() <= 0) {
+            errors.rejectValue("price", "priceProduct.absolute");
+        }
+        if(u.getStock() <= 0) {
+            errors.rejectValue("stock", "priceProduct.absolute");
+        }
         // Trolololo
     }
 }

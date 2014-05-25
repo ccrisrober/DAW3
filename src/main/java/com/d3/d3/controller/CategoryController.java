@@ -44,10 +44,10 @@ public class CategoryController {
     private final String EDIT = URL + "/edit";
     private final String SHOW = URL + "/show";
 
-    @InitBinder(value = "category")
+    /*@InitBinder(value = "category")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new CategoryValidator());
-    }
+    }*/
 
     @RequestMapping(value = {"/admin/category", "/admin/category/index"}, method = RequestMethod.GET)
     public String index(HttpSession session, Model m) {

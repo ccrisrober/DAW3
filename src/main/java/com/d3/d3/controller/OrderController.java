@@ -130,38 +130,55 @@ public class OrderController {
     @RequestMapping(value = "/user/order/{id}", method = RequestMethod.GET)
     public String showOrderUser(@PathVariable String id,
             Model m, HttpSession session) {
-        //Comprobamos si el pedido es del usuario
-        int idUser = Functions.getID_USER(session);
-        if (idUser <= 0) {
-            m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
-        } else {
-            int idOrd = Functions.getInt(id);
-            if (idOrd <= 0) {
-                m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
+        String redir = Functions.goUser(session);
+        if (redir.isEmpty()) {
+            //Comprobamos si el pedido es del usuario
+            int idUser = Functions.getID_USER(session);
+            if (idUser <= 0) {
+                m.addAttribute("error", "El pedido no existe");
             } else {
-                orderService.setRepository(orderRepository);
-                boolean checkAccess = orderService.checkAccessUser(idOrd, idUser);
-                if (!checkAccess) {
-                    m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
+                int idOrd = Functions.getInt(id);
+                if (idOrd <= 0) {
+                    m.addAttribute("error", "El pedido no existe");
+                } else {
+                    orderService.setRepository(orderRepository);
+                    boolean checkAccess = orderService.checkAccessUser(idOrd, idUser);
+                    if (!checkAccess) {
+                        m.addAttribute("error", "El pedido no existe");
+                    } else {
+                        Order1 o = orderService.findById(idOrd);    // No hace falta comprobar porque si ha llegado aquí,
+                        if (o == null) {
+                            m.addAttribute("error", "El pedido no existe");
+                        } else {
+                            //  es que al menos existe y se tiene acceso
+                            System.out.println(o.getItemCollection() == null);
+                            m.addAttribute("order", o);
+                        }
+                    }
                 }
-                Order1 o = orderService.findById(idOrd);    // No hace falta comprobar porque si ha llegado aquí,
-                //  es que al menos existe y se tiene acceso
-                System.out.println(o.getItemCollection() == null);
-                m.addAttribute("order", o);
             }
+            redir = "order/_view";
         }
-        return "order/_view";
+        return redir;
     }
 
     @RequestMapping(value = {"/user/order", "/user/order/index", "/user/order/"}, method = RequestMethod.GET)
     public String showAllOrderUser(Model m, HttpSession session) {
-        orderService.setRepository(orderRepository);
-        List<Order1> order = orderService.findAll();
-        if (order == null) {
-            order = new LinkedList<Order1>();
+        String redir = Functions.goUser(session);
+        if (redir.isEmpty()) {
+            int idUser = Functions.getID_USER(session);
+            if (idUser <= 0) {
+                m.addAttribute("error", "El pedido no existe");
+            }
+            orderService.setRepository(orderRepository);
+            List<Order1> order = orderService.findAllUser(idUser);
+            if (order == null) {
+                order = new LinkedList<Order1>();
+            }
+            m.addAttribute("orders", order);
+            redir = "order/ordersUser";
         }
-        m.addAttribute("orders", order);
-        return "order/ordersUser";
+        return redir;
     }
 
 }

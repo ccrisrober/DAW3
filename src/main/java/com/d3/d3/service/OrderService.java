@@ -32,6 +32,8 @@ public interface OrderService {
     
     public List<Order1> findAll();
     
+    public List<Order1> findAllUser(Integer idUser);
+    
     public Order1 findById(Integer idOrd);
     
     public boolean checkAccessUser(Integer idOrd, Integer idUser);

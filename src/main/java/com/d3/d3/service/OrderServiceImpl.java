@@ -239,4 +239,17 @@ public class OrderServiceImpl implements OrderService {
         }
         return ret_;
     }
+
+    @Override
+    public List<Order1> findAllUser(Integer idUser) {
+        List<Order1> findAll = orderRepository.findAll();
+        List<Order1> ret = new LinkedList<Order1>();
+        for(Order1 order: findAll) {
+            if(order.getIdUsu().getIdUsu() == idUser) {
+                ret.add(order);
+            }
+        }
+        return ret;
+        //return orderRepository.findAllUser(idUser);
+    }
 }

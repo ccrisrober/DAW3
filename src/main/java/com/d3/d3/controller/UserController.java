@@ -59,7 +59,8 @@ public class UserController {
             // Si entro aquí, es que el usuario existe
             userService.setRepository(userRepository);
             User user = userRepository.findOne(Functions.getID_USER(session));
-            m.addAttribute("user", " " + user.getNickname());
+            user.setNickname(" " + user.getNickname());
+            m.addAttribute("user", user);
         }
         return redir;
     }

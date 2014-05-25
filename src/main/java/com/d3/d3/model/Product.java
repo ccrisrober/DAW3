@@ -6,8 +6,11 @@
 
 package com.d3.d3.model;
 
+import com.d3.d3.model.others.ProductAux;
+import com.d3.d3.repository.CategoryRepository;
 import java.io.Serializable;
 import java.util.Collection;
+import javax.annotation.Resource;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -78,6 +81,17 @@ public class Product implements Serializable {
         this.description = description;
         this.price = price;
         this.stock = stock;
+    }
+
+    public Product(ProductAux product, Category cat) {
+        this.description = product.getDescription();
+        this.idCat = cat;
+        this.idProd = product.getIdProd();
+        this.imageCollection = null;
+        this.itemCollection = null;
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.stock = product.getStock();
     }
 
     public Integer getIdProd() {

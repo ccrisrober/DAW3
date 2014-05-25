@@ -32,25 +32,62 @@
                 <p th:text="${error}"></p>
             </div>
             <div th:if="${order}">
-                Precio: <span th:text="${order.price}"></span><br/>
-                Nombre: <span th:text="${order.nameRec}"></span><br/>
-                Apellidos: <span th:text="${order.surnameRec}"></span><br/>
-                Dirección: <span th:text="${order.direction}"></span><br/>
-                Teléfono: <span th:text="${order.telephone}"></span><br/>
-                Estado: <span th:text="${order.status}"></span><br/>
-
-                <div th:each="item: ${order.itemCollection}">
-                    <div class="row clearfix">
-                        <div class="col-md-4 column">
-                            <img alt="140x140" src="http://lorempixel.com/140/140/" class="img-rounded" />
-                        </div>
-                        <div class="col-md-8 column">
-                            <h3 th:text="${item.product.name}"></h3>
-                            <p th:text="${item.product.description}"></p>
-                            <blockquote>Cantidad: <span th:text=" ${item.quantity}"></span></blockquote>
+               
+                <h1>Pedido Nº <span th:text="${order.idOrd}"></span></h1>
+                
+                <div class="row clearfix">
+                    <div class="col-md-5 column">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Estado</th>
+                                    <th th:text="${order.status}"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="active">
+                                    <td>Nombre:</td>
+                                    <td th:text="${order.nameRec}"></td>
+                                </tr>
+                                <tr class="success">
+                                    <td>Apellidos:</td>
+                                    <td th:text="${order.surnameRec}"></td>
+                                </tr>
+                                <tr class="warning">
+                                    <td>Dirección:</td>
+                                    <td th:text="${order.direction}"></td>
+                                </tr>
+                                <tr class="danger">
+                                    <td>Teléfono:</td>
+                                    <td th:text="${order.telephone}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Precio</td>
+                                    <td th:text="${order.price}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="col-md-7 column">
+                        <div th:each="item: ${order.itemCollection}">
+                            <div class="row clearfix">
+                                <div class="col-md-4 column">
+                                    <img alt="140x140" src="http://lorempixel.com/140/140/" class="img-rounded" />
+                                </div>
+                                <div class="col-md-8 column">
+                                    <h3 th:text="${item.product.name}"></h3>
+                                    <p th:text="${item.product.description}"></p>
+                                    <blockquote>Cantidad: <span th:text=" ${item.quantity}"></span></blockquote>
+                                </div>
+                            </div>
+                            <hr/>
                         </div>
                     </div>
                 </div>
+
+                <div class="clear"></div>
+
             </div>
 
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   

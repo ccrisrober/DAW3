@@ -74,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findBySearchName(String search) {
-        return productRepository.findByName(search);
+        return productRepository.findByName("%"+search+"%");
     }
 
     @Override

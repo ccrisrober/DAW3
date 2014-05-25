@@ -20,7 +20,7 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ProductRepository extends JpaRepository<Product, Integer>{
     
-    @Query("SELECT p FROM Product p WHERE p.name like :searchTerm")
+    @Query("SELECT p FROM Product p WHERE p.name LIKE :searchTerm")
     public List<Product> findByName(@Param("searchTerm") String searchTerm);
 
     @Query("SELECT p.stock FROM Product p WHERE p.idProd = :id")

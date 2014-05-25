@@ -58,7 +58,12 @@
                     return true;" class="btn btn-warning" />
             </form>
             <br/>
-            
+            <hr/><hr/>
+            IMÁGENES
+            <hr/>
+            <div th:each="image: ${product.imageCollection}">
+                <img src="" th:attr="src=@{/assets/img/} + ${image.image}" />
+            </div>
             Subir imágenes
             <a th:href="@{../uploadImages/} + ${product.idProd} + .html">Subir imágenes</a>
             <!--<a th:href="@{/product/uploadImages/ + *{itemproduct.id} + .html">Subir imágenes</a>

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.d3.d3.config;
 
 import org.springframework.context.annotation.ImportResource;
@@ -29,7 +28,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Properties;
-import org.springframework.context.annotation.Import;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
  *
@@ -150,5 +149,12 @@ public class ApplicationContext {
         viewResolver.setCache(false);
         return viewResolver;
     }
-}
 
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+        // set any fields
+        commonsMultipartResolver.setMaxUploadSize(1000000000);
+        return commonsMultipartResolver;
+    }
+}

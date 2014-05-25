@@ -29,37 +29,47 @@
             <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
 
             <h2>Crear producto</h2>
-            
-            <form action="#" th:action="@{/product/create.html}" th:object="${product}" method="post" role="form"><!-- enctype="multipart/form-data">-->
+
+            <form action="#" th:action="@{/admin/product/create.html}" th:object="${productaux}" method="post" role="form"><!-- enctype="multipart/form-data">-->
                 <div class="form-group">
                     <input type="hidden" th:field="*{idProd}" />
                 </div>
                 <div class="form-group">
-                    <label for="name">Nombre
-                        <input type="text" th:field="*{name}" class="form-control" /></label>
+                    <label for="name">Nombre</label>
+                    <input type="text" th:field="*{name}" class="form-control" />
+                    <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</label>
                 </div>
                 <div class="form-group">
-                    <label for="description">Descripción
-                        <input type="text" th:field="*{description}" class="form-control" /></label>
+                    <label for="description">Descripción</label>
+                    <input type="text" th:field="*{description}" class="form-control" />
+                    <label th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Name Error</label>
                 </div>
                 <div class="form-group">
-                    <label for="price">Precio
-                        <input type="text" th:field="*{price}" class="form-control" /></label>
+                    <label for="price">Precio</label>
+                    <input type="text" th:field="*{price}" class="form-control" />
+                    <label th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Name Error</label>
                 </div>
                 <div class="form-group">
-                    <label for="stock">Stock
-                        <input type="text" th:field="*{stock}" class="form-control" /></label>
+                    <label for="stock">Stock</label>
+                    <input type="text" th:field="*{stock}" class="form-control" />
+                    <label th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}">Name Error</label>
                 </div>
-                
+
                 <div class="form-group"> <!-- Esto debe ser un selector -->
-                    <label for="idCat">Categoría
-                        <input type="text" th:field="*{idCat}" class="form-control" /></label>
+                    <label for="idCat">Categoría</label>
+                    <select class="form-control" th:field="*{idCat}">
+                        <option th:each="cat : ${catgs}" 
+                                th:value="${cat.idCat}" 
+                                th:text="${cat.name}"></option>
+                    </select>
+                    <!--<input type="text" th:field="*{idCat}" class="form-control" />
+                    <label th:if="${#fields.hasErrors('idCat')}" th:errors="*{idCat}">Name Error</label>-->
                 </div>
 
 
                 <!--File to upload 1: <input type="file" name="image"></input><br />
                 File to upload 2: <input type="file" name="image"></input><br />
--->
+                -->
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
