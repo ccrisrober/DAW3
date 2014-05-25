@@ -9,6 +9,7 @@ package com.d3.d3.repository;
 import com.d3.d3.model.Item;
 import com.d3.d3.model.ItemPK;
 import java.util.Collection;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +21,6 @@ import org.springframework.data.repository.query.Param;
 public interface ItemRepository extends JpaRepository<Item, ItemPK>{
 
     @Query("select i from Item i where i.order1.idOrd = :idOrd")
-    public Collection<Item> findByIdOrd(@Param("idOrd") Integer idOrd);
+    public List<Item> findByIdOrd(@Param("idOrd") Integer idOrd);
     
 }

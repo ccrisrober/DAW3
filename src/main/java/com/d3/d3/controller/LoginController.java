@@ -31,7 +31,7 @@ public class LoginController {
     @Resource
     private UserService userService;
     
-    private static final String REDIR_LOGIN = "redirect:../index.html";
+    private static final String REDIR_LOGIN = "redirect:" + Functions.URL;
     private static final String LOGIN = "/login/login";
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)

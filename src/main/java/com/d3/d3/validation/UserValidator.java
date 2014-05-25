@@ -25,7 +25,14 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         // Compruebo argumentos vacíos
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "username.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "nickname", "username.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "password.required");
         /*ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "name.required");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "surname.required");*/

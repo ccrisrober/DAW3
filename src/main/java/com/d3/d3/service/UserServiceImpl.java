@@ -9,7 +9,11 @@ package com.d3.d3.service;
 import com.d3.d3.model.User;
 import com.d3.d3.model.others.UserLogin;
 import com.d3.d3.repository.UserRepository;
+import com.d3.d3.validation.others.Functions;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +24,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean create(User u) {
-        User us = userRepository.save(u);
-        return us != null && us.getIdUsu() > 0;
+        if(userRepository.getUser(u.getNickname())== null) {
+            try {
+                u.setPassword(Functions.sha1(u.getPassword()));
+            } catch (NoSuchAlgorithmException ex) {
+                return false;
+            }
+            User us = userRepository.save(u);
+            return us != null && us.getIdUsu() > 0;
+        }
+        return false;
     }
 
     @Override
@@ -41,6 +53,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int chekLogin(UserLogin ul) {
+        try {
+            ul.setPassword(Functions.sha1(ul.getPassword()));
+        } catch (NoSuchAlgorithmException ex) {
+            return -1;
+        }
         User usu = userRepository.getUserLogin(ul.getUsername(), ul.getPassword());
         return (usu == null) ? -1 : usu.getIdUsu();
         //return ((usu != null) && (usu.getIdUsu()>=1))? usu.getIdUsu():-1;

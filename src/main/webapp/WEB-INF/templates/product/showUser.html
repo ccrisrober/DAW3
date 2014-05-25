@@ -27,7 +27,7 @@
         <div class="container">
 
             <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
-            
+
             <div class="panel panel-default">
                 <div class="panel-heading">Producto</div>
                 <div class="table-responsive">
@@ -53,26 +53,26 @@
                 </div>
             </div>
             
-            <table>
-                hola
-                <tr th:each="image: ${product.imageCollection}">
-                    <td th:text="${image.image}"></td>
-                </tr>
-            </table>
-            
+            <hr/><hr/>
+            IMÁGENES
+            <hr/>
+            <div th:each="image: ${product.imageCollection}">
+                <img src="" th:attr="src=@{/assets/img/} + ${image.image}" />
+            </div>
+
             <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
                 <input type="text" th:field="*{id}" ></input>
                 <input type="number" th:field="*{quantity}"></input>
                 <button type="submit">Añadir al carro tu xD</button>
             </form>
-            
-            
+
+
             <form>
                 <input type="button" value="Back" onClick="history.go(-1);
-                    return true;" class="btn btn-warning" />
+                        return true;" class="btn btn-warning" />
             </form>
             <br/>
-            
+
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   
 
         </div>

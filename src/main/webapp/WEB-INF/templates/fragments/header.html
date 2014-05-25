@@ -42,8 +42,18 @@
                         </form>
                     </div>
                     <div class="col-md-4 column margin1">
-                        <a href="login.html" th:href="@{/login.html}"><button type="button" class="btn btn-default">Mi cuenta</button></a>
+                        <a href="user.html" th:href="@{/user.html}"><button type="button" class="btn btn-default">Mi cuenta</button></a>
                         <a href="shopcart/index.html" th:href="@{/shopcart/index.html}"><button type="button" class="btn btn-primary">Cesta</button></a>
+                        <div th:if="${session.id_admin} or ${session.id_user}">
+                            <form th:action="@{/login/logout.html}" method="post">
+                                <button type="submit" class="btn btn-danger">Logout</button>
+                            </form>
+                        </div>
+                        <div th:if="${session.id_admin}">
+                            <a href="admin.html" th:href="@{/admin.html}" th:if="${session.id_admin}">
+                                <button type="button" class="btn btn-warning">Admin</button>
+                            </a>
+                        </div>
                     </div>
                 </center>
             </div>

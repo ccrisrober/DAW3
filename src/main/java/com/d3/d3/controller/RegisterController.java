@@ -9,6 +9,7 @@ package com.d3.d3.controller;
 import com.d3.d3.model.User;
 import com.d3.d3.service.UserService;
 import com.d3.d3.validation.UserValidator;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,10 +39,10 @@ public class RegisterController {
     private final String REGISTER = URL + "/register";
     private final String REGISTER_SUCCESS = URL + "/registerSuccess";
     
-    @InitBinder(value = "user")
+    /*@InitBinder(value = "user")
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(new UserValidator());
-    }
+    }*/
 
     @RequestMapping(value = {"", "/index"}, method = RequestMethod.GET)
     public String login(Model model) {
@@ -53,6 +55,16 @@ public class RegisterController {
             @ModelAttribute(value = "user") @Valid User user,
             BindingResult errors, ModelMap modelMap) {
         String redir = REGISTER_SUCCESS;
+        
+        
+        
+        List<ObjectError> allErrors = errors.getAllErrors();
+        for(ObjectError oe: allErrors) {
+            System.out.println(oe);
+        }
+        
+        
+        
         if (errors.hasErrors()) {
             redir = REGISTER;
         } else {

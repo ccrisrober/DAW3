@@ -28,13 +28,15 @@
 
             <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
 
-            VISTA DE ADMINISTRACIÓN MODO ADMIN
+            VISTA DE ADMINISTRACIÓN
 
-
-            <form th:action="@{/login.html?logout}" method="post">
-                <input type="submit" value="Logout" />
-            </form>
-
+            <ul>
+                <li><a th:href="@{/admin/order.html}">Administrar pedidos</a></li>
+                <li><a th:href="@{/admin/product.html}">Administrar productos</a></li>
+                <li><a th:href="@{/admin/category.html}">Administrar categorías</a></li>
+                <li><a th:href="@{/admin/user.html}">Administrar usuarios</a></li>
+            </ul>
+            
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   
 
         </div>

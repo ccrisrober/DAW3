@@ -42,12 +42,16 @@
                         </form>
                     </div>
                     <div class="col-md-4 column margin1">
-                        <a href="login.html" th:href="@{/login.html}"><button type="button" class="btn btn-default">Mi cuenta</button></a>
-                        <a href="shopcart/index.html" th:href="@{/shopcart/index.html}"><button type="button" class="btn btn-primary">Cesta</button></a>
+                        <a href="admin.html" th:href="@{/admin.html}"><button type="button" class="btn btn-warning">Admin</button></a>
+                        <a th:if="${session.id_admin} or ${session.id_user}" href="">
+                            <form th:action="@{/login/logout.html}" method="post">
+                                <button type="button" class="btn btn-danger">Logout</button>
+                            </form>
+                        </a>
                     </div>
                 </center>
             </div>
-            
+
             <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
                 <div class="container-fluid">
                     <!-- Brand and toggle get grouped for better mobile display -->

@@ -151,7 +151,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order1 findById(Integer idOrd) {
-        return orderRepository.findOne(idOrd);
+        Order1 order = orderRepository.findOne(idOrd);
+        List<Item> items = itemRepository.findByIdOrd(idOrd);
+        if(items == null) {
+            items = new LinkedList<Item>();
+        }
+        order.setItemCollection(items);
+        return order;
     }
 
     @Override

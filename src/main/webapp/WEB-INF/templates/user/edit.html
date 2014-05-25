@@ -1,1 +1,33 @@
 EDIT USER : D
+<form class="form-signin" action="#" th:action="@{/user/edit.html}" th:object="${user}" method="post">
+    <input type="text" th:field="*{idUsu}"></input>
+    <br/>
+    <input name="user" type="text" class="form-control" th:field="*{nickname}" placeholder="Nick"/>
+    <label th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Name Error</label>
+    <br/>
+    <input type="password" class="form-control" th:field="*{password}" placeholder="Password"/>
+    <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</label>
+    <br/>
+    <input type="text" class="form-control" th:field="*{name}" placeholder="Nombre"/>
+    <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</label>
+    <br/>
+    <input type="text" class="form-control" th:field="*{surname}" placeholder="Apellido 1"/>
+    <label th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Name Error</label>
+    <br/>
+    <input type="text" class="form-control" th:field="*{surname2}" placeholder="Apellido 2"/>
+    <label th:if="${#fields.hasErrors('surname2')}" th:errors="*{surname2}">Name Error</label>
+    <br/>
+    <input type="text" class="form-control" th:field="*{direction}" placeholder="Direction"/>
+    <label th:if="${#fields.hasErrors('direction')}" th:errors="*{direction}">Name Error</label>
+    <br/>
+    <input type="text" class="form-control" th:field="*{telephone}" placeholder="Telephone"/>
+    <label th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}">Name Error</label>
+    <br/>
+    
+    
+    
+    
+    
+    <!--<td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</td>-->
+    <button class="btn btn-lg btn-primary btn-block" type="submit" value="Registrar">Registrar</button>
+</form>

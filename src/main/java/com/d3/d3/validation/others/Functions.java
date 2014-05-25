@@ -6,8 +6,9 @@
 package com.d3.d3.validation.others;
 
 import com.d3.d3.model.others.UserLogin;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpSession;
-import org.springframework.http.HttpRequest;
 
 /**
  *
@@ -23,7 +24,15 @@ public class Functions {
     public static final String LOGIN = "login.html";
     public static final String URL = "http://localhost:8080/caca/";
 
-    
+    public static String goUser(HttpSession session) {
+        String redir = "";
+        int id_user = Functions.getID_USER(session);
+        if(id_user < 0) {
+            redir = "redirect:" + URL + "login.html";
+        } 
+        return redir;
+    }
+        
     public static String goAdmin(HttpSession session) {
         String redir = "";
         int id_user = Functions.getID_USER(session);
@@ -106,4 +115,15 @@ public class Functions {
         return Integer.parseInt(str);
     }
 
+    
+    public static String sha1(String input) throws NoSuchAlgorithmException {
+        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+        }
+         
+        return sb.toString();
+    }
 }

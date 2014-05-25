@@ -6,6 +6,7 @@
 
 package com.d3.d3.model;
 
+import com.d3.d3.annotation.Phone;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -35,31 +37,40 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_USU")
     private Integer idUsu;
-    @Size(max = 20)
+    @NotNull
+    @Size(min = 4,max = 20)
     @Column(name = "NAME")
     private String name;
-    @Size(max = 20)
+    @NotNull
+    @Size(min = 4,max = 20)
     @Column(name = "SURNAME")
     private String surname;
-    @Size(max = 20)
+    @NotNull
+    @Size(min = 4,max = 20)
     @Column(name = "SURNAME2")
     private String surname2;
-    @Size(max = 50)
+    @NotNull
+    @Size(min = 4,max = 50)
     @Column(name = "DIRECTION")
     private String direction;
-    @Size(max = 10)
+    @NotNull
+    @Phone
+    @Size(min = 9,max = 9)
     @Column(name = "TELEPHONE")
     private String telephone;
-    @Size(max = 50)
+    @NotNull
+    @Size(min = 4,max = 50)
     @Column(name = "PASSWORD")
     private String password;
-    @Size(max = 20)
+    @NotNull
+    @Size(min = 4, max = 20)
     @Column(name = "NICKNAME")
     private String nickname;
     @OneToMany(mappedBy = "idUsu")
     private Collection<Order1> order1Collection;
 
     public User() {
+        this.idUsu = 0;
     }
 
     public User(Integer idUsu) {
