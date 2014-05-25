@@ -1,0 +1,6 @@
+<form action="#" th:action="@{/product/uploadImages/} + *{id} + .html" method="post" role="form" enctype="multipart/form-data">
+    <input type="text" name="id" th:value="*{id}"></input><br/>
+    File to upload 1: <input type="file" name="image"></input><br />
+    File to upload 2: <input type="file" name="image"></input><br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -32,7 +32,7 @@
                     }
                  });
             });
-</script>
+        </script>
 
     </head>
 
@@ -42,7 +42,7 @@
 
             <div th:replace="fragments/header :: header">&nbsp;</div>
 
-            <form action="#" th:action="@{/shopcart/finish.html}" method="post">
+            <form action="#" th:action="@{/shopcart/payment.html}" method="post">
                 <div class="panel panel-default">
                     <div class="panel-heading">Listado de productos</div>
                     <div class="table-responsive">
@@ -76,7 +76,7 @@
                     <label class="espacio1" data-precio="off">TOTAL: <span th:text="${total}"></span> &euro;</label><br/>
                 </div>
 
-                <div class="panel panel-default">
+                <!--<div class="panel panel-default">
                     <div class="panel-heading">Forma de pago</div>    
                     <div class="espacio1">
                         <label>Contra Reembolso (+5 Euros)   <input type="radio" name="payment" value="delivery" /></label><br/>
@@ -85,8 +85,8 @@
                 </div>
 
                 <div id="payment">
-                    <div th:replace="shopcart/tarjeta">&nbsp;</div><!--http://ugate.github.io/thymus/#navcontrol-->
-                </div>
+                    <div th:replace="shopcart/tarjeta">&nbsp;</div>--><!--http://ugate.github.io/thymus/#navcontrol-->
+                <!--</div>-->
                 
                 <div class="control-group limpiarlados">
                     <label label-default="" class="control-label"></label>

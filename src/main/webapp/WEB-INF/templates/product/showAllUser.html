@@ -54,9 +54,7 @@
                                 <td width="25%" th:text="${prod.name}"></td>
                                 <td width="25%" th:text="${prod.description}"></td>
                                 <td width="25%" th:text="${prod.price}"></td>
-                                <td width="6.5%"><a th:href="@{/admin/product/show/} + ${prod.idProd} + .html">Mirar</a></td>
-                                <td width="6.5%"><a th:href="@{/admin/product/edit/} + ${prod.idProd} + .html">Editar</a></td>
-                                <td width="6.5%"><a th:href="@{/admin/product/delete/} + ${prod.idProd} + .html">Borrar</a></td>
+                                <td width="6.5%"><a th:href="@{/product/show/} + ${prod.idProd} + .html">Mirar</a></td>
                             </tr>                    
                         </tbody>
                     </table>
@@ -64,7 +62,6 @@
                 </div>
             </div>
 
-            <a th:href="@{/admin/product/create.html}"><button class="btn btn-primary">Crear nuevo producto</button></a>
             <br/><br/>
 
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   

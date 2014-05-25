@@ -30,7 +30,7 @@
 
             <h2>Crear producto</h2>
             
-            <form action="#" th:action="@{/product/create.html}" th:object="${product}" method="post" role="form" enctype="multipart/form-data">
+            <form action="#" th:action="@{/product/create.html}" th:object="${product}" method="post" role="form"><!-- enctype="multipart/form-data">-->
                 <div class="form-group">
                     <input type="hidden" th:field="*{idProd}" />
                 </div>
@@ -57,9 +57,9 @@
                 </div>
 
 
-                File to upload 1: <input type="file" name="image"></input><br />
+                <!--File to upload 1: <input type="file" name="image"></input><br />
                 File to upload 2: <input type="file" name="image"></input><br />
-
+-->
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

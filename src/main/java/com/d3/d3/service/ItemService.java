@@ -23,4 +23,6 @@ public interface ItemService {
     public void setRepository(ItemRepository itemRepository);
 
     public void setRepository(ProductRepository productRepository);
+
+    public boolean delete(int idOrd);
 }

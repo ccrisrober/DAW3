@@ -24,17 +24,12 @@
     </head>
 
     <body> 
-
         <div class="container">
 
             <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
-        
-
-            <div th:if="${error}"><p class="alert alert-danger" th:text="$(error)"></p></div>
-            <div th:if="${ok}"><p class="alert alert-success" th:text="${ok}"></p></div>
-
+            
             <div class="panel panel-default">
-                <div class="panel-heading">Listado de productos</div>
+                <div class="panel-heading">Producto</div>
                 <div class="table-responsive">
 
                     <table class="table table-hover">
@@ -44,31 +39,43 @@
                                 <th>Nombre</th>
                                 <th>Descripción</th>
                                 <th>Precio</th>
-                                <th>Mirar</th>
-                                <th>Editar</th>
-                                <th>Borrar</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="prod : ${products}">
-                                <td width="25%" th:text="${prod.name}"></td>
-                                <td width="25%" th:text="${prod.description}"></td>
-                                <td width="25%" th:text="${prod.price}"></td>
-                                <td width="6.5%"><a th:href="@{/admin/product/show/} + ${prod.idProd} + .html">Mirar</a></td>
-                                <td width="6.5%"><a th:href="@{/admin/product/edit/} + ${prod.idProd} + .html">Editar</a></td>
-                                <td width="6.5%"><a th:href="@{/admin/product/delete/} + ${prod.idProd} + .html">Borrar</a></td>
+                            <tr>
+                                <td th:text="${product.name}"></td>
+                                <td th:text="${product.description}"></td>
+                                <td th:text="${product.price}"></td>
                             </tr>                    
                         </tbody>
                     </table>
 
                 </div>
             </div>
-
-            <a th:href="@{/admin/product/create.html}"><button class="btn btn-primary">Crear nuevo producto</button></a>
-            <br/><br/>
-
+            
+            <table>
+                hola
+                <tr th:each="image: ${product.imageCollection}">
+                    <td th:text="${image.image}"></td>
+                </tr>
+            </table>
+            
+            <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
+                <input type="text" th:field="*{id}" ></input>
+                <input type="number" th:field="*{quantity}"></input>
+                <button type="submit">Añadir al carro tu xD</button>
+            </form>
+            
+            
+            <form>
+                <input type="button" value="Back" onClick="history.go(-1);
+                    return true;" class="btn btn-warning" />
+            </form>
+            <br/>
+            
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   
 
         </div>
+
     </body>
 </html>

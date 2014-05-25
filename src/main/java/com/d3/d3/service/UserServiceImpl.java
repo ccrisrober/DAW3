@@ -42,7 +42,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public int chekLogin(UserLogin ul) {
         User usu = userRepository.getUserLogin(ul.getUsername(), ul.getPassword());
-        return ((usu != null) && (usu.getIdUsu()>=1))? usu.getIdUsu():-1;
+        return (usu == null) ? -1 : usu.getIdUsu();
+        //return ((usu != null) && (usu.getIdUsu()>=1))? usu.getIdUsu():-1;
     }
 
     @Override

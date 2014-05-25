@@ -38,11 +38,15 @@
                             <img class="profile-img" src="../../assets/img/photo.png" th:attr="src=@{/assets/img/photo.png}" />
                         </center>
                         <br/>
-                        <form class="form-signin" th:action="@{/login.html}" method="post">
+                        <div th:if="${error}">
+                            <p th:text="${error}"></p>
+                        </div>
+                        <form class="form-signin" th:action="@{/login.html}" th:object="${userlogin}" method="post">
                             <input type="text" class="form-control" id="j_username" name="username" autofocus="autofocus" placeholder="Nombre usuario" />
                             <br />
                             <input type="password" class="form-control" placeholder="password" id="j_password" name="Password" />
                             <br/>
+                            <input type="text" name="referer" th:value="${referer}"></input>
                             <button class="btn btn-lg btn-primary btn-block" type="submit" value="Log in">Log in</button><!--<input type="submit" value="Log in" />-->
                         </form>
                         

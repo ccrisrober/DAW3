@@ -6,12 +6,15 @@
 
 package com.d3.d3.service;
 
-import com.d3.d3.model.Item;
 import com.d3.d3.model.Order1;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
+import com.d3.d3.repository.CardRepository;
+import com.d3.d3.repository.ItemRepository;
+import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.repository.ProductRepository;
+import com.d3.d3.repository.UserRepository;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,8 +38,15 @@ public interface OrderService {
     
     public String text();
 
-    public void setRepository(ProductRepository productRepository);
-
     public Collection<ItemProductReceipt> generateReceipt(Collection<ItemProduct> products);
+
+    //Setters 
+    public void setRepository(ProductRepository productRepository);
+    public void setRepository(UserRepository userRepository);
+    public void setRepository(OrderRepository orderRepository);
+    public void setRepository(CardRepository cardRepository);
+    public void setRepository(ItemRepository itemRepository);
+
+    public boolean delete(int id_);
 
 }

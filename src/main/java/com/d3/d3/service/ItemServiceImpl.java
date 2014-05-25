@@ -87,4 +87,13 @@ public class ItemServiceImpl implements ItemService {
     public void setRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+
+    @Override
+    public boolean delete(int idOrd) {
+        Collection<Item> items = itemRepository.findByIdOrd(idOrd);
+        for(Item i: items) {
+            itemRepository.delete(i);
+        }
+        return true;
+    }
 }

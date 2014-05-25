@@ -7,6 +7,7 @@
 package com.d3.d3.controller;
 
 import com.d3.d3.model.Product;
+import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.service.ProductService;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,12 +53,12 @@ public class IndexController {
         return CONTACT;
     }
     
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search_get() {
         return REDIR;
-    }
+    }*/
     
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @RequestMapping(value = "/search", method = {RequestMethod.POST, RequestMethod.GET})
     public String search (@RequestParam(value = "search", defaultValue = "",
             required = false) String search, Model m) {
         List<Product> products;
@@ -66,6 +67,7 @@ public class IndexController {
         } else {
             products = productService.findBySearchName(search);
         }
+        m.addAttribute("itemproduct", new ItemProduct());
         m.addAttribute("products", products);
         m.addAttribute("search", search);
         return SEARCH;

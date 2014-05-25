@@ -36,4 +36,6 @@ public interface ProductService {
 
     public void setRepository(ProductRepository productRepositoryMock);
     
+    public List<Product> findByIdCat(Integer idCat);
+    
 }

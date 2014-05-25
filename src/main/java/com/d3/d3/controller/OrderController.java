@@ -7,6 +7,7 @@
 package com.d3.d3.controller;
 
 import com.d3.d3.model.Order1;
+import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.service.OrderService;
 import com.d3.d3.validation.others.Functions;
 import java.util.LinkedList;
@@ -39,12 +40,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class OrderController {
-/*  
+  
     @Resource
     private OrderService orderService;
+    @Resource
+    private OrderRepository orderRepository;
     
     @RequestMapping(value = {"/admin/order", "/admin/order/index"}, method = RequestMethod.GET)
     public String showOrders(Model model) {
+        orderService.setRepository(orderRepository);
         List<Order1> orders = orderService.findAll();
         if(orders == null) {
             orders = new LinkedList<Order1>();
@@ -61,7 +65,8 @@ public class OrderController {
             m.addAttribute("error", "Producto no encontrado");
             return "redirect:../order.html";
         }
-        boolean delete = true;
+        orderService.setRepository(orderRepository);
+        boolean delete = orderService.delete(id_);
         if(!delete) {
             m.addAttribute("error", "Pedido no encontrado");
         } else {
@@ -77,6 +82,7 @@ public class OrderController {
             m.addAttribute("error", "Producto no encontrado");
             return "redirect:../order.html";
         }
+        orderService.setRepository(orderRepository);
         Order1 order = orderService.findById(id_);
         if(order == null) {
             m.addAttribute("error", "Pedido no encontrado");
@@ -93,6 +99,7 @@ public class OrderController {
             m.addAttribute("error", "Producto no encontrado");
             return "redirect:../order.html";
         }
+        orderService.setRepository(orderRepository);
         Order1 order = orderService.findById(id_);
         if(order == null) {
             m.addAttribute("error", "Pedido no encontrado");
@@ -122,6 +129,7 @@ public class OrderController {
             System.out.println("Error validación");
             return "order/status";
         }
+        orderService.setRepository(orderRepository);
         boolean update = orderService.updateStatus(Functions.getInt(id), status);
         if(!update) {
             m.addAttribute("error", "No se ha podido actualizar");
@@ -145,6 +153,7 @@ public class OrderController {
             m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
             return "¿DONDE?";
         }
+        orderService.setRepository(orderRepository);
         boolean checkAccess = orderService.checkAccessUser(idOrd, idUser);
         if(!checkAccess) {
             m.addAttribute("error", "Producto no encontrado");  // esto no es el error xD
@@ -158,6 +167,7 @@ public class OrderController {
 
     @RequestMapping(value = {"/user/order", "/user/order/index"}, method = RequestMethod.GET)
     public String showAllOrderUser(Model m, HttpSession session) {
+        orderService.setRepository(orderRepository);
         List<Order1> order = orderService.findAll();
         if(order == null) {
             order = new LinkedList<Order1>();
@@ -165,5 +175,5 @@ public class OrderController {
         m.addAttribute("orders", order);
         return "order/orders";
     }
-*/
+
 }

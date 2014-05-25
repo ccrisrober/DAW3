@@ -6,17 +6,29 @@
 
 package com.d3.d3.service;
 
+import com.d3.d3.model.Image;
 import com.d3.d3.model.Product;
+import com.d3.d3.repository.ImageRepository;
 import com.d3.d3.repository.ProductRepository;
 import java.util.List;
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    @Resource
+    @Autowired
     ProductRepository productRepository;
+    @Autowired
+    ImageRepository imageRepository;
 
+    public void setImageRepository(ImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
+    }
+    
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+    
     @Override
     public boolean create(Product product) {
         Product p = productRepository.save(product);
@@ -47,7 +59,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(int id) {
-        return productRepository.findOne(id);
+        Product p = productRepository.findOne(id);
+        if(p != null) {
+            List<Image> images = this.imageRepository.findByProductId(id);
+            p.setImageCollection(images);
+        }
+        return p;
     }
 
     @Override
@@ -93,5 +110,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void setRepository(ProductRepository productRepositoryMock) {
         this.productRepository = productRepositoryMock;
+    }
+
+    @Override
+    public List<Product> findByIdCat(Integer idCat) {
+        return productRepository.findByIdCategory(idCat);
     }
 }

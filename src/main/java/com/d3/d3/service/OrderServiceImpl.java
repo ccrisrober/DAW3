@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.d3.d3.service;
 
 import com.d3.d3.model.Card;
@@ -28,10 +27,10 @@ import org.springframework.stereotype.Service;
 // VIGILAR AND Y OR DE CUANDO COMPRUEBO DATOS EN TODOS LOS SERVICIOS
 @Service
 public class OrderServiceImpl implements OrderService {
+
     //Borrar
     String texto = "";
-    
-    
+
     @Resource
     private OrderRepository orderRepository;
     @Resource
@@ -54,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     //@Resource
     private ItemService itemService = new ItemServiceImpl();
-    
+
     @Override
     public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus) {
         // Creo un Order vacío
@@ -70,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
             Card create = cardService.create(cardAux);
             if (create == null || create.getIdCard() < 0) {
                 //ERROR XD
-                texto+=("Error creación de tarjeta");
+                texto += ("Error creación de tarjeta");
                 return false;
             }
             emptyOrder.setIdCard(create.getIdCard());
@@ -79,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
         User usu = userService.findById(id_user);
         if (usu == null || usu.getIdUsu() <= 0) {
             // ERROR XD
-            texto+=("Error al buscar usuario");
+            texto += ("Error al buscar usuario");
             return false;
         }
         emptyOrder.setIdUsu(usu);
@@ -91,10 +90,10 @@ public class OrderServiceImpl implements OrderService {
 
         // Guardamos el pedido para sacar su id
         Order1 order = orderRepository.save(emptyOrder);
-        
+
         if (order == null || order.getIdOrd() <= 0) {
             //ERROR XD
-            texto+=("Error al guardar order");
+            texto += ("Error al guardar order");
             return false;
         }
 
@@ -102,28 +101,28 @@ public class OrderServiceImpl implements OrderService {
         itemService.setRepository(itemRepository);
         itemService.setRepository(productRepository);
         boolean create = itemService.create(sp, order);
-        
+
         if (!create) {
             //ERROR XD
-            texto+=("Error al crear los items");
+            texto += ("Error al crear los items");
             return false;
         }
-        
+
         double price = this.getTotalPrice(sp);
-        
+
         order.setPrice(price);
-        
+
         Order1 save = orderRepository.save(order);
-        
+
         if (save == null || save.getIdOrd() <= 0) {
             //ERROR XD
-            texto+=("Error al actualizar el pedido");
+            texto += ("Error al actualizar el pedido");
             return false;
         }
-        texto+=("Se finish");
+        texto += ("Se finish");
         return true;
     }
-    
+
     @Override
     public double getTotalPrice(Collection<ItemProduct> products) {
         double total = 0.0;
@@ -133,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
         }
         return total;
     }
-    
+
     @Override
     public boolean updateStatus(Integer idOrd, String status) {
         Order1 findById = this.findById(idOrd);
@@ -144,17 +143,17 @@ public class OrderServiceImpl implements OrderService {
         Order1 upd = orderRepository.save(findById);
         return upd != null;
     }
-    
+
     @Override
     public List<Order1> findAll() {
         return orderRepository.findAll();
     }
-    
+
     @Override
     public Order1 findById(Integer idOrd) {
         return orderRepository.findOne(idOrd);
     }
-    
+
     @Override
     public boolean checkAccessUser(Integer idOrd, Integer idUser) {
         Order1 ord = orderRepository.findOne(idOrd);
@@ -178,6 +177,7 @@ public class OrderServiceImpl implements OrderService {
     
 
      */
+
     //Borrar
     @Override
     public String text() {
@@ -193,14 +193,44 @@ public class OrderServiceImpl implements OrderService {
     public Collection<ItemProductReceipt> generateReceipt(Collection<ItemProduct> products) {
         productService.setRepository(productRepository);
         Collection<ItemProductReceipt> items = new LinkedList<ItemProductReceipt>();
-        for(ItemProduct ip: products) {
+        for (ItemProduct ip : products) {
             Product product = productService.findById(ip.getId());
-            if(product == null) {
+            if (product == null) {
                 //error xD
             }
             items.add(new ItemProductReceipt(ip, product));
         }
-        
+
         return items;
+    }
+
+    @Override
+    public void setRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public void setRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @Override
+    public void setRepository(CardRepository cardRepository) {
+        this.cardRepository = cardRepository;
+    }
+
+    @Override
+    public void setRepository(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
+
+    @Override
+    public boolean delete(int idOrd) {
+        boolean ret_ = false;
+        if (orderRepository.exists(idOrd))  {
+            itemService.setRepository(itemRepository);
+            ret_ = itemService.delete(idOrd);
+        }
+        return ret_;
     }
 }

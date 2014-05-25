@@ -25,12 +25,17 @@
     <body>
 
         <div class="container">
-
             <div th:replace="fragments/header :: header">&nbsp;</div>
+
+            <h1>Parámetro de búsqueda: <span th:text="${search}"></span></h1>
 
             <div th:if="${error}"><p class="alert alert-danger" th:text="$(error)"></p></div>
             <div th:if="${ok}"><p class="alert alert-success" th:text="${ok}"></p></div>
 
+            <div th:if="${products == null or #lists.isEmpty(products)}">
+                <p th:text="#{search.noproducts}">No hay productos D:</p>
+            </div>
+            
             <div th:if="${products != null and not #lists.isEmpty(products)}">
                 <div class="panel panel-default">
                     <div class="panel-heading">Listado de productos</div>
@@ -44,8 +49,7 @@
                                     <th>Descripción</th>
                                     <th>Precio</th>
                                     <th>Mirar</th>
-                                    <th>Editar</th>
-                                    <th>Borrar</th>
+                                    <th>Añadir a carrito</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -53,7 +57,22 @@
                                     <td width="25%" th:text="${prod.name}"></td>
                                     <td width="25%" th:text="${prod.description}"></td>
                                     <td width="25%" th:text="${prod.price}"></td>
-                                    <td width="6.5%"><a th:href="@{product/show.html(id=${prod.id})}">Mirar</a></td>
+                                    <td width="6.5%"><a th:href="@{product/show.html(id=${prod.idProd})}">Mirar</a></td>
+                                    <td with="6.5%">
+                                        <div th:if="${prod.stock > 0}">
+                                            <form action="#" th:action="@{/shopcart/add_.html}" method="POST">
+                                                <!--<input type="text" name=id" th:value="${prod.idProd}"></input>-->
+                                                <input type="text" name="id" th:value="${prod.idProd}"></input>
+                                                <input type="text" name="quantity" value="1"></input>
+                                                <input type="text" name="search" th:value="${search}"></input>
+                                                <button type="submit">Añadir</button>
+                                            </form>
+                                        </div>
+                                        <div th:if="${prod.stock == null}">
+                                            No se ponerlo bien :S
+                                            <button>Esto debe estar desactivado</button>
+                                        </div>
+                                    </td>
                                 </tr>                    
                             </tbody>
                         </table>

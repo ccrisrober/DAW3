@@ -7,7 +7,9 @@
 package com.d3.d3.repository;
 
 import com.d3.d3.model.Category;
+import com.d3.d3.model.Item;
 import com.d3.d3.model.Product;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -20,6 +20,11 @@ public class ItemProduct {
 
     public ItemProduct() {
     }
+
+    public ItemProduct(Integer quantity, Integer id) {
+        this.quantity = quantity;
+        this.id = id;
+    }
     
     public ItemProduct(int id) {
         this.id = id;

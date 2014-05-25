@@ -43,7 +43,7 @@ import org.springframework.context.annotation.Import;
 @EnableWebMvc
 @ImportResource("classpath:applicationContext.xml")
 @PropertySource("classpath:application.properties")
-@Import({SecurityConfig.class})
+//@Import({SecurityConfig.class})
 public class ApplicationContext {
 
     private static final String VIEW_RESOLVER_PREFIX = "/WEB-INF/templates/";

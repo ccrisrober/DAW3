@@ -9,17 +9,25 @@ package com.d3.d3.service;
 import com.d3.d3.model.Category;
 import com.d3.d3.model.Product;
 import com.d3.d3.repository.CategoryRepository;
+import com.d3.d3.repository.ProductRepository;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     
     @Resource
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+    
     @Override
     public List<Category> findAll() {
         return categoryRepository.findAll();
@@ -69,10 +77,12 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public List<Product> findProductWithIdCategory(Integer id) {
-        Category c = categoryRepository.findOne(id);
         List<Product> categories = null;
-        if(c != null) {
-            categories = (List<Product>) c.getProductCollection();
+        if(categoryRepository.exists(id)) {
+            categories = productRepository.findByIdCategory(id);
+        }
+        if(categories == null) {
+            categories = new LinkedList<Product>();
         }
         return categories;
     }

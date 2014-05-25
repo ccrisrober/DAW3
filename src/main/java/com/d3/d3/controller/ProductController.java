@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -38,11 +40,12 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Cristian
  */
 @Controller
-@RequestMapping("/product")
+//@RequestMapping("/product")
 public class ProductController {
 
     @Resource
     private ProductService productService;
+    
     @Resource
     private ImageService imageService;
 
@@ -51,7 +54,7 @@ public class ProductController {
     public String module() {
         return "product";
     }
-    
+
     @InitBinder(value = "itemproduct")
     protected void initBinderItemProduct(WebDataBinder binder) {
         binder.setValidator(new ItemProductValidator());
@@ -62,8 +65,11 @@ public class ProductController {
     private final String CREATE = URL + "/create";
     private final String EDIT = URL + "/edit";
     private final String DELETE = URL + "/delete";
-    private final String SHOW = URL + "/show";
-    private final String SHOW_ALL = URL + "/showAll";
+    private final String SHOW_ADMIN = URL + "/show";
+    private final String SHOW_USER = URL + "/showUser";
+    private final String UPD_IMG = URL + "/upload";
+    private final String SHOW_ALL_ADMIN = URL + "/showAll";
+    private final String SHOW_ALL_USER = URL + "/showAllUser";
     private final String PRODJS = URL + "/productjs";
 
     @InitBinder(value = "product")
@@ -71,7 +77,7 @@ public class ProductController {
         binder.setValidator(new ProductValidator());
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/product/create", method = RequestMethod.GET)
     public String create(Model model) {
         model.addAttribute("product", new Product());
         return CREATE;
@@ -111,9 +117,46 @@ public class ProductController {
         return message;
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/product/uploadImages/{id}", method = RequestMethod.GET)
+    public String updGet(@PathVariable String id, Model m) {
+        int id_ = Functions.getInt(id);
+        if (id_ <= 0) {
+            m.addAttribute("error", "{product.notfound}");
+            return PRODJS;
+        }
+        if(productService.findById(id_) == null) {
+            m.addAttribute("error", "{product.notfound}");
+            return PRODJS;
+        }
+        // El producto existe
+        m.addAttribute("idProd", id_);
+        return UPD_IMG;
+    }
+    
+    @RequestMapping(value = "/admin/product/uploadImages/{id}", method = RequestMethod.POST)
+    public String updPost(@RequestParam("id") String id, 
+            @RequestParam("image") MultipartFile[] images, Model m) {
+        int id_ = Functions.getInt(id);
+        if (id_ <= 0) {
+            m.addAttribute("error", "{product.notfound}");
+            return PRODJS;
+        }
+        Product product = productService.findById(id_);
+        if(product == null) {
+            m.addAttribute("error", "{product.notfound}");
+            return PRODJS;
+        }
+        // Si todo ha ido bien, subo las fotos
+        String message = "";
+        for (MultipartFile image : images) {
+            message += uploadImage(image, product);
+        }
+        return "redirect:product/show/" + id_ + ".html";
+    }
+    
+    @RequestMapping(value = "/admin/product/create", method = RequestMethod.POST)
     public String create_post(@ModelAttribute(value = "product") @Valid Product product,
-            BindingResult errors, Model m, @RequestParam("image") MultipartFile[] images) {
+            BindingResult errors, Model m/*, @RequestParam("image") MultipartFile[] images*/ ) {
         if (errors.hasErrors()) {
             System.out.println("Error validación");
             return CREATE;
@@ -122,18 +165,35 @@ public class ProductController {
         if (!insert) {
             m.addAttribute("error", "No se ha podido insertar");
         } else {
-            // Si todo ha ido bien, subo las fotos
+           /* // Si todo ha ido bien, subo las fotos
             String message = "";
             for (MultipartFile image : images) {
                 message += uploadImage(image, product);
-            }
+            }*/
             m.addAttribute("ok", "Producto " + product.getName() + " insertado");
         }
         return PRODJS;
     }
 
-    @RequestMapping(value = "/show/{id}", method = RequestMethod.GET)
-    public String show(@PathVariable String id, Model m) {
+    @RequestMapping(value = "/admin/product/show/{id}", method = RequestMethod.GET)
+    public String show_admin(@PathVariable String id, Model m) {
+        int id_ = Functions.getInt(id);
+        if (id_ <= 0) {
+            m.addAttribute("error", "Producto no encontrado");
+        } else {
+            Product p = productService.findById(id_);
+            if (p != null) {
+                m.addAttribute("product", p);
+                return SHOW_ADMIN;
+            } else {
+                m.addAttribute("error", "Producto no encontrado");
+            }
+        }
+        return PRODJS;
+    }
+
+    @RequestMapping(value = "/product/show/{id}", method = RequestMethod.GET)
+    public String show_user(@PathVariable String id, Model m) {
         int id_ = Functions.getInt(id);
         if (id_ <= 0) {
             m.addAttribute("error", "Producto no encontrado");
@@ -142,7 +202,7 @@ public class ProductController {
             if (p != null) {
                 m.addAttribute("product", p);
                 m.addAttribute("itemproduct", new ItemProduct(id_));
-                return SHOW;
+                return SHOW_USER;
             } else {
                 m.addAttribute("error", "Producto no encontrado");
             }
@@ -150,7 +210,23 @@ public class ProductController {
         return PRODJS;
     }
 
-    @RequestMapping(value = {"/all", "", "/index"}, method = RequestMethod.GET)
+    
+    @RequestMapping(value = {"/product/all", "/product/", "/product/index"}, method = RequestMethod.GET)
+    public String showAllUser(@RequestParam(value = "error", defaultValue = "",
+            required = true) String error, @RequestParam(value = "ok", defaultValue = "",
+                    required = true) String ok, ModelMap model) {
+        List<Product> lp = productService.findAll();
+        if (!ok.isEmpty()) {
+            model.addAttribute("ok", ok);
+        }
+        if (!error.isEmpty()) {
+            model.addAttribute("error", error);
+        }
+        model.addAttribute("products", lp);
+        return SHOW_ALL_USER;
+    }
+    
+    @RequestMapping(value = {"/admin/product/all", "/admin/product/", "/admin/product/index"}, method = RequestMethod.GET)
     public String showAll(@RequestParam(value = "error", defaultValue = "",
             required = true) String error, @RequestParam(value = "ok", defaultValue = "",
                     required = true) String ok, ModelMap model) {
@@ -162,10 +238,10 @@ public class ProductController {
             model.addAttribute("error", error);
         }
         model.addAttribute("products", lp);
-        return SHOW_ALL;
+        return SHOW_ALL_ADMIN;
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/product/edit/{id}", method = RequestMethod.GET)
     public String edit_get(@PathVariable String id, Model m) {
         int id_ = Functions.getInt(id);
         if (id_ <= 0) {
@@ -182,7 +258,7 @@ public class ProductController {
         return PRODJS;
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/product/delete/{id}", method = RequestMethod.GET)
     public String delete(@PathVariable String id,
             Model m) {
         int id_ = Functions.getInt(id);
@@ -199,7 +275,7 @@ public class ProductController {
         return PRODJS;
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/product/edit/{id}", method = RequestMethod.POST)
     public String edit_post(@ModelAttribute(value = "product") @Valid Product product,
             BindingResult errors, Model m) {
         if (errors.hasErrors()) {

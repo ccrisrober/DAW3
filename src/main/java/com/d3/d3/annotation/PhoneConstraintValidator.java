@@ -15,6 +15,8 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class PhoneConstraintValidator implements ConstraintValidator<Phone, String> {
  
+    public final static String MATCH = "[0-9()-\\.]*";
+    
     @Override
     public void initialize(Phone phone) { }
  
@@ -23,7 +25,7 @@ public class PhoneConstraintValidator implements ConstraintValidator<Phone, Stri
         if(phoneField == null) {
             return false;
         }
-        return phoneField.matches("[0-9()-\\.]*");
+        return phoneField.matches(MATCH);
     }
  
 }

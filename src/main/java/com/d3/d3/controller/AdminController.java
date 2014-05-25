@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Cristian
  */
 @Controller
-@RequestMapping("/admin/**")
+@RequestMapping("/admin")
 public class AdminController {
     
     @Resource

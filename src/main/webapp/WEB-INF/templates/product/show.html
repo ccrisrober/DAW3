@@ -52,13 +52,6 @@
 
                 </div>
             </div>
-
-            <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
-                <input type="text" th:field="*{id}" ></input>
-                <input type="number" th:field="*{quantity}"></input>
-                <button type="submit">Añadir al carro tu xD</button>
-            </form>
-            
             
             <form>
                 <input type="button" value="Back" onClick="history.go(-1);
@@ -66,6 +59,10 @@
             </form>
             <br/>
             
+            Subir imágenes
+            <a th:href="@{../uploadImages/} + ${product.idProd} + .html">Subir imágenes</a>
+            <!--<a th:href="@{/product/uploadImages/ + *{itemproduct.id} + .html">Subir imágenes</a>
+            -->
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   
 
         </div>

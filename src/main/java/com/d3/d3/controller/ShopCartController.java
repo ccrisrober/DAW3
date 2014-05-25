@@ -11,6 +11,9 @@ import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.model.others.ShopCart;
+import com.d3.d3.repository.CardRepository;
+import com.d3.d3.repository.ItemRepository;
+import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.repository.ProductRepository;
 import com.d3.d3.repository.UserRepository;
 import com.d3.d3.service.OrderService;
@@ -27,7 +30,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -37,6 +39,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
@@ -45,7 +48,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @RequestMapping("/shopcart")
-@Secured("ROLE_USER")
 @SessionAttributes("shopcart")
 public class ShopCartController {
     
@@ -65,7 +67,7 @@ public class ShopCartController {
     private final String RECEIPT = URL + "/receipt";
     private final String PAYMENT = URL + "/payment";
     private final String FINISH = URL + "/finish";
-    private final String REDIR_LOGIN = "redirect: login.html";
+    private final String REDIR_LOGIN = "redirect:../" + Functions.LOGIN;
     
     @ModelAttribute("page")
     public String module() {
@@ -85,17 +87,23 @@ public class ShopCartController {
     private UserService userService;
     @Resource
     private UserRepository userRepository;
+    @Resource
+    private ItemRepository itemRepository;
+    @Resource
+    private CardRepository cardRepository;
+    @Resource
+    private OrderRepository orderRepository;
     
-    
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(@ModelAttribute(value = "itemproduct") @Valid ItemProduct item,
-            BindingResult errors, HttpServletRequest request, 
-            HttpSession session) {
-        
+    @RequestMapping(value = "/add_", method = RequestMethod.POST)
+    public String add_(@RequestParam("id") Integer id, 
+            @RequestParam("quantity") Integer quantity, 
+            @RequestParam("search") String search,
+            HttpServletRequest request, HttpSession session, Model m) {
+        ItemProduct item = new ItemProduct(quantity, id);
         String referer = request.getHeader("Referer");  // Obtenemos la página de dónde venimos : D
-       
         // Comprobamos que existe el id_user en session
         int id_user = Functions.getID_USER(session);
+        System.out.println(id_user);
         if(id_user < 1) {
             return REDIR_LOGIN;   // Creo que así valdría : D
         }
@@ -116,7 +124,54 @@ public class ShopCartController {
         productService.setRepository(productRepository);
         Integer stock = productService.findStockById(item.getId());
         if(item.getQuantity() > stock) {
-            //Error, no hay espacio D:
+            m.addAttribute("error", "No hay stock");
+        }
+        //      Si hay stock, insertamos en el carrito : D
+        sp.addItem(item.getId(), item.getQuantity());
+        
+        session.setAttribute(SHOPCART, sp);
+        System.out.println("CARRITO: ");
+        System.out.println(sp);
+        int split = referer.indexOf("?");
+        if(split > 0) {
+            referer = referer.substring(0, split);
+        }
+        System.out.println(referer);
+        referer += "?search=" + search;
+        return "redirect:"+ referer;
+    }
+    
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(@ModelAttribute(value = "itemproduct") @Valid ItemProduct item,
+            BindingResult errors, HttpServletRequest request, 
+            HttpSession session, Model m) {
+        
+        String referer = request.getHeader("Referer");  // Obtenemos la página de dónde venimos : D
+        System.out.println(referer);
+        // Comprobamos que existe el id_user en session
+        int id_user = Functions.getID_USER(session);
+        System.out.println(id_user);
+        if(id_user < 1) {
+            return REDIR_LOGIN;   // Creo que así valdría : D
+        }
+        
+        // Vemos si existe el shopcart
+        Object spp = session.getAttribute(SHOPCART);
+        ShopCart sp;
+        if((spp == null) || ! (spp instanceof ShopCart)) {
+            sp = new ShopCart(id_user); // Cargamos el shopcart en "sp"
+        } else {
+            sp = (ShopCart) spp;
+            if(!sp.valid(id_user)) {
+                return REDIR_LOGIN;
+            }
+        }
+        // Si llegamos aquí ya sabemos que tenemos un Carrito en perfecto estado
+        //      Vamos a mirar si existe stock
+        productService.setRepository(productRepository);
+        Integer stock = productService.findStockById(item.getId());
+        if(item.getQuantity() > stock) {
+            m.addAttribute("error", "No hay stock");
         }
         //      Si hay stock, insertamos en el carrito : D
         sp.addItem(item.getId(), item.getQuantity());
@@ -127,7 +182,7 @@ public class ShopCartController {
         return "redirect:"+ referer;
     }
     
-    @RequestMapping(value = "/receipt", method = RequestMethod.GET)
+    @RequestMapping(value = {"/receipt", "", "index"}, method = RequestMethod.GET)
     public String receipt(Model m, HttpSession session) {
         // Comprobamos que existe el id_user en session
         int id_user = Functions.getID_USER(session);
@@ -139,7 +194,7 @@ public class ShopCartController {
         Object spp = session.getAttribute(SHOPCART);
         ShopCart sp;
         if((spp == null) || ! (spp instanceof ShopCart)) {
-            return REDIR_LOGIN;
+            sp = new ShopCart(id_user); // Cargamos el shopcart en "sp"
         } else {
             sp = (ShopCart) spp;
             if(!sp.valid(id_user)) {
@@ -150,6 +205,10 @@ public class ShopCartController {
         // Llegados aquí, ya tenemos un carrito en perfecto estado de "revista"
         Collection<ItemProduct> products = sp.getProducts();
         orderService.setRepository(productRepository);
+        orderService.setRepository(orderRepository);
+        orderService.setRepository(itemRepository);
+        orderService.setRepository(cardRepository);
+        orderService.setRepository(userRepository);
         double total = orderService.getTotalPrice(products);
         Collection<ItemProductReceipt> productsItem = orderService.generateReceipt(products);
         if(productsItem == null) {
@@ -210,6 +269,7 @@ public class ShopCartController {
         if(!create) {
             //ERROR ¿A DÓNDE MANDO?
         }
+        session.setAttribute(SHOPCART, null);
         return FINISH;
     }
     

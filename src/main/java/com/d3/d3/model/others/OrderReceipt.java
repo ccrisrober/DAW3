@@ -17,16 +17,17 @@ import javax.validation.constraints.Size;
  * @author Cristian
  */
 public class OrderReceipt {
+    public static final int MIN = 5;
     @NotNull
     String payment;
     @NotNull
-    @Size(min=5)
+    @Size(min=MIN)
     String name;
     @NotNull
-    @Size(min=5)
+    @Size(min=MIN)
     String surname;
     @NotNull
-    @Size(min=5)
+    @Size(min=MIN)
     String direction;
     @Phone
     String phone;
