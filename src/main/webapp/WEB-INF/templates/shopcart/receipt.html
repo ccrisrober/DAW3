@@ -20,17 +20,17 @@
         <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
-        
+
         <script type="text/javascript">
             $(document).ready(function() {
-                $("input[name=payment]").click(function () {    
+                $("input[name=payment]").click(function() {
                     alert($('input:radio[name=payment]:checked').val());
                     var sel = $('input:radio[name=payment]:checked').val();
-                    if(sel === "delivery") {
+                    if (sel === "delivery") {
                         alert("hola");
                         $('#payment').text('');
                     }
-                 });
+                });
             });
         </script>
 
@@ -42,7 +42,64 @@
 
             <div th:replace="fragments/header :: header">&nbsp;</div>
 
-            <form action="#" th:action="@{/shopcart/payment.html}" method="post">
+            <div th:if="${total} > 0">
+                <form action="#" th:action="@{/shopcart/payment.html}" method="post">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Listado de productos</div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item : ${products}">
+                                        <td width="25%" th:text="${item.product.name}"></td>
+                                        <td width="25%" th:text="${item.product.description}"></td>
+                                        <td width="25%" th:text="${item.product.price}"></td>
+                                        <td width="10%" th:text="${item.quantity}"></td>
+                                        <td width="15%"><span th:text="${item.price}"></span> &#8364;</td>
+                                    </tr>                    
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Precio total del pedido</div>
+                        <label class="espacio1" data-precio="off">TOTAL: <span th:text="${total}"></span> &euro;</label><br/>
+                    </div>
+
+                    <!--<div class="panel panel-default">
+                        <div class="panel-heading">Forma de pago</div>    
+                        <div class="espacio1">
+                            <label>Contra Reembolso (+5 Euros)   <input type="radio" name="payment" value="delivery" /></label><br/>
+                            <label>Tarjeta de crédito   <input type="radio" name="payment" value="card" /></label><br/>
+                        </div>
+                    </div>
+    
+                    <div id="payment">
+                        <div th:replace="shopcart/tarjeta">&nbsp;</div>--><!--http://ugate.github.io/thymus/#navcontrol-->
+                    <!--</div>-->
+
+                    <div class="control-group limpiarlados">
+                        <label label-default="" class="control-label"></label>
+                        <div class="controls">
+                            <button type="submit" class="btn btn-success">Finalizar pedido</button> 
+                            <a href="../index.html" th:href="@{/index.html}"><button type="button" class="btn btn-warning">Cancel</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div th:if="0 > ${total}">
                 <div class="panel panel-default">
                     <div class="panel-heading">Listado de productos</div>
                     <div class="table-responsive">
@@ -52,9 +109,8 @@
                                     <th>Nombre</th>
                                     <th>Descripción</th>
                                     <th>Precio</th>
-                                    <th>Mirar</th>
-                                    <th>Editar</th>
-                                    <th>Borrar</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio total</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,44 +118,15 @@
                                     <td width="25%" th:text="${item.product.name}"></td>
                                     <td width="25%" th:text="${item.product.description}"></td>
                                     <td width="25%" th:text="${item.product.price}"></td>
-                                    <td width="6.5%"><input type="text" id="quantity" name="quantity" th:value="${item.quantity}" autofocus="autofocus" /></td>
-                                    <td width="6.5%"><input type="text" id="product" name="product" th:value="${item.id}"/></td>
+                                    <td width="10%" th:text="${item.quantity}"></td>
+                                    <td width="15%"><span th:text="${item.price}"></span> &#8364;</td>
                                 </tr>                    
                             </tbody>
                         </table>
 
                     </div>
                 </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">Precio total del pedido</div>
-                    <label class="espacio1" data-precio="off">TOTAL: <span th:text="${total}"></span> &euro;</label><br/>
-                </div>
-
-                <!--<div class="panel panel-default">
-                    <div class="panel-heading">Forma de pago</div>    
-                    <div class="espacio1">
-                        <label>Contra Reembolso (+5 Euros)   <input type="radio" name="payment" value="delivery" /></label><br/>
-                        <label>Tarjeta de crédito   <input type="radio" name="payment" value="card" /></label><br/>
-                    </div>
-                </div>
-
-                <div id="payment">
-                    <div th:replace="shopcart/tarjeta">&nbsp;</div>--><!--http://ugate.github.io/thymus/#navcontrol-->
-                <!--</div>-->
-                
-                <div class="control-group limpiarlados">
-                    <label label-default="" class="control-label"></label>
-                    <div class="controls">
-                        <button type="submit" class="btn btn-success">Finalizar pedido</button> 
-                        <a href="../index.html" th:href="@{/index.html}"><button type="button" class="btn btn-warning">Cancel</button></a>
-                    </div>
-                </div>
-            </form>
-            <!--<form action="#" th:action="@{/shopcart/begin.html}" method="post">
-                <input type="hidden" th:value="back" name="back" />
-                <button type="submit">Empezar pedido</button>
-            </form>    -->
+            </div>
 
             <br/>
 

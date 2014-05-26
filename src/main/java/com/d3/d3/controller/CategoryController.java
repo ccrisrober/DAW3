@@ -153,15 +153,15 @@ public class CategoryController {
         return redir;
     }
 
-    @RequestMapping(value = "/category/show/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/category/show/{id}", method = RequestMethod.GET)
     public String showProductWithCatgID(@PathVariable String id, Model m) {
         int id_ = Functions.getInt(id);
-        if (id_ <= 0) {
-            m.addAttribute("error", "{category.notfound}");
-        }
-        List<Product> products = categoryService.findProductWithIdCategory(id_);
-        if (products == null) {
-            products = new LinkedList<Product>();
+        List<Product> products = null;
+        if (id_ > 0) {
+            products = categoryService.findProductWithIdCategory(id_);
+            if (products == null) {
+                products = new LinkedList<Product>();
+            }
         }
         m.addAttribute("products", products);
         return SHOW;

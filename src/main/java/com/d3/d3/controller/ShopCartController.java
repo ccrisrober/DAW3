@@ -12,6 +12,7 @@ import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.model.others.ShopCart;
 import com.d3.d3.repository.CardRepository;
+import com.d3.d3.repository.ImageRepository;
 import com.d3.d3.repository.ItemRepository;
 import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.repository.ProductRepository;
@@ -93,6 +94,8 @@ public class ShopCartController {
     private CardRepository cardRepository;
     @Resource
     private OrderRepository orderRepository;
+    @Resource
+    private ImageRepository imageRepository;
     
     @RequestMapping(value = "/add_", method = RequestMethod.POST)
     public String add_(@RequestParam("id") Integer id, 
@@ -209,6 +212,7 @@ public class ShopCartController {
         orderService.setRepository(itemRepository);
         orderService.setRepository(cardRepository);
         orderService.setRepository(userRepository);
+        orderService.setRepository(imageRepository);
         double total = orderService.getTotalPrice(products);
         Collection<ItemProductReceipt> productsItem = orderService.generateReceipt(products);
         if(productsItem == null) {
@@ -265,6 +269,7 @@ public class ShopCartController {
         if(receipt.getPayment().equals("delivery")) {
             plus = 5;
         }
+        orderService.setRepository(imageRepository);
         boolean create = orderService.createOrder(sp.getProducts(), receipt, id_user, plus);
         if(!create) {
             //ERROR ¿A DÓNDE MANDO?

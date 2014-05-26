@@ -97,7 +97,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean removeStock(Integer id, Integer quantity) {
-        Product prod = this.findById(id);
+        Product prod = this.findById(id, false);
         Integer stock = prod.getStock();
         stock -= quantity;
         if(stock < 0) {
@@ -108,6 +108,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void setRepository(ImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
+    }
+    
+    @Override
     public void setRepository(ProductRepository productRepositoryMock) {
         this.productRepository = productRepositoryMock;
     }
@@ -115,5 +120,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findByIdCat(Integer idCat) {
         return productRepository.findByIdCategory(idCat);
+    }
+
+    @Override
+    public Product findById(Integer id, boolean sinImagen) {
+        return productRepository.findOne(id);
     }
 }

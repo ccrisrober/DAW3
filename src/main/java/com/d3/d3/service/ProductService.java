@@ -7,6 +7,7 @@
 package com.d3.d3.service;
 
 import com.d3.d3.model.Product;
+import com.d3.d3.repository.ImageRepository;
 import com.d3.d3.repository.ProductRepository;
 import java.util.List;
 
@@ -37,5 +38,9 @@ public interface ProductService {
     public void setRepository(ProductRepository productRepositoryMock);
     
     public List<Product> findByIdCat(Integer idCat);
+    
+    public void setRepository(ImageRepository imageRepository);
+
+    public Product findById(Integer id, boolean b);
     
 }

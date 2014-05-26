@@ -10,7 +10,7 @@
 
         <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
         <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
-        <link rel="icon" href="assets/img/icon.png" type="image/x-icon" />
+        <link rel="icon" href="../assets/img/icon.png" type="image/x-icon" th:href="@{/assets/img/icon.png}"/>
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -20,62 +20,45 @@
         <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
         <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
-
     </head>
 
-    <body> 
+    <body>
+
         <div class="container">
 
-            <div th:replace="fragments/header :: header">&nbsp;</div>
+        <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>	
 
-            <div class="panel panel-default">
-                <div class="panel-heading">Producto</div>
+		<div class="panel panel-default">
+                <div class="panel-heading">Usuario en el sistema</div>
                 <div class="table-responsive">
 
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th style="display: none">Nº Producto</th>
+                                <th>Nickname</th>
                                 <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Precio</th>
+                                <th>Apellidos</th>
+                                <th>Pedidos</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td th:text="${product.name}"></td>
-                                <td th:text="${product.description}"></td>
-                                <td th:text="${product.price}"></td>
+                            <tr th:each="usu : ${users}">
+                                <td width="25%" th:text="${usu.nickname}"></td>
+                                <td width="25%" th:text="${usu.name}"></td>
+                                <td width="25%" th:text="${usu.surname}"></td>
+                                <td width="25%"><a th:href="@{/user/order/} + ${usu.idUsu} + .html">Ver pedidos</a></td> 
                             </tr>                    
                         </tbody>
                     </table>
 
                 </div>
             </div>
-            
-            <hr/><hr/>
-            IMÁGENES
-            <hr/>
-            <div th:each="image: ${product.imageCollection}">
-                <img src="" th:attr="src=@{/assets/img/} + ${image.image}" />
-            </div>
 
-            <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
-                <input type="text" th:field="*{id}" ></input>
-                <input type="number" th:field="*{quantity}"></input>
-                <button type="submit">Añadir al carro tu xD</button>
-            </form>
+			<a href="create.html" th:href="@{create.html}"><button class="btn btn-primary">Crear nueva categoría</button></a>
+			<br/><br/>
 
-
-            <form>
-                <input type="button" value="Back" onClick="history.go(-1);
-                        return true;" class="btn btn-warning" />
-            </form>
-            <br/>
-
-            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
-
+            <div th:replace="fragments/footer :: footer">&nbsp;</div> 
         </div>
-
     </body>
 </html>

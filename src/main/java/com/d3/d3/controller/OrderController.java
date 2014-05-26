@@ -6,6 +6,7 @@
 package com.d3.d3.controller;
 
 import com.d3.d3.model.Order1;
+import com.d3.d3.model.others.StatusOrder;
 import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.service.OrderService;
 import com.d3.d3.validation.others.Functions;
@@ -13,10 +14,14 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import static javax.ws.rs.core.Response.status;
+import static jdk.nashorn.internal.runtime.Debug.id;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -93,22 +98,25 @@ public class OrderController {
             m.addAttribute("error", "Pedido no encontrado");
             return "redirect:../order.html";
         }
-        m.addAttribute("status", "listo");//order.getStatus());
+        StatusOrder so = new StatusOrder();
+        so.setIdOrd(order.getIdOrd());
+        so.setStatus(order.getStatus());
+        m.addAttribute("statusorder", so);
         m.addAttribute("all_status", Order1.allStatus);
         return "order/status";
     }
 
     // Igual aquí el id me lo puedo quitar xD
     @RequestMapping(value = "/admin/order/status/{id}", method = RequestMethod.POST)
-    public String changeStatusOrder_post(@PathVariable String status, @PathVariable String id,
+    public String changeStatusOrder_post(@ModelAttribute(value = "statuserror") @Valid StatusOrder so,
             BindingResult errors, Model m) {
         // Compruebo si el status es de los buenos
-        if (!Order1.allStatus.contains(status)) {
+        if (!Order1.allStatus.contains(so.getStatus())) {
             ObjectError err_status = new ObjectError("status", "orderForm.status.incorrect");
             errors.addError(err_status);
         }
         // Compruebo si el id es correcto
-        if (Functions.getInt(id) < 0) {
+        if (so.getIdOrd() < 0) {
             ObjectError err_id = new ObjectError("id", "orderForm.id.incorrect");
             errors.addError(err_id);
         }
@@ -118,13 +126,13 @@ public class OrderController {
             return "order/status";
         }
         orderService.setRepository(orderRepository);
-        boolean update = orderService.updateStatus(Functions.getInt(id), status);
+        boolean update = orderService.updateStatus(so.getIdOrd(), so.getStatus());
         if (!update) {
             m.addAttribute("error", "No se ha podido actualizar");
             return "order/status";
         }
         m.addAttribute("ok", "Pedido actualizado");// + order.getID() + " (" + order.getUser().getUsername() + ") actualizado");
-        return "order/status";
+        return "redirect:../index.html";
     }
 
     @RequestMapping(value = "/user/order/{id}", method = RequestMethod.GET)

@@ -1,18 +1,57 @@
-Aquí te cuento que hace este html:
-    -Si existe la variable "error", muestras el error y solo el href.
-    -Si existe la variable "ok", me muestras el "js" y el a href
-  
-    <div th:if="${error}">
-        <p th:text="${error}"></p>
-    </div>
-    <div th:if="${ok}">
-        <p th:text="${ok}"></p>
-        <script type="text/javascript">
-            function redireccionar(){
-                window.location="../category.html";
-            } 
-            setTimeout ("redireccionar()", 5000);
-        </script>
-    </div>
-    
-Pulsa <a href="../" th:href="@{../category.html}">aquí</a> para volver a la lista de categorías
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Poxmanía tu tienda online</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
+        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
+        <link rel="icon" href="assets/img/icon.png" type="image/x-icon" />
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
+        <![endif]-->
+
+        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
+
+    </head>
+
+    <body>
+        <div class="container">
+
+            <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
+
+            <!--Aquí te cuento que hace este html:
+            -Si existe la variable "error", muestras el error y solo el href.
+            -Si existe la variable "ok", me muestras el "js" y el a href-->
+
+            <div th:if="${error}">
+                <p th:text="${error}"></p>
+            </div>
+
+            <div th:if="${ok}">
+                <p th:text="${ok}"></p>
+            </div>
+            <script type="text/javascript">
+                    function redireccionar() {
+                        window.location = "../index.html";
+                    }
+                    setTimeout("redireccionar()", 5000);
+                </script>
+
+                <!--Pulsa <a href="../" th:href="@{../category.html}">aquí</a> para volver a la lista de categorías-->
+                <p><a href="../index.html" th:href="@{../index.html}"><button class="btn btn-primary">Pulsa el botón para volver a la lista de productos</button></a> ó espere unos segundos y redigirá automáticamente</p>
+            <br/>
+
+            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
+
+        </div>
+    </body>
+</html>

@@ -14,6 +14,7 @@ import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.repository.CardRepository;
+import com.d3.d3.repository.ImageRepository;
 import com.d3.d3.repository.ItemRepository;
 import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.repository.ProductRepository;
@@ -41,6 +42,8 @@ public class OrderServiceImpl implements OrderService {
     private ItemRepository itemRepository;
     @Resource
     private ProductRepository productRepository;
+    @Resource
+    private ImageRepository imageRepository;
 
     //@Resource
     private ProductService productService = new ProductServiceImpl();
@@ -198,6 +201,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Collection<ItemProductReceipt> generateReceipt(Collection<ItemProduct> products) {
         productService.setRepository(productRepository);
+        productService.setRepository(imageRepository);
         Collection<ItemProductReceipt> items = new LinkedList<ItemProductReceipt>();
         for (ItemProduct ip : products) {
             Product product = productService.findById(ip.getId());
@@ -251,5 +255,10 @@ public class OrderServiceImpl implements OrderService {
         }
         return ret;
         //return orderRepository.findAllUser(idUser);
+    }
+
+    @Override
+    public void setRepository(ImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
     }
 }

@@ -10,6 +10,7 @@ import com.d3.d3.model.Product;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.ProductAux;
 import com.d3.d3.repository.CategoryRepository;
+import com.d3.d3.service.CategoryService;
 import com.d3.d3.service.ImageService;
 import com.d3.d3.service.ProductService;
 import com.d3.d3.validation.ItemProductValidator;
@@ -19,6 +20,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
@@ -79,6 +81,7 @@ public class ProductController {
     private final String SHOW_ALL_ADMIN = URL + "/showAll";
     private final String SHOW_ALL_USER = URL + "/showAllUser";
     private final String PRODJS = URL + "/productjs";
+    private final String PRODCATG = URL + "/productsCatg";
 
     @InitBinder(value = "productaux")
     protected void initBinder(WebDataBinder binder) {
@@ -116,8 +119,8 @@ public class ProductController {
             }
 
             // Create the file on server
-            File serverFile = new File(servletContext.getRealPath("/") + 
-                    "assets" + File.separator + "img" + File.separator + image.getOriginalFilename());
+            File serverFile = new File(servletContext.getRealPath("/")
+                    + "assets" + File.separator + "img" + File.separator + image.getOriginalFilename());
             BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
             stream.write(bytes);
             stream.close();
@@ -337,6 +340,7 @@ public class ProductController {
                 } else {
                     ProductAux prod = new ProductAux(p);
                     m.addAttribute("productaux", prod);
+                    m.addAttribute("catgs", categoryRepository.findAll());
                     return EDIT;
                 }
             }
@@ -387,4 +391,21 @@ public class ProductController {
         return redir;
     }
 
+    @Resource
+    private CategoryService categoryService;
+
+    @RequestMapping(value = "/product/category/{id}", method = RequestMethod.GET)
+    public String showProductWithCatgID(@PathVariable String id, Model m) {
+        int id_ = Functions.getInt(id);
+        List<Product> products = null;
+        if (id_ > 0) {
+            products = categoryService.findProductWithIdCategory(id_);
+            if (products == null) {
+                products = new LinkedList<Product>();
+            }
+        }
+        m.addAttribute("category", categoryService.findById(id_).getName());
+        m.addAttribute("products", products);
+        return PRODCATG;
+    }
 }

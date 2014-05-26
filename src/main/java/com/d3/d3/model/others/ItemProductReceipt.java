@@ -20,6 +20,8 @@ public class ItemProductReceipt {
     Integer id;
     @NotNull
     Product product;
+    @NotNull
+    Double price;
 
     public ItemProductReceipt() {
     }
@@ -28,6 +30,7 @@ public class ItemProductReceipt {
         this.id = ip.getId();
         this.product = p;
         this.quantity = ip.getQuantity();
+        this.price = ip.getQuantity() * p.getPrice();
     }
     
     public ItemProductReceipt(int id) {
@@ -56,6 +59,14 @@ public class ItemProductReceipt {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
     
 }

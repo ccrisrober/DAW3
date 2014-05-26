@@ -27,7 +27,7 @@
         <div class="container">
             <div th:replace="fragments/header :: header">&nbsp;</div>
 
-            <h1>Parámetro de búsqueda: <span th:text="${search}"></span></h1>
+            <h1>Categoría : <span th:text="${category}"></span></h1>
 
             <div th:if="${error}"><p class="alert alert-danger" th:text="$(error)"></p></div>
             <div th:if="${ok}"><p class="alert alert-success" th:text="${ok}"></p></div>
@@ -68,7 +68,7 @@
                                                 <button type="submit">Añadir</button>
                                             </form>
                                         </div>
-                                        <div th:if="${prod.stock == null}">
+                                        <div th:if="${prod.stock == null} or 0 > ${prod.stock}">
                                             No se ponerlo bien :S
                                             <button>Esto debe estar desactivado</button>
                                         </div>

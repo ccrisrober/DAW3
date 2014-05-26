@@ -11,6 +11,7 @@ import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.ItemProductReceipt;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.repository.CardRepository;
+import com.d3.d3.repository.ImageRepository;
 import com.d3.d3.repository.ItemRepository;
 import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.repository.ProductRepository;
@@ -48,6 +49,7 @@ public interface OrderService {
     public void setRepository(OrderRepository orderRepository);
     public void setRepository(CardRepository cardRepository);
     public void setRepository(ItemRepository itemRepository);
+    public void setRepository(ImageRepository imageRepository);
 
     public boolean delete(int id_);
 

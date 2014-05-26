@@ -14,15 +14,15 @@
     <tbody>
         <tr th:each="ord : ${orders}">
             <td width="10%" th:text="${ord.idUsu.nickname}"></td>
-            <td width="10%" th:text="${ord.name}"></td>
-            <td width="10%" th:text="${ord.surname}"></td>
+            <td width="10%" th:text="${ord.nameRec}"></td>
+            <td width="10%" th:text="${ord.surnameRec}"></td>
             <td width="10%" th:text="${ord.direction}"></td>
             <td width="10%" th:text="${ord.telephone}"></td>
             <td width="10%" th:text="${ord.price}"></td>
             <td width="10%" th:text="${ord.status}"></td>
-            <td width="11.1%"><a th:href="@{/admin/user/} + ${ord.idOrd} + .html">Mirar</a></td>
-            <td width="11.1%"><a th:href="@{/admin/user/} + ${user.idOrd} + .html">Editar estado</a></td>
-            <td width="11.1%"><a th:href="@{/admin/user/} + ${user.idOrd} + .html">Borrar</a></td>
+            <td width="11.1%"><a th:href="@{/admin/order/show/} + ${ord.idOrd} + .html">Mirar</a></td>
+            <td width="11.1%"><a th:href="@{/admin/order/status/} + ${ord.idOrd} + .html">Editar estado</a></td>
+            <td width="11.1%"><a th:href="@{/admin/order/delete/} + ${ord.idOrd} + .html">Borrar</a></td>
         </tr>                    
     </tbody>
     <tfoot>

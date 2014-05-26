@@ -41,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
     public boolean create(ItemProduct ip, Order1 order) {
         init();
         productService.setRepository(productRepository);
-        Product p = productService.findById(ip.getId());
+        Product p = productService.findById(ip.getId(), false);
         if(p == null || p.getIdProd() <= 0) {
             //ERROR XD
         }

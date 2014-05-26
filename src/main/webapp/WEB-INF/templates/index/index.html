@@ -106,20 +106,20 @@
                     <p class="saldoParrafo">SALDOS MASIVOS EN TODAS NUESTRAS CATEGORÍAS</p>
 
                     <div class="col-md-3 column">
-                        <img src="../../assets/img/1.jpg" th:attr="src=@{/assets/img/1.jpg}" class="sec"/>
-                        <img src="../../assets/img/2.jpg" th:attr="src=@{/assets/img/2.jpg}" class="sec"/>
+                        <a th:href="@{/product/category/12.html}"><img src="../../assets/img/1.jpg" th:attr="src=@{/assets/img/1.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/13.html}"><img src="../../assets/img/2.jpg" th:attr="src=@{/assets/img/2.jpg}" class="sec"/></a>
                     </div>
                     <div class="col-md-3 column">
-                        <img src="../../assets/img/3.jpg" th:attr="src=@{/assets/img/3.jpg}" class="sec"/>
-                        <img src="../../assets/img/4.jpg" th:attr="src=@{/assets/img/4.jpg}" class="sec"/>
+                        <a th:href="@{/product/category/14.html}"><img src="../../assets/img/3.jpg" th:attr="src=@{/assets/img/3.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/15.html}"><img src="../../assets/img/4.jpg" th:attr="src=@{/assets/img/4.jpg}" class="sec"/></a>
                     </div>
                     <div class="col-md-3 column">
-                        <img src="../../assets/img/5.jpg" th:attr="src=@{/assets/img/5.jpg}" class="sec"/>
-                        <img src="../../assets/img/6.jpg" th:attr="src=@{/assets/img/6.jpg}" class="sec"/>
+                        <a th:href="@{/product/category/16.html}"><img src="../../assets/img/5.jpg" th:attr="src=@{/assets/img/5.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/17.html}"><img src="../../assets/img/6.jpg" th:attr="src=@{/assets/img/6.jpg}" class="sec"/></a>
                     </div>
                     <div class="col-md-3 column">
-                        <img src="../../assets/img/7.jpg" th:attr="src=@{/assets/img/7.jpg}" class="sec"/>
-                        <img src="../../assets/img/8.jpg" th:attr="src=@{/assets/img/8.jpg}" class="sec"/>
+                        <a th:href="@{/product/category/18.html}"><img src="../../assets/img/7.jpg" th:attr="src=@{/assets/img/7.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/19.html}"><img src="../../assets/img/8.jpg" th:attr="src=@{/assets/img/8.jpg}" class="sec"/></a>
                     </div>
                 </center>
             </div>
@@ -147,59 +147,25 @@
                 </div>
             </div>
             <div class="row clearfix">
-                <div class="col-md-3">
-                    <div class="thumbnail">
-                        <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}"/>
-                        <div class="caption">
-                            <h3 class="">nombre</h3>
-                            <p>
-                                <span>Precio:</span> 
-                                <span class="">123</span> &euro;
-                            </p>
-                            <p>En stock</p>
-                            <button type="button" class="btn btn-success">Añadir a la cesta</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="thumbnail">
-                        <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}"/>
-                        <div class="caption">
-                            <h3 class="">nombre</h3>
-                            <p>
-                                <span>Precio:</span> 
-                                <span class="">123</span> &euro;
-                            </p>
-                            <p>En stock</p>
-                            <button type="button" class="btn btn-success">Añadir a la cesta</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="thumbnail">
-                        <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}"/>
-                        <div class="caption">
-                            <h3 class="">nombre</h3>
-                            <p>
-                                <span>Precio:</span> 
-                                <span class="">123</span> &euro;
-                            </p>
-                            <p>En stock</p>
-                            <button type="button" class="btn btn-success">Añadir a la cesta</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="thumbnail">
-                        <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}"/>
-                        <div class="caption">
-                            <h3 class="">nombre</h3>
-                            <p>
-                                <span>Precio:</span> 
-                                <span class="">123</span> &euro;
-                            </p>
-                            <p>En stock</p>
-                            <button type="button" class="btn btn-success">Añadir a la cesta</button>
+                <div th:each="prod: ${prodRandom}">
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}"/>
+                            <div class="caption">
+                                <h3 th:text="${prod.name}"></h3>
+                                <p>
+                                    <span>Precio:</span> 
+                                    <span th:text="${prod.price}"></span> &euro;
+                                </p>
+                                <p>En stock</p>
+                                <form action="#" th:action="@{/shopcart/add_.html}" method="POST">
+                                    <!--<input type="text" name=id" th:value="${prod.idProd}"></input>-->
+                                    <input type="hidden" name="id" th:value="${prod.idProd}"></input>
+                                    <input type="hidden" name="quantity" value="1"></input>
+                                    <p>En stock</p>
+                                    <button type="button" class="btn btn-success">Añadir a la cesta</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

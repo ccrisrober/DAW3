@@ -1,8 +1,17 @@
-STATUS
+<form action="#" th:action="@{/admin/order/status/} + ${statusorder.idOrd} + .html" th:object="${statusorder}" method="post" role="form"><!-- enctype="multipart/form-data">-->
+    <div class="form-group">
+        <input type="hidden" th:field="*{idOrd}" />
+    </div>
+    <div class="form-group"> <!-- Esto debe ser un selector -->
+        <label for="idCat">Categoría</label>
+        <select class="form-control" th:field="*{status}">
+            <option th:each="stat : ${all_status}" 
+                    th:value="${stat}" 
+                    th:text="${stat}"></option>
+        </select>
+        <!--<input type="text" th:value="*{status}" th:field="*{status}" />-->
+        <button type="submit"></button>
+    </div>
+</form>
 
-<select>
-  <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="mercedes">Mercedes</option>
-  <option value="audi">Audi</option>
-</select>
+
