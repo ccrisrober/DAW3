@@ -52,7 +52,8 @@ public class IndexController {
             for (int i = 0; i < MAX; i++) {
                 num = Math.abs(r.nextInt() % products.size());
                 if(products.get(num).getStock() > 0) {
-                    prodSearch.add(productService.findById(products.get(num).getIdProd()));
+                    Product p = productService.findById(products.get(num).getIdProd());
+                    prodSearch.add(p);
                     products.remove(num);
                 } else {
                     i--;

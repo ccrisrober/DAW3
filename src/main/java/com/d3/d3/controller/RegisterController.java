@@ -56,15 +56,6 @@ public class RegisterController {
             BindingResult errors, ModelMap modelMap) {
         String redir = REGISTER_SUCCESS;
         
-        
-        
-        List<ObjectError> allErrors = errors.getAllErrors();
-        for(ObjectError oe: allErrors) {
-            System.out.println(oe);
-        }
-        
-        
-        
         if (errors.hasErrors()) {
             redir = REGISTER;
         } else {

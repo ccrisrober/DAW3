@@ -16,12 +16,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
     @Resource
     UserRepository userRepository;
 
+    @Transactional
     @Override
     public boolean create(User u) {
         if(userRepository.getUser(u.getNickname())== null) {
@@ -36,21 +38,25 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Transactional(rollbackFor = UserNotFoundException.class)
     @Override
-    public boolean delete(Integer id) {
+    public boolean delete(Integer id) throws UserNotFoundException {
         User del = userRepository.findOne(id);
         if(del == null) {
-            return false;
+            throw new UserNotFoundException();
+            //return false;
         }
         userRepository.delete(id);
         return true;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public int chekLogin(UserLogin ul) {
         try {
@@ -63,16 +69,19 @@ public class UserServiceImpl implements UserService {
         //return ((usu != null) && (usu.getIdUsu()>=1))? usu.getIdUsu():-1;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findById(Integer id) {
         return userRepository.findOne(id);
     }
 
+    @Transactional(rollbackFor = UserNotFoundException.class)
     @Override
-    public boolean update(User u) {
+    public boolean update(User u) throws UserNotFoundException{
         User old = userRepository.findOne(u.getIdUsu());
         if(old == null) {
-            return false;
+            throw new UserNotFoundException();
+            //return false;
         }
         old.update(u);
         old = userRepository.save(u);

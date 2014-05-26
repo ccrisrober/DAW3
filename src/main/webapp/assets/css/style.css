@@ -92,7 +92,7 @@ a:link, a:visited { text-decoration: none }
     .sec { width: 50%; }
 
 }
-@media(max-width: 768px){ #botonBuscar{ margin-top:10px; }}
+
 @media(max-width:607px) { 
     .ocultar2 { display: none;}
     /*#pixmaniacosParrafo { font-size: 20px; } */

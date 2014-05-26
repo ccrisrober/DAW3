@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -31,22 +30,23 @@ public class LoginController {
     @Resource
     private UserService userService;
     
-    private static final String REDIR_LOGIN = "redirect:" + Functions.URL;
+    private static final String REDIR_INDEX = "redirect:" + Functions.URL;
     private static final String LOGIN = "/login/login";
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public String logout(HttpSession session) {
         //if (Functions.isAdmin(session) || Functions.isLogin(session)) {
-            session.setAttribute(Functions.ID_USER, -1);
-            session.setAttribute(Functions.ID_ADMIN, -1);
+            session.setAttribute(Functions.ID_USER, null);
+            session.setAttribute(Functions.ID_ADMIN, null);
+            session.setAttribute(ShopCartController.SHOPCART, null);
         //}
-        return REDIR_LOGIN;
+        return REDIR_INDEX;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String login(Model m, HttpServletRequest request, HttpSession session) {
         if (Functions.isAdmin(session) || Functions.isLogin(session)) {
-            return REDIR_LOGIN;
+            return REDIR_INDEX;
         }
         m.addAttribute("userlogin", new UserLogin());
         m.addAttribute("referer", request.getHeader("Referer"));

@@ -92,9 +92,9 @@
                 <div th:each="prod: ${prodRandom}">
                     <div class="col-md-3">
                         <div class="thumbnail">
-                            <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/im.html-o=3884083.jpg}"/>
+                            <img src="../../assets/img/amarillo.jpg" th:src="@{/assets/img/} + ${prod.imageCollection[0].image}" />
                             <div class="caption">
-                                <h3 th:text="${prod.name}"></h3>
+                                <a th:href="@{/product/show/} + ${prod.idProd} + .html"><h3 th:text="${prod.name}"></h3></a>
                                 <p>
                                     <span>Precio:</span> 
                                     <span th:text="${prod.price}"></span> &euro;

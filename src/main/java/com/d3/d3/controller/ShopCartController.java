@@ -16,6 +16,7 @@ import com.d3.d3.repository.ItemRepository;
 import com.d3.d3.repository.OrderRepository;
 import com.d3.d3.repository.ProductRepository;
 import com.d3.d3.repository.UserRepository;
+import com.d3.d3.service.OrderException;
 import com.d3.d3.service.OrderService;
 import com.d3.d3.service.OrderServiceImpl;
 import com.d3.d3.service.ProductService;
@@ -62,7 +63,7 @@ public class ShopCartController {
         binder.setValidator(new ItemProductValidator());
     }
 
-    private final String SHOPCART = "shopcart";
+    public static final String SHOPCART = "shopcart";
     private final String URL = "shopcart";
     private final String INDEX = URL + "/index";
     private final String RECEIPT = URL + "/receipt";
@@ -98,7 +99,7 @@ public class ShopCartController {
     private ImageRepository imageRepository;
 
     @RequestMapping(value = "/_add_", method = RequestMethod.POST)
-    public String add_(@RequestParam("id") Integer id,
+    public String _add_(@RequestParam("id") Integer id,
             @RequestParam("quantity") Integer quantity,
             HttpServletRequest request, HttpSession session, Model m) {
         ItemProduct item = new ItemProduct(quantity, id);
@@ -319,7 +320,12 @@ public class ShopCartController {
             plus = 5;
         }
         orderService.setRepository(imageRepository);
-        boolean create = orderService.createOrder(sp.getProducts(), receipt, id_user, plus);
+        boolean create = false;
+        try {
+            create = orderService.createOrder(sp.getProducts(), receipt, id_user, plus);
+        } catch (OrderException ex) {
+            model.addAttribute("error", "Error al crear el pedido");
+        }
         if (!create) {
             model.addAttribute("error", "Error al crear el pedido");
         }

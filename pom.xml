@@ -7,7 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>caca</name>
+    <name>Tienda_crodriguezbe</name>
 
     <properties>
         <hibernate.version>4.0.1.Final</hibernate.version>

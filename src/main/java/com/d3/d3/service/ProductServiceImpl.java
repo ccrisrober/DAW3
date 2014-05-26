@@ -12,9 +12,9 @@ import com.d3.d3.repository.ImageRepository;
 import com.d3.d3.repository.ProductRepository;
 import java.util.LinkedList;
 import java.util.List;
-import static jdk.nashorn.internal.runtime.Debug.id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -31,34 +31,39 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
     
+    @Transactional
     @Override
     public boolean create(Product product) {
         Product p = productRepository.save(product);
         return p != null && p.getIdProd() > 0;
     }
 
+    @Transactional(rollbackFor = ProductNotFoundException.class)
     @Override
-    public boolean update(Product product) {
+    public boolean update(Product product) throws ProductNotFoundException{
         Product old = productRepository.findOne(product.getIdProd());
         if(old == null) {
-            return false;
+            //return false;
+            throw new ProductNotFoundException();
         }
         old.update(product);
         old = productRepository.save(old);
         return old != null && old.getIdProd() > 0;
     }
-
+    
+    @Transactional(rollbackFor = ProductNotFoundException.class)
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id) throws ProductNotFoundException{
         Product del = productRepository.findOne(id);
         if(del == null) {
-            return false;
-            //throw new ProductNotFoundException();
+            //return false;
+            throw new ProductNotFoundException();
         }
         productRepository.delete(id);
         return true;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Product findById(int id) {
         Product p = productRepository.findOne(id);
@@ -69,11 +74,13 @@ public class ProductServiceImpl implements ProductService {
         return p;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Product> findBySearchName(String search) {
         List<Product> prods = productRepository.findByName("%"+search+"%");
@@ -86,6 +93,7 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Integer findStockById(Integer id) {
         Integer stock = productRepository.findStockById(id);
@@ -95,6 +103,7 @@ public class ProductServiceImpl implements ProductService {
         return stock;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Double findPriceById(Integer id) {
         Double price = productRepository.findPriceById(id);
@@ -104,13 +113,15 @@ public class ProductServiceImpl implements ProductService {
         return price;
     }
 
+    @Transactional(rollbackFor = ProductNotFoundException.class)
     @Override
-    public boolean removeStock(Integer id, Integer quantity) {
+    public boolean removeStock(Integer id, Integer quantity) throws ProductNotFoundException{
         Product prod = this.findById(id, false);
         Integer stock = prod.getStock();
         stock -= quantity;
         if(stock < 0) {
-            return false;
+            throw new ProductNotFoundException();
+            //return false;
         }
         prod.setStock(stock);
         return this.update(prod);
@@ -131,6 +142,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByIdCategory(idCat);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Product findById(Integer id, boolean sinImagen) {
         return productRepository.findOne(id);

@@ -54,11 +54,6 @@ public class OrderReceiptValidator implements Validator {
             if(!Pattern.matches("\\d{4}", or.getCard4())) {
                 errors.rejectValue("card4", "orderreceipt.card.matcher");
             }
-            /**
-             *  Falta validar fecha y mes xD
-             * if(or.getDate() == null) {
-                errors.rejectValue(null, null);
-            }**/
         }
         // Compruebo el teléfono bien formado : D
         if(or.getPhone() == null ||!Pattern.matches(PhoneConstraintValidator.MATCH, or.getPhone())) {

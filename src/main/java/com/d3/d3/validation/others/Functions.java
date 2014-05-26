@@ -22,7 +22,7 @@ public class Functions {
     public static final String ADMIN_USER = "POXMANIA_USER";
     public static final String ADMIN_PASS = "POXMANIA_PASS";
     public static final String LOGIN = "login.html";
-    public static final String URL = "http://localhost:8080/caca/";
+    public static final String URL = "http://localhost:8080/Tienda_crodriguezbe/";
 
     public static String goUser(HttpSession session) {
         String redir = "";

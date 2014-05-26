@@ -5,22 +5,21 @@
  */
 package com.d3.d3.controller;
 
-import com.d3.d3.validation.CategoryValidator;
 import com.d3.d3.model.Category;
 import com.d3.d3.model.Product;
+import com.d3.d3.service.CategoryNotFoundException;
 import com.d3.d3.service.CategoryService;
-import com.d3.d3.service.ProductService;
 import com.d3.d3.validation.others.Functions;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,9 +83,9 @@ public class CategoryController {
 
             Category c = categoryService.create(category);
             if (c == null) {
-                m.addAttribute("error", "{category.create.error}");
+                m.addAttribute("error", "No se ha podido crear la categoría");
             } else {
-                m.addAttribute("ok", "{category.create.ok}");
+                m.addAttribute("ok", "Categoría creada");
             }
             redir = CATJS;
         }
@@ -99,11 +98,11 @@ public class CategoryController {
         if (redir.isEmpty()) {
             int id_ = Functions.getInt(id);
             if (id_ <= 0) {
-                m.addAttribute("error", "{category.notfound}");
+                m.addAttribute("error", "Categoría no encontrada");
             } else {
                 Category c = categoryService.findById(id_);
                 if (c == null) {
-                    m.addAttribute("error", "{category.notfound}");
+                    m.addAttribute("error", "Categoría no encontrada");
                 } else {
                     m.addAttribute("category", c);
                     return EDIT;
@@ -123,11 +122,16 @@ public class CategoryController {
                 System.out.println("ERRORES");
                 return EDIT;
             }
-            boolean edit = categoryService.update(category);
+            boolean edit = false;
+            try {
+                edit = categoryService.update(category);
+            } catch (CategoryNotFoundException ex) {
+                m.addAttribute("error", "No se ha podido actualizar");
+            }
             if (!edit) {
-                m.addAttribute("error", "{category.edit.error}");
+                m.addAttribute("error", "No se ha podido actualizar");
             } else {
-                m.addAttribute("ok", "{category.edit.ok}");
+                m.addAttribute("ok", "Categoría actualizada");
             }
             redir = CATJS;
         }
@@ -140,13 +144,18 @@ public class CategoryController {
         if (redir.isEmpty()) {
             int id_ = Functions.getInt(id);
             if (id_ <= 0) {
-                m.addAttribute("error", "{category.notfound}");
+                m.addAttribute("error", "Categoría no encontrada");
             }
-            boolean delete = categoryService.delete(id_);
+            boolean delete = false;
+            try {
+                delete = categoryService.delete(id_);
+            } catch (CategoryNotFoundException ex) {
+                m.addAttribute("error", "No se ha podido borrar");
+            }
             if (!delete) {
-                m.addAttribute("error", "{category.delete.error}");
+                m.addAttribute("error", "No se ha podido borrar");
             } else {
-                m.addAttribute("ok", "{category.delete.ok}");
+                m.addAttribute("ok", "Categoría borrada");
             }
             redir = CATJS;
         }
@@ -156,7 +165,7 @@ public class CategoryController {
     @RequestMapping(value = "/admin/category/show/{id}", method = RequestMethod.GET)
     public String showProductWithCatgID(@PathVariable String id, Model m) {
         int id_ = Functions.getInt(id);
-        List<Product> products = null;
+        List<Product> products = new LinkedList<Product>();
         if (id_ > 0) {
             products = categoryService.findProductWithIdCategory(id_);
             if (products == null) {

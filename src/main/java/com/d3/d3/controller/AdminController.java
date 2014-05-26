@@ -7,6 +7,7 @@ package com.d3.d3.controller;
 
 import com.d3.d3.model.Order1;
 import com.d3.d3.model.User;
+import com.d3.d3.service.OrderService;
 import com.d3.d3.service.UserService;
 import com.d3.d3.validation.others.Functions;
 import java.util.LinkedList;
@@ -29,15 +30,17 @@ public class AdminController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private OrderService orderService;
 
     private final String INDEX_USER = "user";
-    private final String USER_ALL = INDEX_USER + "/index";
+    private final String USER_ALL = INDEX_USER + "/indexAll";
     private final String INDEX_ORDER = "order";
     private final String ORDER_ALL = INDEX_ORDER + "/showAllOrders";
     private final String USER_ORDER_ALL = INDEX_ORDER + "/showAllOrders";
     private final String ADMIN_INDEX = "admin/admin";
 
-    @RequestMapping(value = {"", "index"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"", "/index"}, method = RequestMethod.GET)
     public String admin(Model model, HttpSession session) {
         String redir = Functions.goAdmin(session);
         if (redir.isEmpty()) {
@@ -67,14 +70,17 @@ public class AdminController {
         if (redir.isEmpty()) {
             int id_ = Functions.getInt(id);
             if (id_ <= 0) {
-                m.addAttribute("error", "Producto no encontrado");
+                m.addAttribute("error", "Pedido no encontrado");
             } else {
                 User u = userService.findById(id_);
                 List<Order1> orders;
-                if (u == null || u.getOrder1Collection() == null) {
+                if (u == null) {
                     orders = new LinkedList<Order1>();
                 } else {
-                    orders = (List<Order1>) u.getOrder1Collection();
+                    orders = orderService.findAllUser(id_);
+                    if(orders == null) {
+                        orders = new LinkedList<Order1>();
+                    }
                 }
                 m.addAttribute("orders", orders);
             }

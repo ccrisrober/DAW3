@@ -1,42 +1,45 @@
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <td width="10%">NOMBRE</td>
-            <td width="10%">SURNAME</td>
-            <td width="10%">SURNAME2</td>
-            <td width="10%">DIRECTION</td>
-            <td width="10%">TELEPHONE</td>
-            <td width="10%">NICKNAME</td>
-            <td width="40%"></td>
-        </tr>                    
-    </thead>
-    <tbody>
-        <tr th:each="user : ${users}">
-            <td width="10%" th:text="${user.name}"></td>
-            <td width="10%" th:text="${user.surname}"></td>
-            <td width="10%" th:text="${user.surname2}"></td>
-            <td width="10%" th:text="${user.direction}"></td>
-            <td width="10%" th:text="${user.telephone}"></td>
-            <td width="10%" th:text="${user.nickname}"></td>
-            <td width="10%"><a th:href="@{/admin/user/order/} + ${user.idUsu} + .html">Orders</a></td>
-            <td width="10%"><a th:href="@{/admin/user/} + ${user.idUsu} + .html">Mirar</a></td>
-            <td width="10%"><a th:href="@{/admin/user/edit/} + ${user.idUsu} + .html">Editar</a></td>
-            <td width="10"><a th:href="@{/admin/user/delete/} + ${user.idUsu} + .html">Borrar</a></td>
-        </tr>                    
-    </tbody>
-    <tfoot>
-        <tr>
-            <td width="10%">NOMBRE</td>
-            <td width="10%">SURNAME</td>
-            <td width="10%">SURNAME2</td>
-            <td width="10%">DIRECTION</td>
-            <td width="10%">TELEPHONE</td>
-            <td width="10%">NICKNAME</td>
-            <td width="40%"></td>
-        </tr>                      
-    </tfoot>
-</table>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-<form th:action="@{/login.html?logout}" method="post">
-    <input type="submit" value="Logout" />
-</form>
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
+
+    <body>
+
+        <div class="container">
+
+            <div th:replace="fragments/header :: header">&nbsp;</div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="10%">NOMBRE</th>
+                        <th width="10%">SURNAME</th>
+                        <th width="10%">SURNAME2</th>
+                        <th width="10%">DIRECTION</th>
+                        <th width="10%">TELEPHONE</th>
+                        <th width="10%">NICKNAME</th>
+                        <!--<th colspan="4"></th>-->
+                    </tr>                    
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td width="10%" th:text="${user.name}"></td>
+                        <td width="10%" th:text="${user.surname}"></td>
+                        <td width="10%" th:text="${user.surname2}"></td>
+                        <td width="10%" th:text="${user.direction}"></td>
+                        <td width="10%" th:text="${user.telephone}"></td>
+                        <td width="10%" th:text="${user.nickname}"></td>
+                        <td width="10%"><a th:href="@{/admin/user/order/} + ${user.idUsu} + .html">Orders</a></td>
+                        <!--<td width="10%"><a th:href="@{/user/show/} + ${user.idUsu} + .html">Mirar</a></td>
+                        <td width="10%"><a th:href="@{/admin/user/edit/} + ${user.idUsu} + .html">Editar</a></td>
+                        <td width="10"><a th:href="@{/admin/user/delete/} + ${user.idUsu} + .html">Borrar</a></td>-->
+                    </tr>                    
+                </tbody>
+            </table>
+            <div class="clear"></div>
+
+            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
+
+        </div>
+    </body>
+</html>

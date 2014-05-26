@@ -23,7 +23,7 @@
                                 <th width="10%">TELEPHONE</th>
                                 <th width="10%">PRECIO</th>
                                 <th width="10%">ESTADO</th>
-                                <th colspan="3" style="text-align: center">ADMINISTRAR</th>
+                                <th colspan="2" style="text-align: center">ADMINISTRAR</th>
                             </tr>                    
                         </thead>
                         <tbody>
@@ -37,7 +37,6 @@
                                 <td width="10%" th:text="${ord.status}"></td>
                                 <td width="11.1%"><a th:href="@{/admin/order/show/} + ${ord.idOrd} + .html">Mirar</a></td>
                                 <td width="11.1%"><a th:href="@{/admin/order/status/} + ${ord.idOrd} + .html">Editar estado</a></td>
-                                <td width="11.1%"><a th:href="@{/admin/order/delete/} + ${ord.idOrd} + .html">Borrar</a></td>
                             </tr>                    
                         </tbody>
                     </table>

@@ -11,12 +11,16 @@ import com.d3.d3.model.Product;
 import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.model.others.OrderReceipt;
 import com.d3.d3.service.ImageService;
+import com.d3.d3.service.OrderException;
 import com.d3.d3.service.OrderService;
+import com.d3.d3.service.ProductNotFoundException;
 import com.d3.d3.service.ProductService;
 import com.d3.d3.service.UserService;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -50,7 +54,11 @@ public class PruebaController {
     
     @RequestMapping(value = "/stock", method = RequestMethod.GET)
     public String stock(Model m) {
-        m.addAttribute("error", !productService.removeStock(1, -20));
+        try {
+            m.addAttribute("error", !productService.removeStock(1, -20));
+        } catch (ProductNotFoundException ex) {
+            Logger.getLogger(PruebaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "index2";
     }
     
@@ -111,7 +119,11 @@ public class PruebaController {
         or.setSurname("Mi apellido o k ase");
         or.setPhone("916651199");
         System.out.println("hola");
-        boolean error = orderService.createOrder(cir, or, 1, 5);
+        try {
+            boolean error = orderService.createOrder(cir, or, 1, 5);
+        } catch (OrderException ex) {
+            Logger.getLogger(PruebaController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         m.addAttribute("error", orderService.text());
         return "index2";
     }

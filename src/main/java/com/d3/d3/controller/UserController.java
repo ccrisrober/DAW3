@@ -8,10 +8,9 @@ package com.d3.d3.controller;
 
 import com.d3.d3.model.User;
 import com.d3.d3.repository.UserRepository;
+import com.d3.d3.service.UserNotFoundException;
 import com.d3.d3.service.UserService;
-import com.d3.d3.validation.UserValidator;
 import com.d3.d3.validation.others.Functions;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -20,8 +19,6 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -86,7 +83,11 @@ public class UserController {
                 return EDIT;
             }
             userService.setRepository(userRepository);
-            boolean update = userService.update(user);
+            boolean update = false;
+            try {
+                update = userService.update(user);
+            } catch (UserNotFoundException ex) {
+            }
             redir = update ? EDIT_OK : EDIT_ERROR;
         }
         return redir;

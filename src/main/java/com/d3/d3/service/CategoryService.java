@@ -22,9 +22,9 @@ public interface CategoryService {
 
     public Category findById(int id_);
 
-    public boolean update(Category category);
+    public boolean update(Category category) throws CategoryNotFoundException;
 
-    public boolean delete(int id_);// throws CategoryNotFoundException;
+    public boolean delete(int id_) throws CategoryNotFoundException;
 
     public List<Product> findProductWithIdCategory(Integer id);
     

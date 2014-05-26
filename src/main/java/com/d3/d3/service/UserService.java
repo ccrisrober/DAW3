@@ -17,11 +17,11 @@ import java.util.List;
  */
 public interface UserService {
     public boolean create(User u);
-    public boolean delete(Integer id);// throws UserNotFoundException;
+    public boolean delete(Integer id) throws UserNotFoundException;
     public List<User> findAll();
     public int chekLogin(UserLogin ul);
     public User findById(Integer id);
-    public boolean update(User u);// throws UserNotFoundException;
+    public boolean update(User u) throws UserNotFoundException;
 
     public void setRepository(UserRepository userRepository);
 }

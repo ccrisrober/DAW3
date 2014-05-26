@@ -12,17 +12,20 @@ import com.d3.d3.repository.CardRepository;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CardServiceImpl implements CardService {
     @Resource
     CardRepository cardRepository;
 
+    @Transactional
     @Override
     public Card create(Card c) {
         return cardRepository.save(c);
     }
 
+    @Transactional(rollbackFor = CardNotFoundException.class)
     @Override
     public Card update(Card c) throws CardNotFoundException {
         // Buscamos la tarjeta vieja con el id de "c"
@@ -36,6 +39,7 @@ public class CardServiceImpl implements CardService {
         return old;
     }
 
+    @Transactional(rollbackFor = CardNotFoundException.class)
     @Override
     public boolean delete(Integer id) throws CardNotFoundException {
         // Buscamos la "card" con el id = "id"
@@ -48,11 +52,13 @@ public class CardServiceImpl implements CardService {
         return true;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Card> findAll() {
         return cardRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Card findById(Integer id) {
         return cardRepository.findOne(id);

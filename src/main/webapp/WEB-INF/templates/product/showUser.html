@@ -32,7 +32,14 @@
                                     </tr>   
                                     <tr>
                                         <th>Stock</th>
-                                        <td th:text="${product.stock}"></td>
+                                        <td>
+                                            <div th:if="${product.stock} > 0">
+                                                <span th:text="${product.stock}"></span>
+                                            </div>
+                                            <div th:if="1 > ${product.stock}">
+                                                <span style="color: red">No hay stock</span>
+                                            </div>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Categoría</th>
@@ -46,14 +53,25 @@
                 </div>
 
                 <div class="col-md-3">
-                    <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
-                        <input type="hidden" th:field="*{id}" ></input>
-                        <center>
-                            <input type="number" th:field="*{quantity}" min="0" th:value="0"></input>
-                            <br/><br/>
-                            <button type="submit" class="btn btn-success">Añadir</button>
-                        </center>
-                    </form>
+
+                    <div th:if="${product.stock} > 0">
+                        <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
+                            <input type="hidden" th:field="*{id}" ></input>
+                            <center>
+                                <input type="number" th:field="*{quantity}" min="0" th:value="0"></input>
+                                <br/><br/>
+                                <button type="submit" class="btn btn-success">Añadir</button>
+                            </center>
+                        </form>
+                    </div>
+
+                    <div th:if="1 > ${product.stock}">
+                        <blockquote>
+                            <p>
+                                Lo sentimos, no hay stock
+                            </p>
+                        </blockquote>
+                    </div>
                 </div>
             </div>
 

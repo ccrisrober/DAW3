@@ -25,11 +25,11 @@ import java.util.List;
  */
 public interface OrderService {
 
-    public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus);
+    public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus) throws OrderException;
 
     public double getTotalPrice(Collection<ItemProduct> products);
     
-    public boolean updateStatus(Integer idOrd, String status);
+    public boolean updateStatus(Integer idOrd, String status) throws OrderNotFoundException;
     
     public List<Order1> findAll();
     

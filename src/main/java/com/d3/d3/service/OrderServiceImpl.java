@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 // VIGILAR AND Y OR DE CUANDO COMPRUEBO DATOS EN TODOS LOS SERVICIOS
 @Service
@@ -57,8 +58,10 @@ public class OrderServiceImpl implements OrderService {
     //@Resource
     private ItemService itemService = new ItemServiceImpl();
 
+    @Transactional(rollbackFor = OrderException.class)
     @Override
-    public boolean createOrder(Collection<ItemProduct> sp, OrderReceipt receipt, Integer id_user, double plus) {
+    public boolean createOrder(Collection<ItemProduct> sp,
+            OrderReceipt receipt, Integer id_user, double plus) throws OrderException {
         // Creo un Order vacío
         Order1 emptyOrder = new Order1();
         emptyOrder.setDirection(receipt.getDirection());
@@ -97,7 +100,8 @@ public class OrderServiceImpl implements OrderService {
         if (order == null || order.getIdOrd() <= 0) {
             //ERROR XD
             texto += ("Error al guardar order");
-            return false;
+            throw new OrderException();
+            //return false;
         }
 
         // Ahora cremos la tabla intermedia
@@ -108,7 +112,8 @@ public class OrderServiceImpl implements OrderService {
         if (!create) {
             //ERROR XD
             texto += ("Error al crear los items");
-            return false;
+            throw new OrderException();
+            //return false;
         }
 
         double price = this.getTotalPrice(sp);
@@ -120,12 +125,14 @@ public class OrderServiceImpl implements OrderService {
         if (save == null || save.getIdOrd() <= 0) {
             //ERROR XD
             texto += ("Error al actualizar el pedido");
-            return false;
+            throw new OrderException();
+            //return false;
         }
         texto += ("Se finish");
         return true;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public double getTotalPrice(Collection<ItemProduct> products) {
         double total = 0.0;
@@ -136,32 +143,36 @@ public class OrderServiceImpl implements OrderService {
         return total;
     }
 
+    @Transactional(rollbackFor = OrderNotFoundException.class)
     @Override
-    public boolean updateStatus(Integer idOrd, String status) {
+    public boolean updateStatus(Integer idOrd, String status) throws OrderNotFoundException {
         Order1 findById = this.findById(idOrd);
         if (findById == null || findById.getIdOrd() <= 0) {
-            return false;
+            throw new OrderNotFoundException();
+            //return false;
         }
         findById.setStatus(status);
         Order1 upd = orderRepository.save(findById);
         return upd != null;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Order1> findAll() {
         return orderRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Order1 findById(Integer idOrd) {
         Order1 order = orderRepository.findOne(idOrd);
         List<Item> items = itemRepository.findByIdOrd(idOrd);
-        if(items == null) {
+        if (items == null) {
             items = new LinkedList<Item>();
         } else {
             productService.setRepository(imageRepository);
             productService.setRepository(productRepository);
-            for(Item i: items) {
+            for (Item i : items) {
                 int id = i.getProduct().getIdProd();
                 Product p = productService.findById(id);
                 i.setProduct(p);
@@ -171,6 +182,7 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean checkAccessUser(Integer idOrd, Integer idUser) {
         Order1 ord = orderRepository.findOne(idOrd);
@@ -206,6 +218,7 @@ public class OrderServiceImpl implements OrderService {
         this.productRepository = productRepository;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Collection<ItemProductReceipt> generateReceipt(Collection<ItemProduct> products) {
         productService.setRepository(productRepository);
@@ -213,12 +226,10 @@ public class OrderServiceImpl implements OrderService {
         Collection<ItemProductReceipt> items = new LinkedList<ItemProductReceipt>();
         for (ItemProduct ip : products) {
             Product product = productService.findById(ip.getId());
-            if (product == null) {
-                //error xD
+            if (product != null) {
+                items.add(new ItemProductReceipt(ip, product));
             }
-            items.add(new ItemProductReceipt(ip, product));
         }
-
         return items;
     }
 
@@ -245,7 +256,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public boolean delete(int idOrd) {
         boolean ret_ = false;
-        if (orderRepository.exists(idOrd))  {
+        if (orderRepository.exists(idOrd)) {
             itemService.setRepository(itemRepository);
             ret_ = itemService.delete(idOrd);
         }
@@ -256,8 +267,8 @@ public class OrderServiceImpl implements OrderService {
     public List<Order1> findAllUser(Integer idUser) {
         List<Order1> findAll = orderRepository.findAll();
         List<Order1> ret = new LinkedList<Order1>();
-        for(Order1 order: findAll) {
-            if(order.getIdUsu().getIdUsu() == idUser) {
+        for (Order1 order : findAll) {
+            if (order.getIdUsu().getIdUsu() == idUser) {
                 ret.add(order);
             }
         }

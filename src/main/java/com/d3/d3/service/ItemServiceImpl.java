@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.d3.d3.service;
 
 import com.d3.d3.model.Item;
@@ -14,10 +13,13 @@ import com.d3.d3.model.others.ItemProduct;
 import com.d3.d3.repository.ItemRepository;
 import com.d3.d3.repository.ProductRepository;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
-
+import org.springframework.transaction.annotation.Transactional;
 
 public class ItemServiceImpl implements ItemService {
+
     @Resource
     private ItemRepository itemRepository;
     @Resource
@@ -27,22 +29,23 @@ public class ItemServiceImpl implements ItemService {
     private ProductService productService;
     @Resource
     private ItemService itemService;
-    
+
     private void init() {
-        if(productService == null) {
+        if (productService == null) {
             productService = new ProductServiceImpl();
         }
-        if(itemService == null) {
+        if (itemService == null) {
             itemService = new ItemServiceImpl();
         }
     }
-    
+
+    @Transactional
     @Override
     public boolean create(ItemProduct ip, Order1 order) {
         init();
         productService.setRepository(productRepository);
         Product p = productService.findById(ip.getId(), false);
-        if(p == null || p.getIdProd() <= 0) {
+        if (p == null || p.getIdProd() <= 0) {
             //ERROR XD
         }
         Item item = new Item();
@@ -54,23 +57,27 @@ public class ItemServiceImpl implements ItemService {
         item.setProduct(p);
         item.setOrder1(order);
         Item create = itemRepository.save(item);
-        if(create == null) {
-            // ERROR XD
+        if (create == null) {
             return false;
         }
-        //Ahora borro el stock asociado al objeto
-        if(!productService.removeStock(ip.getId(), ip.getQuantity())) {
+        try {
+            //Ahora borro el stock asociado al objeto
+            if (!productService.removeStock(ip.getId(), ip.getQuantity())) {
+                return false;
+            }
+        } catch (ProductNotFoundException ex) {
             return false;
         }
         return true;
     }
 
+    @Transactional
     @Override
     public boolean create(Collection<ItemProduct> ip, Order1 order) {
         init();
         boolean ret_ = true;
-        for(ItemProduct itp: ip) {
-            if(!this.create(itp, order)) {
+        for (ItemProduct itp : ip) {
+            if (!this.create(itp, order)) {
                 ret_ = false;
                 break;
             }
@@ -91,7 +98,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean delete(int idOrd) {
         Collection<Item> items = itemRepository.findByIdOrd(idOrd);
-        for(Item i: items) {
+        for (Item i : items) {
             itemRepository.delete(i);
         }
         return true;

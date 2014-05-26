@@ -19,9 +19,9 @@ public interface ProductService {
 
     public boolean create(Product product);
 
-    public boolean update(Product product);
+    public boolean update(Product product) throws ProductNotFoundException;
 
-    public boolean delete(int id_);
+    public boolean delete(int id_) throws ProductNotFoundException;
 
     public Product findById(int id_);
 
@@ -33,7 +33,7 @@ public interface ProductService {
     
     public Double findPriceById(Integer id);
 
-    public boolean removeStock(Integer id, Integer quantity);
+    public boolean removeStock(Integer id, Integer quantity) throws ProductNotFoundException;
 
     public void setRepository(ProductRepository productRepositoryMock);
     

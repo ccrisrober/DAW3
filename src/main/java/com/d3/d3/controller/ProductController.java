@@ -12,6 +12,7 @@ import com.d3.d3.model.others.ProductAux;
 import com.d3.d3.repository.CategoryRepository;
 import com.d3.d3.service.CategoryService;
 import com.d3.d3.service.ImageService;
+import com.d3.d3.service.ProductNotFoundException;
 import com.d3.d3.service.ProductService;
 import com.d3.d3.validation.ItemProductValidator;
 import com.d3.d3.validation.ProductValidator;
@@ -22,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -267,7 +270,7 @@ public class ProductController {
     public String showAllUser(@RequestParam(value = "error", defaultValue = "",
             required = true) String error, @RequestParam(value = "ok", defaultValue = "",
                     required = true) String ok, ModelMap model, HttpSession session) {
-        String redir = Functions.goAdmin(session);
+        String redir = Functions.goUser(session);
         if (redir.isEmpty()) {
             List<Product> lp = productService.findAll();
             if (!ok.isEmpty()) {
@@ -334,7 +337,12 @@ public class ProductController {
             if (id_ <= 0) {
                 m.addAttribute("error", "Producto no encontrado");
             } else {
-                boolean delete = productService.delete(id_);
+                boolean delete = false;
+                try {
+                    delete = productService.delete(id_);
+                } catch (ProductNotFoundException ex) {
+                    m.addAttribute("error", "Producto no encontrado");
+                }
                 if (!delete) {
                     m.addAttribute("error", "Producto no encontrado");
                 } else {
@@ -357,7 +365,12 @@ public class ProductController {
                 return EDIT;
             }
             Product prod = new Product(product, categoryRepository.findOne(product.getIdCat()));
-            boolean edit = productService.update(prod);
+            boolean edit = false;
+            try {
+                edit = productService.update(prod);
+            } catch (ProductNotFoundException ex) {
+                m.addAttribute("error", "product.edit.error");
+            }
             if (!edit) {
                 m.addAttribute("error", "product.edit.error");
             } else {
