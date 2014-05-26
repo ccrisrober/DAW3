@@ -1,7 +1,43 @@
-<form action="#" th:action="@{/admin/product/uploadImages/} + *{id} + .html" method="post" role="form" enctype="multipart/form-data">
-    <!--<input type="text" name="id" th:value="*{id}"></input><br/>-->
-    <input type="text" name="id" th:value="*{id}"></input><br />
-    File to upload 1: <input type="file" name="image"></input><br />
-    File to upload 2: <input type="file" name="image"></input><br />
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
+
+    <body> 
+        <script>
+            $(document).ready(function() {
+                $("#mas").click(function() {
+                    var num = $('#numFotos').val();
+                    num++;
+                    $('#numFotos').val(num);
+                    $('#ficheros').append('File to upload ' + num + ': <input type="file" name="image"></input><br />');
+                });
+            });
+
+        </script>
+
+        <div class="container">
+
+            <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
+
+            <form action="#" th:action="@{/admin/product/uploadImages/} + *{id} + .html" method="post" role="form" enctype="multipart/form-data">
+                <!--<input type="text" name="id" th:value="*{id}"></input><br/>-->
+                <input type="hidden" name="id" th:value="*{id}"></input><br />
+                <div id="ficheros">
+                    File to upload 1: <input type="file" name="image"></input><br />
+                    File to upload 2: <input type="file" name="image"></input><br />
+                </div>
+                <input type="hidden" id="numFotos" value="2" />
+                <button class="btn btn-success" id="mas" type="button">Añadir más imágenes</button>
+                <hr/>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <div class="clear"></div>
+
+            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
+
+        </div>
+
+    </body>
+</html>

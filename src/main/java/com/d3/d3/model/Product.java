@@ -7,10 +7,9 @@
 package com.d3.d3.model;
 
 import com.d3.d3.model.others.ProductAux;
-import com.d3.d3.repository.CategoryRepository;
 import java.io.Serializable;
 import java.util.Collection;
-import javax.annotation.Resource;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,7 +66,7 @@ public class Product implements Serializable {
     @JoinColumn(name = "ID_CAT", referencedColumnName = "ID_CAT")
     @ManyToOne
     private Category idCat;
-
+    
     public Product() {
     }
 

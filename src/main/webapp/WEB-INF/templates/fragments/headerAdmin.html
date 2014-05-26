@@ -1,31 +1,6 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <!-- Navbar 
-        <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">My project</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li th:classappend="${page == 'home' ? 'active' : ''}"><a href="#" th:href="@{/}">Home</a></li>
-                        <li th:classappend="${page == 'messages' ? 'active' : ''}"><a href="#" th:href="@{/message}">Messages</a></li>
-                        <li th:classappend="${page == 'tasks' ? 'active' : ''}"><a href="#" th:href="@{/task}">Tasks</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/signin" th:href="@{/signin}">Sign in</a></li>
-                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
-                    </ul>
-                </div>
-                /.nav-collapse
-            </div>
-        </div>-->
         <header>
             <div class="row clearfix margin2">
                 <center>
@@ -34,42 +9,68 @@
                     </div>
 
                     <div class="col-md-4 column margin1">
+                        <form role="form" method="POST" action="#" th:action="@{/search.html}" >
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-info" id="botonBuscar">Buscar</button>
+                                </span>
+                            </div>
+                        </form>
                     </div>
                     <div class="col-md-4 column margin1">
-                        <a href="admin.html" th:href="@{/admin.html}"><button type="button" class="btn btn-warning">Admin</button></a>
-                        <a th:if="${session.id_admin} or ${session.id_user}" href="">
+                        <div th:if="not ${session.id_admin}">
+                            <a href="user.html" th:href="@{/user.html}"><button type="button" class="btn btn-default">Mi cuenta</button></a>
+                            <a href="shopcart/index.html" th:href="@{/shopcart/index.html}"><button type="button" class="btn btn-primary">Cesta</button></a>
+                        </div>
+                        <div th:if="${session.id_admin} or ${session.id_user}">
                             <form th:action="@{/login/logout.html}" method="post">
-                                <button type="button" class="btn btn-danger">Logout</button>
+                                <button type="submit" class="btn btn-danger">Logout</button>
                             </form>
-                        </a>
+                        </div>
                     </div>
                 </center>
             </div>
 
-            <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" >Menú</a>
-                    </div>
+            <div class="row clearfix limpiarlados">
+                <ul id="menuAdmin">
+                    <li>
+                        <a href="index.html" th:href="@{/index.html}">
+                            <button class="btn btn-primary"><span class="glyphicon glyphicon-home"></span> Poxmania.com</button>
+                        </a>
+                    </li>
 
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li id="casa"><a href="index.html" th:href="@{/index.html}"><span class="glyphicon glyphicon-home"></span></a></li>
-                            <li><a href="/product/create.html" th:href="@{/admin/product/create.html}">Crear producto</a></li>
-                            <li><a href="/product/create.html" th:href="@{/admin/category/create.html}">Crear categoría</a></li>
-                            <li><a href="contact.html" th:href="@{/contact.html}">Logout</a></li>
+                    <li>
+                        <a href="/admin/index.html" th:href="@{/admin/index.html}">
+                            <button class="btn btn-info">Inicio</button>
+                        </a>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle"><button class="btn btn-primary">Productos</button></a>
+                        <ul class="dropdown-menu" id="desplegableMenu" data-caja="off">
+                            <li>
+                                <a href="/product/index.html" th:href="@{/product/index.html}">Listar productos</a>
+                            </li>
+                            <li>
+                                <a href="/product/create.html" th:href="@{/product/create.html}">Crear producto</a>
+                            </li>
                         </ul>
-                    </div><!-- /.navbar-collapse -->
-                </div><!-- /.container-fluid -->
-            </nav>
+                    </li>
+
+                    <li>
+                        <a href="/admin/order/" th:href="@{/admin/order/}">
+                            <button class="btn btn-info">Pedidos</button>
+                        </a>
+                    </li>
+
+                    <li>
+                        <form th:action="@{/login/logout.html}" method="post">
+                            <input class="btn btn-danger" type="submit" value="Logout" />
+                        </form>
+                    </li>
+                </ul>
+            </div>          
         </header>
     </body>
 </html>

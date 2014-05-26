@@ -8,6 +8,7 @@ package com.d3.d3.model.others;
 
 import com.d3.d3.annotation.Phone;
 import com.d3.d3.model.User;
+import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -16,7 +17,7 @@ import javax.validation.constraints.Size;
  *
  * @author Cristian
  */
-public class OrderReceipt {
+public class OrderReceipt implements Serializable {
     public static final int MIN = 5;
     @NotNull
     String payment;
@@ -47,7 +48,25 @@ public class OrderReceipt {
     String card4;
     //@Date
     private Date date;
+    Integer cc_exp_mo;
+    Integer cc_exp_yr;
 
+    public Integer getCc_exp_mo() {
+        return cc_exp_mo;
+    }
+
+    public void setCc_exp_mo(Integer cc_exp_mo) {
+        this.cc_exp_mo = cc_exp_mo;
+    }
+
+    public Integer getCc_exp_yr() {
+        return cc_exp_yr;
+    }
+
+    public void setCc_exp_yr(Integer cc_exp_yr) {
+        this.cc_exp_yr = cc_exp_yr;
+    }
+    
     public OrderReceipt() {
         
     }

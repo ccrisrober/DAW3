@@ -51,7 +51,7 @@ public class OrderReceiptValidator implements Validator {
             if(!Pattern.matches("\\d{4}", or.getCard3())) {
                 errors.rejectValue("card3", "orderreceipt.card.matcher");
             }
-            if(!Pattern.matches("\\d{5}", or.getCard4())) {
+            if(!Pattern.matches("\\d{4}", or.getCard4())) {
                 errors.rejectValue("card4", "orderreceipt.card.matcher");
             }
             /**

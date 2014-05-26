@@ -7,13 +7,14 @@
 package com.d3.d3.model.others;
 
 import com.d3.d3.model.Product;
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author Cristian
  */
-public class ItemProductReceipt {
+public class ItemProductReceipt implements Serializable {
     @NotNull
     Integer quantity;
     @NotNull

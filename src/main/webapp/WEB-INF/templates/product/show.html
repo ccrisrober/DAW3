@@ -1,33 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Poxmanía tu tienda online</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
-        <link rel="icon" href="assets/img/icon.png" type="image/x-icon" />
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
-        <![endif]-->
-
-        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
-
-    </head>
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
 
     <body> 
         <div class="container">
 
             <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
-            
+
             <div class="panel panel-default">
                 <div class="panel-heading">Producto</div>
                 <div class="table-responsive">
@@ -35,39 +16,53 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="display: none">Nº Producto</th>
                                 <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Precio</th>
+                                <td th:text="${product.name}"></td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td th:text="${product.name}"></td>
+                                <th>Descripcion</th>
                                 <td th:text="${product.description}"></td>
+                            </tr>
+                            <tr>    
+                                <th>Precio</th>
                                 <td th:text="${product.price}"></td>
-                            </tr>                    
+                            </tr>   
+                            <tr>
+                                <th>Stock</th>
+                                <td th:text="${product.stock}"></td>
+                            </tr>
+                            <tr>
+                                <th>Categoría</th>
+                                <td th:text="${product.idCat.name}"></td>
+                            </tr>
                         </tbody>
                     </table>
 
                 </div>
             </div>
-            
-            <form>
-                <input type="button" value="Back" onClick="history.go(-1);
-                    return true;" class="btn btn-warning" />
-            </form>
-            <br/>
+
             <hr/><hr/>
-            IMÁGENES
-            <hr/>
-            <div th:each="image: ${product.imageCollection}">
-                <img src="" th:attr="src=@{/assets/img/} + ${image.image}" />
+
+            <h2>Subir imágenes</h2>
+            <a class="btn btn-warning" th:href="@{../uploadImages/} + ${product.idProd} + .html">Subir imágenes</a>
+
+            <hr/><hr/>
+
+            <h2>Imágenes</h2>
+            <div class="row clearfix">
+                <div th:each="image: ${product.imageCollection}">
+                    <div class="col-md-3">
+                        <img class="imagprod" src="" th:attr="src=@{/assets/img/} + ${image.image}" />
+                    </div>
+                </div>
             </div>
-            Subir imágenes
-            <a th:href="@{../uploadImages/} + ${product.idProd} + .html">Subir imágenes</a>
-            <!--<a th:href="@{/product/uploadImages/ + *{itemproduct.id} + .html">Subir imágenes</a>
-            -->
+
+            <hr/><hr/>
+
+            <div class="clear"></div>
+
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   
 
         </div>

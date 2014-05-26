@@ -1,106 +1,87 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Poxmanía tu tienda online</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
-        <link rel="icon" href="../assets/img/icon.png" type="image/x-icon" th:href="@{/assets/img/icon.png}"/>
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
-        <![endif]-->
-
-        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
-
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $("input[name=payment]").click(function() {
-                    //alert($('input:radio[name=payment]:checked').val());
-                    var sel = $('input:radio[name=payment]:checked').val();
-                    if (sel === "delivery") {
-                        $('#payment').text('');
-                    }
-                    else if (sel === "card") {
-                        var content = '<fieldset>';
-                        content += '<legend>Datos de tarjeta</legend>';
-                        content += '<div class="control-group">';
-                        content += '<label label-default="" class="control-label">Número tarjeta</label>';
-                        content += '<div class="controls">';
-                        content += '<div class="row">';
-                        content += '<div class="col-md-3">';
-                        content += '<input type="text" class="form-control" name="card1" autocomplete="off" maxlength="4" title="First four digits" required="" />';
-                        content += '</div>';
-                        content += '<div class="col-md-3">';
-                        content += '<input type="text" class="form-control" name="card2" autocomplete="off" maxlength="4" title="Second four digits" required="" />';
-                        content += '</div>';
-                        content += '<div class="col-md-3">';
-                        content += '<input type="text" class="form-control" name="card3" autocomplete="off" maxlength="4" title="Third four digits" required="" />';
-                        content += '</div>';
-                        content += '<div class="col-md-3">';
-                        content += '<input type="text" class="form-control" name="card4" autocomplete="off" maxlength="4" title="Fourth four digits" required="" />';
-                        content += '</div>';
-                        content += '</div>';
-                        content += '</div>';
-                        content += '</div>';
-                        content += '<br/>';
-                        content += '<div class="control-group">';
-                        content += '<label label-default="" class="control-label">Caducidad de la tarjeta</label>';
-                        content += '<div class="controls">';
-                        content += '<div class="row">';
-                        content += '<div class="col-md-9">';
-                        content += '<select class="form-control" name="cc_exp_mo">';
-                        content += '    <option value="01">Enero</option>';
-                        content += '    <option value="02">Febrero</option>';
-                        content += '    <option value="03">Marzo</option>';
-                        content += '    <option value="04">Abril</option>';
-                        content += '    <option value="05">Mayo</option>';
-                        content += '    <option value="06">Junio</option>';
-                        content += '    <option value="07">Julio</option>';
-                        content += '    <option value="08">Agosto</option>';
-                        content += '    <option value="09">Septiembre</option>';
-                        content += '    <option value="10">Octubre</option>';
-                        content += '    <option value="11">Noviembre</option>';
-                        content += '    <option value="12">Diciembre</option>';
-                        content += ' </select>';
-                        content += '  </div>';
-                        content += '         <div class="col-md-3">';
-                        content += '            <select class="form-control" name="cc_exp_yr">';
-                        content += '                <option>2014</option>';
-                        content += '                <option>2015</option>';
-                        content += '                <option>2016</option>';
-                        content += '                <option>2017</option>';
-                        content += '                <option>2018</option>';
-                        content += '                <option>2019</option>';
-                        content += '                <option>2020</option>';
-                        content += '                <option>2021</option>';
-                        content += '                <option>2022</option>';
-                        content += '                <option>2023</option>';
-                        content += '                <option>2024</option>';
-                        content += '                <option>2025</option>';
-                        content += '                <option>2026</option>';
-                        content += '                <option>2027</option>';
-                        content += '                <option>2028</option>';
-                        content += '                   </select>';
-                        content += '                 </div>';
-                        content += '             </div>';
-                        content += '           </div>';
-                        content += '      </div>';
-                        content += '  </fieldset>';
-                        $('#payment').html(content);
-                    }
-                });
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("input[name=payment]").click(function() {
+                //alert($('input:radio[name=payment]:checked').val());
+                var sel = $('input:radio[name=payment]:checked').val();
+                if (sel === "delivery") {
+                    $('#payment').text('');
+                }
+                else if (sel === "card") {
+                    var content = '<fieldset>';
+                    content += '<legend>Datos de tarjeta</legend>';
+                    content += '<div class="control-group">';
+                    content += '<label label-default="" class="control-label">Número tarjeta</label>';
+                    content += '<div class="controls">';
+                    content += '<div class="row">';
+                    content += '<div class="col-md-3">';
+                    content += '<input type="text" class="form-control" name="card1" autocomplete="off" maxlength="4" title="First four digits" required="" />';
+                    content += '</div>';
+                    content += '<div class="col-md-3">';
+                    content += '<input type="text" class="form-control" name="card2" autocomplete="off" maxlength="4" title="Second four digits" required="" />';
+                    content += '</div>';
+                    content += '<div class="col-md-3">';
+                    content += '<input type="text" class="form-control" name="card3" autocomplete="off" maxlength="4" title="Third four digits" required="" />';
+                    content += '</div>';
+                    content += '<div class="col-md-3">';
+                    content += '<input type="text" class="form-control" name="card4" autocomplete="off" maxlength="4" title="Fourth four digits" required="" />';
+                    content += '</div>';
+                    content += '</div>';
+                    content += '</div>';
+                    content += '</div>';
+                    content += '<br/>';
+                    content += '<div class="control-group">';
+                    content += '<label label-default="" class="control-label">Caducidad de la tarjeta</label>';
+                    content += '<div class="controls">';
+                    content += '<div class="row">';
+                    content += '<div class="col-md-9">';
+                    content += '<select class="form-control" name="cc_exp_mo">';
+                    content += '    <option value="01">Enero</option>';
+                    content += '    <option value="02">Febrero</option>';
+                    content += '    <option value="03">Marzo</option>';
+                    content += '    <option value="04">Abril</option>';
+                    content += '    <option value="05">Mayo</option>';
+                    content += '    <option value="06">Junio</option>';
+                    content += '    <option value="07">Julio</option>';
+                    content += '    <option value="08">Agosto</option>';
+                    content += '    <option value="09">Septiembre</option>';
+                    content += '    <option value="10">Octubre</option>';
+                    content += '    <option value="11">Noviembre</option>';
+                    content += '    <option value="12">Diciembre</option>';
+                    content += ' </select>';
+                    content += '  </div>';
+                    content += '         <div class="col-md-3">';
+                    content += '            <select class="form-control" name="cc_exp_yr">';
+                    content += '                <option>2014</option>';
+                    content += '                <option>2015</option>';
+                    content += '                <option>2016</option>';
+                    content += '                <option>2017</option>';
+                    content += '                <option>2018</option>';
+                    content += '                <option>2019</option>';
+                    content += '                <option>2020</option>';
+                    content += '                <option>2021</option>';
+                    content += '                <option>2022</option>';
+                    content += '                <option>2023</option>';
+                    content += '                <option>2024</option>';
+                    content += '                <option>2025</option>';
+                    content += '                <option>2026</option>';
+                    content += '                <option>2027</option>';
+                    content += '                <option>2028</option>';
+                    content += '                   </select>';
+                    content += '                 </div>';
+                    content += '             </div>';
+                    content += '           </div>';
+                    content += '      </div>';
+                    content += '  </fieldset>';
+                    $('#payment').html(content);
+                }
             });
-        </script>
-    </head>
+        });
+    </script>
 
     <body>
 
@@ -146,29 +127,33 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">Forma de pago</div>    
                             <div class="espacio1">
-                                <label>Contra Reembolso (+5 Euros)   <input type="radio" name="payment" value="delivery" selected="selected"/></label><br/>
-                                <label>Tarjeta de crédito   <input type="radio" name="payment" value="card" /></label><br/>
+                                <label>Contra Reembolso (+5 Euros)   <input type="radio" name="payment" value="delivery" /></label><br/>
+                                <label>Tarjeta de crédito   <input type="radio" name="payment" value="card" checked = ""/></label><br/>
                                 <span th:if="${#fields.hasErrors('payment')}" th:errors="*{payment}">Error</span>
                             </div>
                         </div>
                         <div id="payment">
-                            <!--<fieldset>
+                            <fieldset>
                                 <legend>Datos de tarjeta</legend>
                                 <div class="control-group">
                                     <label label-default="" class="control-label">Número tarjeta</label>
                                     <div class="controls">
                                         <div class="row">
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="First four digits" required="" />
+                                                <input type="text" class="form-control" name="card1" autocomplete="off" maxlength="4" title="First four digits" required="" />
+                                                <span th:if="${#fields.hasErrors('card1')}" th:errors="*{card1}">Error</span>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="Second four digits" required="" />
+                                                <input type="text" class="form-control" name="card2" autocomplete="off" maxlength="4" title="Second four digits" required="" />
+                                                <span th:if="${#fields.hasErrors('card2')}" th:errors="*{card2}">Error</span>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="Third four digits" required="" />
+                                                <input type="text" class="form-control" name="card3" autocomplete="off" maxlength="4" title="Third four digits" required="" />
+                                                <span th:if="${#fields.hasErrors('card3')}" th:errors="*{card3}">Error</span>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="text" class="form-control" autocomplete="off" maxlength="4" pattern="\d{4}" title="Fourth four digits" required="" />
+                                                <input type="text" class="form-control" name="card4" autocomplete="off" maxlength="4" title="Fourth four digits" required="" />
+                                                <span th:if="${#fields.hasErrors('card4')}" th:errors="*{card4}">Error</span>
                                             </div>
                                         </div>
                                     </div>
@@ -179,49 +164,43 @@
                                     <div class="controls">
                                         <div class="row">
                                             <div class="col-md-9">
-                                                <select class="form-control" name="cc_exp_mo">
-                                                    <option value="01">Enero</option>
-                                                    <option value="02">Febrero</option>
-                                                    <option value="03">Marzo</option>
-                                                    <option value="04">Abril</option>
-                                                    <option value="05">Mayo</option>
-                                                    <option value="06">Junio</option>
-                                                    <option value="07">Julio</option>
-                                                    <option value="08">Agosto</option>
-                                                    <option value="09">Septiembre</option>
-                                                    <option value="10">Octubre</option>
-                                                    <option value="11">Noviembre</option>
-                                                    <option value="12">Diciembre</option>
+                                                <select class="form-control" th:field="*{cc_exp_mo}">
+                                                    <option th:value="01">Enero</option>
+                                                    <option th:value="02">Febrero</option>
+                                                    <option th:value="03">Marzo</option>
+                                                    <option th:value="04">Abril</option>
+                                                    <option th:value="05">Mayo</option>
+                                                    <option th:value="06">Junio</option>
+                                                    <option th:value="07">Julio</option>
+                                                    <option th:value="08">Agosto</option>
+                                                    <option th:value="09">Septiembre</option>
+                                                    <option th:value="10">Octubre</option>
+                                                    <option th:value="11">Noviembre</option>
+                                                    <option th:value="12">Diciembre</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
-                                                <select class="form-control" name="cc_exp_yr">
-                                                    <option>2014</option>
-                                                    <option>2015</option>
-                                                    <option>2016</option>
-                                                    <option>2017</option>
-                                                    <option>2018</option>
-                                                    <option>2019</option>
-                                                    <option>2020</option>
-                                                    <option>2021</option>
-                                                    <option>2022</option>
-                                                    <option>2023</option>
-                                                    <option>2024</option>
-                                                    <option>2025</option>
-                                                    <option>2026</option>
-                                                    <option>2027</option>
-                                                    <option>2028</option>
+                                                <select class="form-control" th:field="*{cc_exp_yr}">
+                                                    <option th:value="2014">2014</option>
+                                                    <option th:value="2015">2015</option>
+                                                    <option th:value="2013">2016</option>
+                                                    <option th:value="2017">2017</option>
+                                                    <option th:value="2018">2018</option>
+                                                    <option th:value="2019">2019</option>
+                                                    <option th:value="2020">2020</option>
+                                                    <option th:value="2021">2021</option>
+                                                    <option th:value="2022">2022</option>¡
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </fieldset>-->
+                            </fieldset>
                         </div>
                     </fieldset>
                     <br/>
-                    <button type="submit">Finalizar</button>
-                    <br/>
+                    <button class="btn btn-warning" type="submit">Finalizar</button>
+                    <br/><br/>
                 </div>
             </form>
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   

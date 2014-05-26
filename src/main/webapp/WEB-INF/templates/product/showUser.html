@@ -1,77 +1,76 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Poxmanía tu tienda online</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
-        <link rel="icon" href="assets/img/icon.png" type="image/x-icon" />
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
-        <![endif]-->
-
-        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
-
-    </head>
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
 
     <body> 
         <div class="container">
 
             <div th:replace="fragments/header :: header">&nbsp;</div>
+            <div class="row clearfix">
+                <div class="col-md-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Producto</div>
+                        <div class="table-responsive">
 
-            <div class="panel panel-default">
-                <div class="panel-heading">Producto</div>
-                <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <td th:text="${product.name}"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Descripcion</th>
+                                        <td th:text="${product.description}"></td>
+                                    </tr>
+                                    <tr>    
+                                        <th>Precio</th>
+                                        <td th:text="${product.price}"></td>
+                                    </tr>   
+                                    <tr>
+                                        <th>Stock</th>
+                                        <td th:text="${product.stock}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Categoría</th>
+                                        <td th:text="${product.idCat.name}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
 
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th style="display: none">Nº Producto</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Precio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td th:text="${product.name}"></td>
-                                <td th:text="${product.description}"></td>
-                                <td th:text="${product.price}"></td>
-                            </tr>                    
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="col-md-3">
+                    <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
+                        <input type="hidden" th:field="*{id}" ></input>
+                        <center>
+                            <input type="number" th:field="*{quantity}" min="0" th:value="0"></input>
+                            <br/><br/>
+                            <button type="submit" class="btn btn-success">Añadir</button>
+                        </center>
+                    </form>
                 </div>
             </div>
-            
-            <hr/><hr/>
-            IMÁGENES
-            <hr/>
-            <div th:each="image: ${product.imageCollection}">
-                <img src="" th:attr="src=@{/assets/img/} + ${image.image}" />
+
+            <br/><br/>
+
+            <div class="row clearfix">
+                <h2>Imágenes</h2>
+                <div th:each="image: ${product.imageCollection}">
+                    <div class="col-md-3">
+                        <img class="imagprod" src="" th:attr="src=@{/assets/img/} + ${image.image}" />
+                    </div>
+                </div>
             </div>
 
-            <form action="#" th:action="@{/shopcart/add.html}" th:object="${itemproduct}" method="POST">
-                <input type="text" th:field="*{id}" ></input>
-                <input type="number" th:field="*{quantity}"></input>
-                <button type="submit">Añadir al carro tu xD</button>
-            </form>
+            <hr/><hr/>
 
-
-            <form>
-                <input type="button" value="Back" onClick="history.go(-1);
-                        return true;" class="btn btn-warning" />
-            </form>
-            <br/>
+            <div class="clear"></div>
 
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   
 

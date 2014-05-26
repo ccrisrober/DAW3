@@ -1,27 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Poxmanía tu tienda online</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
-        <link rel="icon" href="assets/img/icon.png" type="image/x-icon" />
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
-        <![endif]-->
-
-        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
-
-    </head>
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
 
     <body>
         <div class="container">
@@ -47,7 +28,7 @@
                 </script>
 
                 <!--Pulsa <a href="../" th:href="@{../category.html}">aquí</a> para volver a la lista de categorías-->
-                <p><a href="../index.html" th:href="@{../index.html}"><button class="btn btn-primary">Pulsa el botón para volver a la lista de productos</button></a> ó espere unos segundos y redigirá automáticamente</p>
+                <p><a href="../index.html" th:href="@{/admin/product/}"><button class="btn btn-primary">Pulsa el botón para volver a la lista de productos</button></a> ó espere unos segundos y redigirá automáticamente</p>
             <br/>
 
             <div th:replace="fragments/footer :: footer">&nbsp;</div>   

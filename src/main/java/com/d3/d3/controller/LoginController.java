@@ -36,10 +36,10 @@ public class LoginController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public String logout(HttpSession session) {
-        if (Functions.isAdmin(session) || Functions.isLogin(session)) {
+        //if (Functions.isAdmin(session) || Functions.isLogin(session)) {
             session.setAttribute(Functions.ID_USER, -1);
             session.setAttribute(Functions.ID_ADMIN, -1);
-        }
+        //}
         return REDIR_LOGIN;
     }
 

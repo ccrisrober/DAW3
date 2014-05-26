@@ -113,7 +113,7 @@ public class OrderServiceImpl implements OrderService {
 
         double price = this.getTotalPrice(sp);
 
-        order.setPrice(price);
+        order.setPrice(price + plus);
 
         Order1 save = orderRepository.save(order);
 
@@ -158,6 +158,14 @@ public class OrderServiceImpl implements OrderService {
         List<Item> items = itemRepository.findByIdOrd(idOrd);
         if(items == null) {
             items = new LinkedList<Item>();
+        } else {
+            productService.setRepository(imageRepository);
+            productService.setRepository(productRepository);
+            for(Item i: items) {
+                int id = i.getProduct().getIdProd();
+                Product p = productService.findById(id);
+                i.setProduct(p);
+            }
         }
         order.setItemCollection(items);
         return order;

@@ -1,31 +1,6 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <!-- Navbar 
-        <div class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">My project</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li th:classappend="${page == 'home' ? 'active' : ''}"><a href="#" th:href="@{/}">Home</a></li>
-                        <li th:classappend="${page == 'messages' ? 'active' : ''}"><a href="#" th:href="@{/message}">Messages</a></li>
-                        <li th:classappend="${page == 'tasks' ? 'active' : ''}"><a href="#" th:href="@{/task}">Tasks</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="/signin" th:href="@{/signin}">Sign in</a></li>
-                        <li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
-                    </ul>
-                </div>
-                /.nav-collapse
-            </div>
-        </div>-->
         <header>
             <div class="row clearfix margin2">
                 <center>
@@ -34,25 +9,18 @@
                     </div>
 
                     <div class="col-md-4 column margin1">
-                        <div th:if="not ${session.id_admin}">
-                            <form role="form" method="POST" action="#" th:action="@{/search.html}" >
-                                <div class="form-group">
-                                    <div class="col-sm-8"><input type="text" name="search" class="form-control" /></div>
+                        <form role="form" method="POST" action="#" th:action="@{/search.html}" >
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" />
+                                <span class="input-group-btn">
                                     <button type="submit" class="btn btn-info" id="botonBuscar">Buscar</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div th:if="${session.id_admin}">
-                            <a href="admin.html" th:href="@{/admin.html}" th:if="${session.id_admin}">
-                                <button type="button" class="btn btn-warning">Admin</button>
-                            </a>
-                        </div>
+                                </span>
+                            </div>
+                        </form>
                     </div>
                     <div class="col-md-4 column margin1">
-                        <div th:if="not ${session.id_admin}">
-                            <a href="user.html" th:href="@{/user.html}"><button type="button" class="btn btn-default">Mi cuenta</button></a>
-                            <a href="shopcart/index.html" th:href="@{/shopcart/index.html}"><button type="button" class="btn btn-primary">Cesta</button></a>
-                        </div>
+                        <a href="user.html" th:href="@{/user.html}"><button type="button" class="btn btn-default">Mi cuenta</button></a>
+                        <a href="shopcart/index.html" th:href="@{/shopcart/index.html}"><button type="button" class="btn btn-primary">Cesta</button></a>
                         <div th:if="${session.id_admin} or ${session.id_user}">
                             <form th:action="@{/login/logout.html}" method="post">
                                 <button type="submit" class="btn btn-danger">Logout</button>
@@ -79,18 +47,26 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li id="casa"><a href="index.html" th:href="@{/index.html}"><span class="glyphicon glyphicon-home"></span></a></li>
-                            <li><a href="contact.html" th:href="@{/contact.html}">Contacta</a></li>
-                            <li><a href="register.html" th:href="@{/register.html}">Registrar</a></li>
-                            <li><a href="aboutUs.html" th:href="@{/aboutUs.html}">Quiénes somos</a></li>
-                            <li id="lisobrante"> </li>
-                            <li><a href="">Electronica</a></li>
-                            <li><a href="">Fotos</a></li>
-                            <li><a href="">Consolas</a></li>
-                            <li><a href="">Fotos</a></li>
-                            <li><a href="">Consolas</a></li>
-                            <li><a href="">Electronica</a></li>
-                            <li><a href="">Fotos</a></li>
-                            <li><a href="">Consolas</a></li>
+                            <!--<li id="lisobrante"> </li>-->
+                            <li><a th:href="@{/product/category/12.html}">Informática</a></li>
+                            <li><a th:href="@{/product/category/13.html}">Juegos</a></li>
+                            <li><a th:href="@{/product/category/15.html}">Sonido</a></li>
+                            <li><a th:href="@{/product/category/16.html}">Fotografía</a></li>
+                            <li><a th:href="@{/product/category/18.html}">TV y vídeo</a></li>
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-info-sign"></span></a>
+                                <ul class="dropdown-menu" data-caja="off">
+                                    <li>
+                                        <a href="/contact.html" th:href="@{/contact.html}" th:classappend="${page == 'contact' ? 'active' : ''}">Contacta</a>
+                                    </li>
+                                    <li>
+                                        <a href="/register.html" th:href="@{/register.html}" th:classappend="${page == 'register' ? 'active' : ''}">Registrar</a>
+                                    </li>
+                                    <li>
+                                        <a href="/aboutUs.html" th:href="@{/aboutUs.html}" th:classappend="${page == 'aboutUs' ? 'active' : ''}">Quiénes somos</a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </div><!-- /.container-fluid -->

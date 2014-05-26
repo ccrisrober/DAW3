@@ -6,13 +6,14 @@
 
 package com.d3.d3.model.others;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 /**
  *
  * @author Cristian
  */
-public class StatusOrder {
+public class StatusOrder implements Serializable {
     @NotNull
     private Integer idOrd;
     @NotNull

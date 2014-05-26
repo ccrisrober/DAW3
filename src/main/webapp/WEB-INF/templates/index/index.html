@@ -1,26 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Poxmanía tu tienda online</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
-        <link rel="icon" href="../assets/img/icon.png" type="image/x-icon" th:href="@{/assets/img/icon.png}"/>
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
-        <![endif]-->
-
-        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
-    </head>
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
 
     <body>
 
@@ -28,78 +10,38 @@
 
             <div th:replace="fragments/header :: header">&nbsp;</div>
 
-            <div class="row clearfix ocultarInfo margin2">
-                <div class="col-md-3 column">
-                    <a href="1"><img src="../../assets/img/satisfecho.gif" th:attr="src=@{/assets/img/satisfecho.gif}" /></a>
-                </div>
-                <div class="col-md-3 column">
-                    <a href="2"><img src="../../assets/img/serviceclient.gif" th:attr="src=@{/assets/img/serviceclient.gif}" /></a>
-                </div>
-                <div class="col-md-3 column">
-                    <a href="3"><img src="../../assets/img/payementsecure.gif" th:attr="src=@{/assets/img/payementsecure.gif}" /></a>
-                </div>
-                <div class="col-md-3 column">
-                    <a href="4"><img src="../../assets/img/freesend.gif" th:attr="src=@{/assets/img/freesend.gif}" /></a>
-                </div>
-            </div>
-
             <div class="row clearfix margin2">
                 <div class="col-md-12 column">
                     <div class="carousel slide" id="carousel-815338">
                         <div class="carousel-inner">
                             <div class="item active">
-                                <img alt="" src="http://lorempixel.com/1600/500/sports/1" />
+                                <img alt="" th:src="@{/assets/img/electronica.jpg}" />
                                 <div class="carousel-caption">
-                                    <h4>
-                                        First Thumbnail label
-                                    </h4>
-                                    <p>
-                                        Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                    </p>
+                                    <h1>
+                                        Electrónica
+                                    </h1>
                                 </div>
                             </div>
                             <div class="item">
-                                <img alt="" src="http://lorempixel.com/1600/500/sports/2" />
+                                <img alt="" th:src="@{/assets/img/nsmb.jpg}" />
                                 <div class="carousel-caption">
-                                    <h4>
-                                        Second Thumbnail label
-                                    </h4>
-                                    <p>
-                                        Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                    </p>
+                                    <h1>
+                                        Juegos
+                                    </h1>
                                 </div>
                             </div>
                             <div class="item">
-                                <img alt="" src="http://lorempixel.com/1600/500/sports/3" />
+                                <img alt="" th:src="@{/assets/img/onda_sonido.jpg}" />
                                 <div class="carousel-caption">
-                                    <h4>
-                                        Third Thumbnail label
-                                    </h4>
-                                    <p>
-                                        Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                    </p>
+                                    <h1>
+                                        Sonido
+                                    </h1>
                                 </div>
                             </div>
                         </div> <a class="left carousel-control" href="#carousel-815338" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> <a class="right carousel-control" href="#carousel-815338" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
                     </div>
                 </div>
             </div>
-            <!--
-            <div class="row clearfix margin2 ocultar">
-                <div class="col-md-3 column">
-                    <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}" class="amarillo"/>
-                </div>
-                <div class="col-md-3 column">
-                    <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}" class="amarillo"/>
-                </div>
-                <div class="col-md-3 column">
-                    <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}" class="amarillo"/>
-                </div>
-                <div class="col-md-3 column">
-                    <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}" class="amarillo"/>
-                </div>
-            </div>
-            -->
 
             <div class="row clearfix margin2 ocultar2">
                 <center>
@@ -107,18 +49,18 @@
 
                     <div class="col-md-3 column">
                         <a th:href="@{/product/category/12.html}"><img src="../../assets/img/1.jpg" th:attr="src=@{/assets/img/1.jpg}" class="sec"/></a>
-                        <a th:href="@{/product/category/13.html}"><img src="../../assets/img/2.jpg" th:attr="src=@{/assets/img/2.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/16.html}"><img src="../../assets/img/2.jpg" th:attr="src=@{/assets/img/2.jpg}" class="sec"/></a>
                     </div>
                     <div class="col-md-3 column">
-                        <a th:href="@{/product/category/14.html}"><img src="../../assets/img/3.jpg" th:attr="src=@{/assets/img/3.jpg}" class="sec"/></a>
-                        <a th:href="@{/product/category/15.html}"><img src="../../assets/img/4.jpg" th:attr="src=@{/assets/img/4.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/13.html}"><img src="../../assets/img/3.jpg" th:attr="src=@{/assets/img/3.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/17.html}"><img src="../../assets/img/4.jpg" th:attr="src=@{/assets/img/4.jpg}" class="sec"/></a>
                     </div>
                     <div class="col-md-3 column">
-                        <a th:href="@{/product/category/16.html}"><img src="../../assets/img/5.jpg" th:attr="src=@{/assets/img/5.jpg}" class="sec"/></a>
-                        <a th:href="@{/product/category/17.html}"><img src="../../assets/img/6.jpg" th:attr="src=@{/assets/img/6.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/14.html}"><img src="../../assets/img/5.jpg" th:attr="src=@{/assets/img/5.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/18.html}"><img src="../../assets/img/6.jpg" th:attr="src=@{/assets/img/6.jpg}" class="sec"/></a>
                     </div>
                     <div class="col-md-3 column">
-                        <a th:href="@{/product/category/18.html}"><img src="../../assets/img/7.jpg" th:attr="src=@{/assets/img/7.jpg}" class="sec"/></a>
+                        <a th:href="@{/product/category/15.html}"><img src="../../assets/img/7.jpg" th:attr="src=@{/assets/img/7.jpg}" class="sec"/></a>
                         <a th:href="@{/product/category/19.html}"><img src="../../assets/img/8.jpg" th:attr="src=@{/assets/img/8.jpg}" class="sec"/></a>
                     </div>
                 </center>
@@ -150,20 +92,19 @@
                 <div th:each="prod: ${prodRandom}">
                     <div class="col-md-3">
                         <div class="thumbnail">
-                            <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/amarillo.jpg}"/>
+                            <img src="../../assets/img/amarillo.jpg" th:attr="src=@{/assets/img/im.html-o=3884083.jpg}"/>
                             <div class="caption">
                                 <h3 th:text="${prod.name}"></h3>
                                 <p>
                                     <span>Precio:</span> 
                                     <span th:text="${prod.price}"></span> &euro;
                                 </p>
-                                <p>En stock</p>
-                                <form action="#" th:action="@{/shopcart/add_.html}" method="POST">
+                                <form action="#" th:action="@{/shopcart/_add_.html}" method="POST">
                                     <!--<input type="text" name=id" th:value="${prod.idProd}"></input>-->
                                     <input type="hidden" name="id" th:value="${prod.idProd}"></input>
                                     <input type="hidden" name="quantity" value="1"></input>
                                     <p>En stock</p>
-                                    <button type="button" class="btn btn-success">Añadir a la cesta</button>
+                                    <button type="submit" class="btn btn-success">Añadir a la cesta</button>
                                 </form>
                             </div>
                         </div>

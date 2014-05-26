@@ -1,40 +1,50 @@
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <td width="10%">USUARIO</td>
-            <td width="10%">NOMBRE</td>
-            <td width="10%">SURNAME</td>
-            <td width="10%">DIRECTION</td>
-            <td width="10%">TELEPHONE</td>
-            <td width="10%">PRECIO</td>
-            <td width="10%">ESTADO</td>
-            <td colspan="3"></td>
-        </tr>                    
-    </thead>
-    <tbody>
-        <tr th:each="ord : ${orders}">
-            <td width="10%" th:text="${ord.idUsu.nickname}"></td>
-            <td width="10%" th:text="${ord.nameRec}"></td>
-            <td width="10%" th:text="${ord.surnameRec}"></td>
-            <td width="10%" th:text="${ord.direction}"></td>
-            <td width="10%" th:text="${ord.telephone}"></td>
-            <td width="10%" th:text="${ord.price}"></td>
-            <td width="10%" th:text="${ord.status}"></td>
-            <td width="11.1%"><a th:href="@{/admin/order/show/} + ${ord.idOrd} + .html">Mirar</a></td>
-            <td width="11.1%"><a th:href="@{/admin/order/status/} + ${ord.idOrd} + .html">Editar estado</a></td>
-            <td width="11.1%"><a th:href="@{/admin/order/delete/} + ${ord.idOrd} + .html">Borrar</a></td>
-        </tr>                    
-    </tbody>
-    <tfoot>
-        <tr>
-            <td width="10%">USUARIO</td>
-            <td width="10%">NOMBRE</td>
-            <td width="10%">SURNAME</td>
-            <td width="10%">DIRECTION</td>
-            <td width="10%">TELEPHONE</td>
-            <td width="10%">PRECIO</td>
-            <td width="10%">ESTADO</td>
-            <td colspan="3"></td>
-        </tr>                      
-    </tfoot>
-</table>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
+
+    <body>
+
+        <div class="container">
+
+            <div th:replace="fragments/headerAdmin :: header">&nbsp;</div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Pedidos</div>
+                <div class="table-responsive">
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th width="10%">USUARIO</th>
+                                <th width="10%">NOMBRE</th>
+                                <th width="10%">SURNAME</th>
+                                <th width="10%">DIRECTION</th>
+                                <th width="10%">TELEPHONE</th>
+                                <th width="10%">PRECIO</th>
+                                <th width="10%">ESTADO</th>
+                                <th colspan="3" style="text-align: center">ADMINISTRAR</th>
+                            </tr>                    
+                        </thead>
+                        <tbody>
+                            <tr th:each="ord : ${orders}">
+                                <td width="10%" th:text="${ord.idUsu.nickname}"></td>
+                                <td width="10%" th:text="${ord.nameRec}"></td>
+                                <td width="10%" th:text="${ord.surnameRec}"></td>
+                                <td width="10%" th:text="${ord.direction}"></td>
+                                <td width="10%" th:text="${ord.telephone}"></td>
+                                <td width="10%" th:text="${ord.price}"></td>
+                                <td width="10%" th:text="${ord.status}"></td>
+                                <td width="11.1%"><a th:href="@{/admin/order/show/} + ${ord.idOrd} + .html">Mirar</a></td>
+                                <td width="11.1%"><a th:href="@{/admin/order/status/} + ${ord.idOrd} + .html">Editar estado</a></td>
+                                <td width="11.1%"><a th:href="@{/admin/order/delete/} + ${ord.idOrd} + .html">Borrar</a></td>
+                            </tr>                    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
+
+        </div>
+    </body>
+</html>

@@ -190,29 +190,6 @@ public class ProductController {
         return redir;
     }
 
-    /*public @ResponseBody String updPost(@RequestParam("id") String id,
-     @RequestParam("image") MultipartFile[] images, Model m, HttpSession session) {
-     String redir = Functions.goAdmin(session);
-     if (redir.isEmpty()) {
-     int id_ = Functions.getInt(id);
-     if (id_ <= 0) {
-     m.addAttribute("error", "{product.notfound}");
-     return PRODJS;
-     }
-     Product product = productService.findById(id_);
-     if (product == null) {
-     m.addAttribute("error", "{product.notfound}");
-     return PRODJS;
-     }
-     // Si todo ha ido bien, subo las fotos
-     String message = "";
-     for (MultipartFile image : images) {
-     message += uploadImage(image, product);
-     }
-     return "redirect:product/show/" + id_ + ".html";
-     }
-     return redir;
-     }*/
     @RequestMapping(value = "/admin/product/create", method = RequestMethod.POST)
     public String create_post(@ModelAttribute(value = "productaux") @Valid ProductAux product,
             BindingResult errors, Model m/*, @RequestParam("image") MultipartFile[] images*/, HttpSession session) {

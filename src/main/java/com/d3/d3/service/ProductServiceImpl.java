@@ -10,7 +10,9 @@ import com.d3.d3.model.Image;
 import com.d3.d3.model.Product;
 import com.d3.d3.repository.ImageRepository;
 import com.d3.d3.repository.ProductRepository;
+import java.util.LinkedList;
 import java.util.List;
+import static jdk.nashorn.internal.runtime.Debug.id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,7 +76,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findBySearchName(String search) {
-        return productRepository.findByName("%"+search+"%");
+        List<Product> prods = productRepository.findByName("%"+search+"%");
+        List<Product> products = new LinkedList<Product>();
+        for(Product p: prods) {
+            List<Image> images = imageRepository.findByProductId(p.getIdProd());
+            p.setImageCollection(images);
+            products.add(p);
+        }
+        return products;
     }
 
     @Override

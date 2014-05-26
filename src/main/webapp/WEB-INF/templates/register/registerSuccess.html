@@ -1,3 +1,21 @@
-Buenas <p th:text="${username}"></p>
-Por aquí se va al login xD
-<a th:href="@{/login.html}">Login</a>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
+
+    <body>
+
+        <div class="container">
+
+            <div th:replace="fragments/header :: header">&nbsp;</div>
+
+            Buenas <span th:text="${username}"></span>
+            Por aquí se va al login xD
+            <a th:href="@{/login.html}">Login</a>
+            
+            <div th:replace="fragments/footer :: footer">&nbsp;</div>   
+
+        </div>
+    </body>
+</html>

@@ -1,26 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <title>Poxmanía tu tienda online</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/bootstrap.css" th:href="@{/assets/css/bootstrap.css}"/>
-        <link rel="stylesheet" type="text/css" media="all" href="../assets/css/style.css" th:href="@{/assets/css/style.css}"/>
-        <link rel="icon" href="../assets/img/icon.png" type="image/x-icon" th:href="@{/assets/img/icon.png}"/>
-
-        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-        <!--[if lt IE 9]>
-        <script type="text/javascript" th:src="@{/assets/js/html5shiv.js}"></script>
-        <![endif]-->
-
-        <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/bootstrap.min.js}"></script>
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>  
-    </head>
+    <!-- HEAD -->
+    <th:block th:include="fragments/head :: cabecera"></th:block>
 
     <body>
 
@@ -41,29 +23,34 @@
                             <thead>
                                 <tr>
                                     <th>Estado</th>
-                                    <th th:text="${order.status}"></th>
+                                    <td th:text="${order.status}"></td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="active">
-                                    <td>Nombre:</td>
+                                    <th>Nombre:</th>
                                     <td th:text="${order.nameRec}"></td>
                                 </tr>
                                 <tr class="success">
-                                    <td>Apellidos:</td>
+                                    <th>Apellidos:</th>
                                     <td th:text="${order.surnameRec}"></td>
                                 </tr>
                                 <tr class="warning">
-                                    <td>Dirección:</td>
+                                    <th>Dirección:</th>
                                     <td th:text="${order.direction}"></td>
                                 </tr>
                                 <tr class="danger">
-                                    <td>Teléfono:</td>
+                                    <th>Teléfono:</th>
                                     <td th:text="${order.telephone}"></td>
                                 </tr>
-                                <tr>
-                                    <td>Precio</td>
+                                <tr class="active">
+                                    <th>Precio</th>
                                     <td th:text="${order.price}"></td>
+                                </tr>
+                                <tr class="success">
+                                    <th>Tipo de pago</th>
+                                    <td th:if="${order.idCard}">Con tarjeta</td>
+                                    <td th:if="not ${order.idCard}">Efectivo</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -73,7 +60,7 @@
                         <div th:each="item: ${order.itemCollection}">
                             <div class="row clearfix">
                                 <div class="col-md-4 column">
-                                    <img alt="140x140" src="http://lorempixel.com/140/140/" class="img-rounded" />
+                                    <img alt="140x140" th:src="@{/assets/img/} + ${item.product.imageCollection[0].image}" class="img-rounded" />
                                 </div>
                                 <div class="col-md-8 column">
                                     <h3 th:text="${item.product.name}"></h3>

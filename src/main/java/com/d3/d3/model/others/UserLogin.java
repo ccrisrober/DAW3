@@ -6,13 +6,14 @@
 
 package com.d3.d3.model.others;
 
+import java.io.Serializable;
 import javax.validation.constraints.Size;
 
 /**
  *
  * @author Cristian
  */
-public class UserLogin {
+public class UserLogin implements Serializable {
     public final int MIN_USER = 4;
     public final int MAX_USER = 30;
     public final int MIN_PASS = 6;

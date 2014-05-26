@@ -14,6 +14,11 @@
 @media (min-width:768px) { .navbar-brand { display: none; } }
 @media (max-width:768px) { .navbar-header { border: 1px solid #cccccc; border-radius: 4px; } }
 
+#menuAdmin { list-style: none; }
+#menuAdmin li { float:left; margin:0 0 30px 12px; }
+#desplegableMenu li { margin:0; }
+
+
 /********
  * BODY *
  ********/
@@ -46,6 +51,33 @@ a:link, a:visited { text-decoration: none }
 .reducirboton { width: 84%; }
 #lisobrante { padding: 25px 10px;}
 
+.btn-rosa {
+    color: #FFF;
+    font-size: 15px;
+    font-weight: bold;
+    background: -webkit-linear-gradient(top,#d056a0 0,#bf3288 100%);
+    background: -moz-linear-gradient(top,#d056a0 0,#bf3288 100%);
+    background: -o-linear-gradient(top,#d056a0 0,#bf3288 100%);
+    background: linear-gradient(top,#d056a0 0,#bf3288 100%);
+    margin: 10px 0 12px 0;
+}
+
+.btn-rosa:hover {
+    color:#FFF;
+    background: -webkit-linear-gradient(bottom,#d056a0 0,#bf3288 100%);
+    background: -moz-linear-gradient(bottom,#d056a0 0,#bf3288 100%);
+    background: -o-linear-gradient(bottom,#d056a0 0,#bf3288 100%);
+    background: linear-gradient(bottom,#d056a0 0,#bf3288 100%);
+}
+
+.thumbnailAmpliacion{
+    padding: 10px 0 0 10px;
+    background: #fbfbfb;
+}
+
+.thumbnailAmpliacion span{
+    font-weight: bold;
+}
 
 @media(max-width:992px ) { #saldoParrafo{ font-size: 22px; }}
 @media(max-width:632px ) { #saldoParrafo{ font-size: 16px; }}
@@ -80,6 +112,13 @@ footer, .limpiarlados {
     padding-top: 40px;
     height: 100px;
     text-align: center;
+}
+
+@media(max-width:607px) { #copyright { padding-top: 30px;} }
+
+#copyright a {
+    color: #000;
+    font-weight: bold;
 }
 
 /* ******************************* 
@@ -121,41 +160,78 @@ n-m linea 4384,  4466, 4495
 /* FORM REGISTRAR Y LOGUIN */
 
 .form-signin {
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 .form-signin .checkbox {
-  font-weight: normal;
+    font-weight: normal;
 }
 .form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
 }
 .form-signin .form-control:focus {
-  z-index: 2;
+    z-index: 2;
 }
 .form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 .form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* FORM de aumentar cantidad en el shopcart */
+.aumentoCantidad { 
+    display:inline-block;
+    white-space:nowrap;
+    border:1px solid #c6c6c6;
+    border-radius: 3px;
+}
+.aumentoCantidad form{display:inline-block}
+
+.aumentoCantidad input[type=text],.aumentoCantidad .btn,.aumentoCantidad .btn[type=button]{
+    display:inline-block;
+    vertical-align:middle;
+    -webkit-border-radius:0;
+    border-radius:0;
+    padding:0;
+    height:24px;
+    line-height:24px;
+    border:0 none}
+
+.aumentoCantidad input[type=submit]{ padding: 0px 5px 5px 5px; }
+
+.aumentoCantidad input[type=text]{
+    width:28px!important;
+    height:22px;
+    text-align:center;
+    margin:0 -1px
 }
 
 
 .clear {
     height: 20px;
+}
+
+.img-rounded {
+    height: 140px;
+    width: 140px;
+}
+
+.imagprod {
+    width: 100%;
 }

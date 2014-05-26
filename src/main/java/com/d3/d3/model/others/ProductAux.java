@@ -7,12 +7,13 @@
 package com.d3.d3.model.others;
 
 import com.d3.d3.model.Product;
+import java.io.Serializable;
 
 /**
  *
  * @author Cristian
  */
-public class ProductAux {
+public class ProductAux implements Serializable {
     private Integer idProd;
     private String name;
     private String description;
